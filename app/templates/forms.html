@@ -1,0 +1,341 @@
+{% extends "base.html" %}
+
+{% block title %} Tables {% endblock %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+<style>
+.card-title {
+    cursor: default;!important
+    }
+.active {
+    background-color:#19355f!important; /* Replace with your desired active background color */
+    color: #fff !important; /* Replace with the desired active text color */
+  }
+tr{
+margin-top:20px;
+border-bottom: 1px solid black;
+}
+  th{
+  text-align:center;
+  color: #19355f;
+  padding:5px;
+  }
+   td{
+  text-align:center;
+  color: #19355f;
+  padding:5px;
+  }
+    .search {
+    padding: 5px;
+    display: none;
+    outline: none;
+    border: none;
+    border-bottom: 1px solid black;
+
+}
+  .hicon {
+    margin-right: 20px;
+    font-size: 22px !important;
+    position: relative;
+}
+
+.hicon:nth-child(1):after {
+    content: '';
+    position: absolute;
+    width: 7px;
+    height: 7px;
+    background: red;
+    border-radius: 10px;
+    left: 13px;
+    top: 7px;
+    transform: scale(0.5);
+    box-shadow: 0 0 0 0 rgba(255, 82, 82, 1);
+    animation: pulse-red 2s infinite;
+    cursor: pointer;
+
+}
+
+@keyframes pulse-red {
+    0% {
+        transform: scale(0.85);
+        box-shadow: 0 0 0 0 rgba(255, 82, 82, 0.7);
+    }
+
+    70% {
+        transform: scale(1);
+        box-shadow: 0 0 0 25px rgba(255, 82, 82, 0);
+    }
+
+    100% {
+        transform: scale(0.85);
+        box-shadow: 0 0 0 0 rgba(255, 82, 82, 0);
+    }
+}
+
+.search-div{
+text-align: right;
+ margin-top: 20px;
+ position: relative;
+margin-left: auto;
+ padding-right: 15px;
+ padding-left: 15px
+}
+.forflex{
+display: flex;
+}
+<!--.fornone{-->
+<!--display: none;-->
+<!--}-->
+</style>
+{% if session['role'] %}
+<div class="content">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card ">
+        <div class="forflex">
+          <div class="card-header">
+               <h4 class="card-title">Submitted forms </h4>
+          </div>
+             <div class="search-div">
+                     <input type="text" class="search" >
+                     <i class="fa fa-search hicon sicon"></i>
+                 </div>
+            <div class="clearfix"></div>
+        </div>
+        <div id="submittedforms" class="card-body fornone">
+          <div class="table-responsive">
+            <table style="overflow-x: auto;" id="dataTable">
+        <thead>
+            <tr>
+                <th scope="col" width="10%">Filled By</th>
+                <th scope="col" width="15%">Belongs To</th>
+                <th scope="col" width="15%">Company</th>
+                <th scope="col" width="10%">Status</th>
+                <th scope="col" width="8%">Date</th>
+                <th scope="col" width="15%">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+           {% if alldata_with_marketing_or_recruiting|length > 0 %}
+              {% for data, marketing_or_recruiting in alldata_with_marketing_or_recruiting %}
+              <tr class="data-row">
+                  <td data-label="Due Date">{{ data.filledby }}</td>
+                  <td data-label="Amount">{{ data.belongsto }}</td>
+                  {% if marketing_or_recruiting.company %}
+                  <td data-label="Amount">{{ marketing_or_recruiting.company }}</td>
+                  {% else %}
+                  <td> - </td>
+                  {% endif %}
+                  <td data-label="Amount">{{ data.status }}</td>
+                  <td data-label="Amount">{{ data.created_at }}</td>
+                  <td data-label="Amount">
+                      <a href="{{ url_for('view', form_id=data.form_id, form_type=data.form_type) }}">
+                      <i style="font-size:15px; margin-right:8px" class="fas fa-eye" data-toggle="tooltip" title="View Form"></i>
+                      <a href="#" data-form-id="{{ data.form_id }}" data-form-type="{{ data.form_type }}" class="delete-form" data-toggle="tooltip" title="Delete Form">
+                      <i style="font-size:15px; margin-left:5px" class="fa fa-trash" aria-hidden="true"></i>
+                      </a>
+                      </a>
+                  </td>
+              </tr>
+              {% endfor %}
+              {% else %}
+              <tr>
+                  <td class="text-center" colspan="5">No Records</td>
+              </tr>
+           {% endif %}
+        </tbody>
+    </table>
+
+          </div>
+        </div >
+      </div>
+     
+    </div>
+
+
+  </div>
+    <!-- Add pagination controls here using alldata -->
+ <nav aria-label="Page navigation example">
+    <ul class="pagination">
+        <li class="page-item{% if page == 1 %} disabled{% endif %}">
+            <a class="page-link" href="{{ url_for('forms', page=page-1) }}" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+            </a>
+        </li>
+        {% if start_page > 1 %}
+            <li class="page-item">
+                <a class="page-link" href="{{ url_for('forms', page=1) }}">1</a>
+            </li>
+            <li class="page-item disabled">
+                <span class="page-link">...</span>
+            </li>
+        {% endif %}
+        {% for p in range(start_page, end_page + 1) %}
+            <li class="page-item{% if p == page %} active{% endif %}">
+                <a class="page-link" href="{{ url_for('forms', page=p) }}">{{ p }}</a>
+            </li>
+        {% endfor %}
+        {% if end_page < total_pages %}
+            <li class="page-item disabled">
+                <span class="page-link">...</span>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="{{ url_for('forms', page=total_pages) }}">{{ total_pages }}</a>
+            </li>
+        {% endif %}
+        <li class="page-item{% if page == total_pages %} disabled{% endif %}">
+            <a class="page-link" href="{{ url_for('forms', page=page+1) }}" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+        </li>
+    </ul>
+</nav>
+
+</div>
+
+<script>
+$(function () {
+  $('[data-toggle="tooltip"]').tooltip()
+})
+document.addEventListener('DOMContentLoaded', function () {
+    const deleteLinks = document.querySelectorAll('.delete-form');
+
+    deleteLinks.forEach(link => {
+        link.addEventListener('click', function (event) {
+            event.preventDefault();
+            const formId = this.getAttribute('data-form-id');
+            const formType = this.getAttribute('data-form-type');
+
+            Swal.fire({
+                icon: 'warning',
+                title: 'Delete Form',
+                text: 'Are you sure you want to delete this form?',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: 'grey',
+                confirmButtonText: 'Delete'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    fetch(`/deleteform/${formId}/${formType}`, {
+                        method: 'POST',
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.message === 'Form Deleted!') {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Success!',
+                                text: 'Form deleted successfully!',
+                            }).then(() => {
+                                window.location.href = "{{ url_for('forms') }}";
+                            });
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: data.message,
+                            });
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'An error occurred while deleting the form.',
+                        });
+                    });
+                }
+            });
+        });
+    });
+});
+</script>
+<script>
+<!--filter start-->
+$(document).ready(function () {
+    $(".sicon").click(function () {
+        $(".search").toggle(1000);
+    });
+
+    $(".search").on("keyup", function () {
+        var value = $(this).val().toLowerCase();
+        $(".data-row").filter(function () {
+            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+        });
+    });
+
+    $("#dateFilterButton").click(function () {
+    var fromDate = new Date($("#fromDate").val());
+    var toDate = new Date($("#toDate").val());
+
+    // Adjust toDate to the next day to include the entire day
+    toDate.setDate(toDate.getDate() + 1);
+
+    console.log("From Date:", fromDate);
+    console.log("To Date:", toDate);
+
+  $("#dateFilterButton").click(function () {
+    var fromDate = new Date($("#fromDate").val());
+    var toDate = new Date($("#toDate").val());
+
+    // Adjust toDate to the next day to include the entire day
+    toDate.setDate(toDate.getDate() + 1);
+
+    console.log("From Date:", fromDate);
+    console.log("To Date:", toDate);
+
+    $(".data-row").each(function () {
+        var dateText = $(this).find("td:eq(2)").text(); // Assuming date is in the third column
+        var parts = dateText.split('/'); // Split the date string into parts
+        var rowDate = new Date(parts[2], parts[0] - 1, parts[1]); // Create a Date object
+
+        if (!isNaN(rowDate)) {
+            if (fromDate && toDate) {
+                var validRow = (rowDate >= fromDate && rowDate < toDate);
+                $(this).toggle(validRow);
+            }
+        } else {
+            // Handle invalid date format here, if necessary
+        }
+    });
+});
+});
+});
+<!--filter end -->
+<!--  function showDivform(divId) {-->
+<!--    var div1 = document.getElementById(divId);-->
+<!--    var div2 = document.getElementById('allforms');-->
+<!--    var div3 = document.getElementById('submittedforms');-->
+
+<!--    var btn1 = document.getElementById('allforms-btn');-->
+<!--    var btn2 = document.getElementById('submittedforms-btn');-->
+
+<!--    if (divId === 'allforms') {-->
+<!--      div2.style.display = 'block';-->
+<!--      div3.style.display = 'none';-->
+
+<!--      btn1.classList.add('active');-->
+<!--      btn2.classList.remove('active');-->
+<!--    } else if (divId === 'submittedforms') {-->
+<!--      div3.style.display = 'block';-->
+<!--      div2.style.display = 'none';-->
+
+<!--      btn2.classList.add('active');-->
+<!--      btn1.classList.remove('active');-->
+<!--    } else {-->
+<!--      div2.style.display = 'none';-->
+<!--      div3.style.display = 'none';-->
+
+<!--      btn1.classList.remove('active');-->
+<!--      btn2.classList.remove('active');-->
+<!--    }-->
+<!--  }-->
+</script>
+{% endif %}
+{% endblock content %}
+{% block javascripts %}{% endblock javascripts %}

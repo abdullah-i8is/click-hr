@@ -1,0 +1,141 @@
+{% extends "base.html" %}
+
+{% block title %} User Profile {% endblock %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+{% if session['role'] %}
+<div class="content">
+  <div class="row">
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="title">Edit Profile</h5>
+        </div>
+
+        <div class="card-body">
+
+          <form method="post" action="/changepassword">
+
+            {% if msg %}
+            <div class="row">
+
+              <div class="col-md-6 pr-md-1">
+
+                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                  <p class="mb-0">
+                    {{msg}}
+                  </p>
+                </div>
+
+              </div>
+
+            </div>
+            {% endif %}
+
+            <div class="row">
+              <div class="col-md-6 pr-md-1">
+                <div class="form-group">
+                  <label>First Name</label>
+                  <input type="text" class="form-control" placeholder="Company" value="{{session['user'].split()[0]}}" readonly>
+                </div>
+              </div>
+              <div class="col-md-6 pl-md-1">
+                <div class="form-group">
+                  <label>Last Name</label>
+                  <input type="text" class="form-control" placeholder="Last Name"
+                    value="{{session['user'].split()[1]}}" readonly>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label class="form-label ">Email Address</label>
+                  <input type="email" name="email" class="form-control" placeholder="Your email Here"
+                    value="{{session['email']}}" readonly>
+                  <section class="display-error-message">
+                  </section>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                  <div class="form-group">
+                      <label>Want to change your password?</label>
+                      <input type="password" class="form-control forfas" id="changepassword" name="oldps" placeholder="Enter Old password">
+<!--                      <i class="fas fa-eye-slash myfas" id="changepswrd"></i>-->
+                  </div>
+              </div>
+          </div>
+          <div class="row">
+              <div class="col-md-12">
+                  <div class="form-group">
+                      <label>New Password</label>
+                      <input type="password" class="form-control" name="newps" id="newPassword" placeholder="Enter New password">
+<!--                      <i class="fas fa-eye-slash myfas" id="toggleNewPassword"></i>-->
+                  </div>
+              </div>
+          </div>
+          <div class="row">
+              <div class="col-md-12">
+                  <div class="form-group">
+                      <label>Confirm Password</label>
+                      <input type="password" class="form-control" name="confirmpswrd" id="confirmPassword" placeholder="Enter Confirm password">
+<!--                      <i class="fas fa-eye-slash myfas" id="toggleConfirmPassword"></i>-->
+                  </div>
+              </div>
+          </div>
+
+            <div class="card-footer">
+              <button type="submit" class="btn btn-fill btn-primary">Save</button>
+            </div>
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+{% endif %}
+<script>
+        const toggleNewPassword = document.getElementById("toggleNewPassword");
+    const newPassword = document.getElementById("newPassword");
+
+    toggleNewPassword.addEventListener("click", function () {
+        togglePasswordVisibility(newPassword, toggleNewPassword);
+    });
+
+    const changepassword = document.getElementById("changepassword");
+    const changepswrd = document.getElementById("changepswrd");
+
+    changepswrd.addEventListener("click", function () {
+        togglePasswordVisibility(changepassword, changepswrd);
+    });
+
+    const toggleConfirmPassword = document.getElementById("toggleConfirmPassword");
+    const confirmPassword = document.getElementById("confirmPassword");
+
+    toggleConfirmPassword.addEventListener("click", function () {
+        togglePasswordVisibility(confirmPassword, toggleConfirmPassword);
+    });
+
+    function togglePasswordVisibility(inputElement, toggleElement) {
+        if (inputElement.type === "password") {
+            inputElement.type = "text";
+            toggleElement.classList.remove("fa-eye-slash");
+            toggleElement.classList.add("fa-eye");
+        } else {
+            inputElement.type = "password";
+            toggleElement.classList.remove("fa-eye");
+            toggleElement.classList.add("fa-eye-slash");
+        }
+    }
+
+</script>
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}{% endblock javascripts %}

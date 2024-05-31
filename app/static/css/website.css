@@ -1,0 +1,730 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat+Subrayada:wght@400;700&family=Montserrat:wght@400;500;600;700&display=swap');
+
+:root {
+    --green: #174129;
+    --white: #fff;
+    --black: #000;
+    --lightblue: #b3bbd1;
+    --gray: #e5e5e5;
+}
+
+* {
+    margin: 0px;
+    padding: 0px;
+    font-family: 'Montserrat', sans-serif;
+}
+
+/* Hassan CSS */
+
+.container{
+    margin: 0 auto;
+    max-width: 1170px;
+    padding: 0 20px;
+
+}
+
+.headerMain{
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    align-items: center;
+    padding: 20px 0;
+
+}
+
+.logoMain{
+    width: 150px;
+
+}
+
+.logoImg{
+    width: 100%;
+
+}
+
+.backToHomeButton{
+    background: none;
+    border: none;
+    background-color: var(--green);
+    color: #fff;
+    font-size: 20px;
+    font-weight: 600;
+    font-family: 'Montserrat';
+    padding: 15px 40px;
+    border-radius: 0px 10px 0px 10px;
+
+}
+
+.jobTitleMain {
+    width: 100%;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    padding: 150px 0;
+
+}
+
+.jobName h4{
+    font-size: 50px;
+    color: #fff;
+    font-weight: 600;
+    font-family: 'Montserrat';
+    text-align: center;
+
+}
+
+.timeLocationPostMain{
+    display: flex;
+    align-items: flex-end;
+    margin-top: 50px;
+
+}
+
+.timeLengthContent{
+    background-color: var(--green);
+    padding: 10px 20px;
+    border-radius: 50px;
+    color: #fff;
+    font-size: 15px;
+    font-weight: 500;
+
+}
+
+.locationMain{
+    display: flex;
+    align-items: center;
+    margin-left: 30px;
+
+}
+
+.locationIconMain{
+    width: 20px;
+
+}
+
+.locationIcon{
+    width: 100%;
+
+}
+
+.locationDetail{
+    color: #999c9f;
+    font-size: 15px;
+    font-family: 'Montserrat';
+    font-weight: 600;
+    margin-left: 10px;
+
+}
+
+.companyNamenTag{
+    padding: 30px;
+    border: 1px solid #e9e9e9;
+    margin-top: 30px;
+
+}
+
+.companyNameTag{
+    font-size: 20px;
+    font-family: 'Montserrat';
+    font-weight: 600;
+
+}
+
+.companyTagline{
+    font-size: 15px;
+    font-family: 'Montserrat';
+    font-weight: 500;
+    margin-top: 20px;
+
+}
+
+.jobDetailsHeading{
+    font-size: 16px;
+    font-family: 'Montserrat';
+    font-weight: 600;
+    margin-top: 20px;
+
+}
+
+.jobDetailsContentMain{
+    font-size: 16px;
+    font-family: 'Montserrat';
+    font-weight: 400;
+    margin-top: 20px;
+
+}
+
+.jobDetailsContentPointsMain{
+    margin-left: 20px;
+    margin-top: 20px;
+
+}
+
+.jobDetailsPointsContent{
+    font-size: 16px;
+    font-family: 'Montserrat';
+    font-weight: 400;
+    margin-top: 10px;
+
+}
+
+.companyLogoMain{
+    width: 50px;
+
+}
+
+.companyLogoContent{
+    width: 100%;
+
+}
+
+.jobHeading{
+    font-size: 18px;
+    font-family: 'Montserrat';
+    font-weight: 600;
+
+}
+
+.logoCompanyName{
+    display: flex;
+
+}
+
+.featuredJobContent{
+    margin-left: 20px;
+
+}
+
+.featuredCompanyNamenTag{
+    margin-top: 10px;
+    padding: 10px;
+    border: 1px solid #e9e9e9;
+
+}
+
+.featuredCompanyNameTag{
+    font-size: 20px;
+    font-family: 'Montserrat';
+    font-weight: 600;
+
+}
+
+.featuredCompanyTagline{
+    font-size: 20px;
+    font-family: 'Montserrat';
+    font-weight: 400;
+
+}
+
+.featuredJobContent .timeLengthContent{
+    display: inline-block;
+
+}
+
+.featuredJobContent .locationMain{
+    margin: 0;
+    margin-top: 10px;
+
+}
+
+.featuredJobContent .timeLengthContent{
+    display: inline-block;
+    margin-top: 30px;
+
+}
+
+.jobDetailsnFreturedJobs{
+    display: flex;
+    margin-top: 20px;
+
+}
+
+.jobDetailsContent{
+    width: 60%;
+
+}
+
+.featuredJobs{
+    width: 40%;
+    height: 100%;
+    margin-left: 20px;
+
+}
+
+.freturedJobsMain{
+    margin-top: 30px;
+    background-color: #f0f3f9;
+    padding: 20px;
+
+}
+
+.applyNowButton{
+    background: none;
+    border: none;
+    background-color: var(--green);
+    color: #fff;
+    font-size: 16px;
+    font-weight: 600;
+    font-family: 'Montserrat';
+    padding: 15px 40px;
+    border-radius: 0px 10px 0px 10px;
+    display: block;
+    margin: 0 auto;
+    margin-top: 30px;
+
+}
+
+.firstnLast{
+    display: flex;
+    margin-top: 30px;
+
+}
+
+.firstnLastCenter{
+    display: flex;
+    margin-top: 30px;
+    align-items: center;
+
+}
+
+.firstName{
+    width: 48%;
+
+}
+
+.lastName{
+    width: 48%;
+    margin-left: 2%;
+
+}
+
+.firstName label + input{
+    display: block;
+
+}
+
+.firstName input{
+    padding: 15px 15px;
+    margin-top: 10px;
+    width: 90%;
+
+}
+
+.lastName label + input{
+    display: block;
+
+}
+
+.lastName input{
+    padding: 15px 15px;
+    margin-top: 10px;
+    width: 90%;
+
+}
+
+.uploadFile{
+    background: none;
+    border: none;
+    background-color: var(--green);
+    color: #fff;
+    font-size: 16px;
+    font-weight: 400;
+    font-family: 'Montserrat';
+    padding: 15px 40px;
+    border-radius: 0px 10px 0px 10px;
+    display: inline-block;
+
+}
+
+/* code pen */
+
+.upload-btn-wrapper {
+    position: relative;
+    overflow: hidden;
+    display: inline-block;
+    margin-top: 30px;
+
+  }
+
+  .btn {
+    background: none;
+    border: none;
+    background-color: var(--green);
+    color: #fff;
+    font-size: 16px;
+    font-weight: 400;
+    font-family: 'Montserrat';
+    padding: 15px 40px;
+    border-radius: 0px 10px 0px 10px;
+  }
+
+  .upload-btn-wrapper input[type=file] {
+    font-size: 100px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    opacity: 0;
+  }
+
+/* code pen end */
+
+.textarea{
+    width: auto;
+    margin-top: 30px;
+    padding: 10px 20px;
+
+}
+
+.applyNowFormSubmit{
+    background: none;
+    border: none;
+    background-color: var(--green);
+    color: #fff;
+    font-size: 16px;
+    font-weight: 400;
+    font-family: 'Montserrat';
+    padding: 15px 40px;
+    border-radius: 0px 10px 0px 10px;
+    margin-top: 20px;
+
+}
+
+.mainWrapper{
+    padding-bottom: 50px;
+
+}
+.textarea {
+    width: 97%;
+}
+
+.upload-btn-wrapper input[type=file] {
+    font-size: 0px;
+
+}
+/* Jobs Search Start */
+
+.jobsFilter{
+    background-color: #f0f3f9;
+    padding: 20px;
+
+}
+
+.searchInputMain{
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+
+}
+
+.searchMainContentRight{
+    width: 48%;
+    margin-left: 30px;
+
+}
+
+.searchMainContent{
+    width: 48%;
+
+}
+
+.keywordSearch{
+    border: 1px solid #999c9f;
+    padding: 15px 30px;
+    width: 89%;
+}
+
+.searchButton{
+    background: none;
+    border: none;
+    background-color: var(--green);
+    color: #fff;
+    font-size: 16px;
+    font-weight: 400;
+    font-family: 'Montserrat';
+    padding: 15px 40px;
+    border-radius: 0px 10px 0px 10px;
+    margin-top: 20px;
+    width: 100%;
+
+}
+
+.jobsContentMain{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 20px;
+    border: 1px solid #f0f3f9;
+    margin-top: 20px;
+
+}
+
+.jobsContentMain:hover{
+    background-color: #f4f4f4;
+
+}
+
+.jobsLogoMain{
+    width: 40px;
+
+}
+
+.jobsLogoContentMain{
+    width: 200%;
+
+}
+
+.jobTileHeadingContent{
+    font-size: 20px;
+    font-family: 'Montserrat';
+    font-weight: 600;
+
+}
+
+.jobTileComapnyName{
+    font-size: 20px;
+    font-family: 'Montserrat';
+    font-weight: 500;
+    margin-top: 10px;
+    color: #999999;
+
+}
+
+.jobTileComapnyName{
+    font-size: 20px;
+    font-family: 'Montserrat';
+    font-weight: 400;
+    color: #999999;
+
+}
+
+.jobLocationDetailsContent{
+    font-size: 20px;
+    font-family: 'Montserrat';
+    font-weight: 400;
+    color: #999999;
+
+}
+
+.jobTimeDetails{
+    font-size: 18px;
+    font-family: 'Montserrat';
+    font-weight: 600;
+    color: var(--green);
+
+}
+
+.postedOnDetails{
+    font-size: 18px;
+    font-family: 'Montserrat';
+    font-weight: 400;
+    margin-top: 10px;
+    color: #999999;
+
+}
+.jobsSearchMain {
+    margin-top: 20px;
+}
+/* ahad new */
+@media screen and (min-width: 1024px) {
+.workh{
+    color: #174129;
+    font-size: 36px;
+    text-align: center;
+    font-weight: 600;
+}
+.workp{
+ color: black;
+ text-align: center;
+ font-size: 18px;
+ width: 600px;
+ display: block;
+ margin: 10px auto;
+ margin-bottom: 90px;
+}
+.colh{
+ color: #174129;
+ font-size: 20px;
+ font-weight: 500;
+ text-align: center;
+ margin-top: 20px;
+}
+.colp{
+ color: #000;
+ font-size: 15px;
+ margin-top: 10px;
+ font-weight: 400;
+ text-align: center;
+}
+.colimg{
+ width: 80px;
+ display: block;
+ margin: 0 auto;
+}
+.working{
+ margin:30px 0 ;
+}
+.work{
+ padding: 80px 0;
+}
+.row{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+.working{
+
+}
+.col{
+    width: 270px;
+}
+/* ahad new */
+.job1{
+    width: 400px;
+}
+.job2{
+    width: 800px;
+    padding-left: 55px;
+
+}
+.jobscontent{
+    display: flex;
+}
+.jobs{
+    background-color: #174129;
+    padding: 80px 0;
+}
+.jobh{
+    color: white;
+    font-size: 36px;
+    font-weight: 600;
+}
+.jobp{
+    margin-top: 40px;
+    color: white;
+    font-size: 16px;
+    font-weight: 400;
+
+}
+.subjobp{
+color: white;
+margin-top: 30px;
+width: 100%;
+
+}
+.subjobimg{
+    margin-right: 20px;
+}
+.jobbtn{
+    background-color: #174129;
+    color: white;
+    padding: 10px 30px;
+    border-radius: 10px;
+    border:1px solid white;
+    margin-top: 40px;
+}
+}
+/* ahad new mob */
+@media (max-width:700px) and (min-width:200px) {
+.workh{
+    color: #174129;
+    font-size: 30px;
+    text-align: center;
+    font-weight: 600;
+}
+.workp{
+ color: black;
+ text-align: center;
+ font-size: 12px;
+
+
+ margin-bottom: 90px;
+}
+.colh{
+ color: #174129;
+ font-size: 20px;
+ font-weight: 500;
+ text-align: center;
+ margin-top: 20px;
+}
+.colp{
+ color: #000;
+ font-size: 15px;
+ font-weight: 400;
+ text-align: center;
+}
+.colimg{
+ width: 80px;
+ display: block;
+ margin: 0 auto;
+}
+.working{
+ margin:30px 0 ;
+}
+.work{
+ padding: 80px 0;
+}
+.row{
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+.working{
+
+}
+.col{
+    width: 270px;
+}
+/* ahad new mob */
+.job1{
+    display: none;
+    width: 400px;
+}
+.job2{
+    width: 800px;
+
+
+}
+.jobscontent{
+    display: flex;
+}
+.jobs{
+    background-color: #174129;
+    padding: 80px 0;
+}
+.jobh{
+    color: white;
+    text-align: center;
+    font-size: 30px;
+    font-weight: 600;
+}
+.jobp{
+    margin-top: 40px;
+    text-align: center;
+    color: white;
+    font-size: 12px;
+    font-weight: 400;
+
+}
+.subjobp{
+color: white;
+font-size: 12px;
+margin-top: 30px;
+width: 100%;
+
+}
+.subjobimg{
+    margin-right: 10px;
+}
+.jobbtn{
+    background-color: #174129;
+    color: white;
+    display: block;
+    margin: 0 auto;
+    padding: 10px 30px;
+    border-radius: 10px;
+    border:1px solid white;
+    margin-top: 40px;
+}
+}

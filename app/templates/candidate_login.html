@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://www.click-hr.com/static/css/loginstyle.css">
+    <link rel="icon" href="https://www.click-hr.com/static/img/titleicon.png">
+
+</head>
+<body>
+<div class="container" id="container">
+	<div class="form-container sign-in-container">
+        <form role="form" method="post" action="/logincandidate">
+            <div class="imaContainer">
+                <img class="logoImg" src="https://www.click-hr.com/static/img/Logo2.png" alt="Logo.png">
+            </div>
+			<h1 class="signin">Sign in</h1>
+             {% if msg %}
+            <div class="row">
+
+              <div class="col-md-6 pr-md-1">
+
+                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                  <p class="mb-0">
+                    {{msg}}
+                  </p>
+                </div>
+
+              </div>
+
+            </div>
+            {% endif %}
+			<input type="email" placeholder="Email" name="email" />
+			<input type="password" name="password"  placeholder="Password" />
+			<button type="submit" name="login"  >Sign In</button>
+		</form>
+	</div>
+	<div class="overlay-container">
+		<div class="overlay">
+            <div class="MainDivFlex">
+                <div class="imgRightContainer">
+                    <img class="imgRightSignin" src="https://www.click-hr.com/static/img/signin.png" alt="signin.png">
+                </div>
+            </div>
+		</div>
+	</div>
+</div>
+</body>
+
+</html>

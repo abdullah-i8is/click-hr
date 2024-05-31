@@ -1,0 +1,132 @@
+.textCenter{
+    text-align: center;
+
+}
+
+.tableHeadingMain{
+    color: #22653F;
+    font-weight: 600;
+    font-size: 20px;
+    border-bottom: 1px solid #22653F;
+    margin: 0;
+    padding: 20px 0px;
+
+
+}
+
+.tablewrapper{
+    max-width: 1170px;
+    overflow-x: auto;
+}
+
+.tableMain{
+    max-width: 1170px;
+    margin: 0 auto;
+    border: 1px solid #22653F;
+    border-radius: 10px;
+    padding-bottom: 6px;
+    margin-top: 30px;
+
+}
+
+.tableMainContent{
+    width: 1170px;
+    border-collapse: collapse;
+    border-radius: 10px 10px 10px 10px;
+
+}
+
+.tableHeading{
+    background-color: #22653F;
+    width: 25%;
+    padding: 20px 0px;
+    color: #fff;
+    font-weight: 500;
+    font-size: 18px;
+
+
+}
+
+.tableDecprition{
+    padding: 20px 0;
+    font-size: 18px;
+
+}
+
+tbody tr:nth-child(even) {
+    background: #E9F0EC;
+
+}
+
+.logoutButton{
+    background: none;
+    border: none;
+    outline: none;
+    border-radius: 5px;
+    background-color: #22653F;
+    color: #fff;
+    font-size: 20px;
+    font-weight: 600;
+    padding: 10px 30px;
+
+}
+
+.candidateinfoHeadingMain{
+    color: #22653F;
+    font-size: 28px;
+    font-size: 600;
+    margin: 0;
+    padding: 0;
+    margin-top:10px
+
+
+}
+
+.candidateNameContent{
+    font-size: 22px;
+    font-size: 500;
+    color: #1D1E24;
+    margin: 0;
+    margin-top: 10px;
+
+}
+
+.candidateNameMainContent{
+    color: #22653F;
+    margin-left: 10px;
+
+}
+
+.status{
+    display: flex;
+    align-items: center;
+
+}
+
+.statusMain{
+    font-size: 15px;
+    font-weight: 600;
+    color: #1D1E24;
+
+}
+
+.logoutButtonMain{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+}
+
+.statusButton{
+    background: none;
+    border: none;
+    outline: none;
+    border-radius: 5px;
+    background-color: #22653F;
+    color: #fff;
+    font-size: 20px;
+    font-weight: 500;
+    padding: 10px 30px;
+    margin-left: 10px;
+
+}

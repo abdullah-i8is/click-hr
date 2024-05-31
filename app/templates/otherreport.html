@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link rel="stylesheet" href="https://www.click-hr.com/static/css/forms.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="icon" href="https://www.click-hr.com/static/img/titleicon.png">
+
+
+
+</head>
+<style>
+    span{
+     color:red;
+    }
+    .container{
+      max-width:700px;
+    }
+    .container .form{
+    width:100%;
+    }
+</style>
+<body>
+    {% if session['role']%}
+    {% if type=='view'%}
+    <script>
+        // Function to disable all form elements within the "Marketing" form
+        function disableFormElements() {
+            // Get the form elements container with the ID "Marketing"
+            var marketingForm = document.getElementById('Otherreport');
+
+            // Get all form elements inside the "Marketing" form
+            var formElements = marketingForm.querySelectorAll('input, textarea, select');
+
+            // Loop through each form element and disable them
+            for (var i = 0; i < formElements.length; i++) {
+                formElements[i].disabled = true;
+            }
+        }
+
+        // Call the function to disable form elements when the page loads
+        window.onload = disableFormElements;
+    </script>
+    {% endif %}
+    <section class="container">
+       <div class="form-head">
+        <a href="/index"><img class="logo" src="https://www.click-hr.com/static/img/clickhr.png" alt=""></a>
+           <a class="backtodashboard" href="{{ url_for('forms') }}">
+             <i class="fa fa-arrow-left"></i>
+             <p style="margin-bottom: 0px">Form History</p>
+           </a>
+       </div>        <header>One reporting form</header>
+        <p>Each incident would have one report per occurrence.</p>
+        <section class="form">
+
+
+            <div class="Otherreport" id="Otherreport">
+                <form action="/otherfinal" method="post" class="form" enctype="multipart/form-data">
+                    <div class="forsubform">
+                        <div class="input-box">
+                            <label>Form Filled By<span>*</span></label>
+                            <input type="text" placeholder="Enter full name" name="name" value="{{formdata.name}}"
+                                readonly />
+                            <input type="text" placeholder="Enter Your name" name="user_id" hidden
+                                value="{{session['user_id']}}" />
+                                <input type="text" placeholder="Enter Your name" value="{{formdata.id}}" name="id" hidden
+                                />
+                        </div>
+                        <div class="gender-box">
+                            <h3>Which form<span>*</span><br>
+                            </h3>
+                            <div class="gender-option">
+                                <div class="gender">
+                                    <input type="radio" id="Marketing-radio" name="gender"
+                                        onchange="showmaincontent('Marketing')" disabled />
+                                    <label for="Marketing-radio">Marketing</label>
+                                </div>
+                                <div class="gender">
+                                    <input type="radio" id="Recruiting-radio" name="gender"
+                                        onchange="showmaincontent('recuriting')" disabled />
+                                    <label for="Recruiting-radio">Recruiting</label>
+                                </div>
+                                <div class="gender">
+                                    <input type="radio" id="HRforms-radio" name="gender"
+                                        onchange="showmaincontent('HRForms')" disabled />
+                                    <label for="HRforms-radio">HR forms</label>
+                                </div>
+                                <div class="gender">
+                                    <input type="radio" id="Other-radio" name="gender"
+                                        onchange="showmaincontent('Otherreport')" checked disabled />
+                                    <label for="Other-radio">Other</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="final-content">
+<!--                        <div class="subform-content-head">-->
+<!--                            <h2>Final</h2>-->
+<!--                        </div>-->
+<!--                        <div class="input-box">-->
+<!--                            <label>Other report <span>*</span></label>-->
+<!--                            <textarea class="area-box" id="otherreport" name="otherreport" required>{{formdata.other_report}}</textarea>-->
+<!--                        </div>-->
+
+                        <div class="input-box">
+                            <label>Notes</label>
+                            <textarea class="area-box" id="notes" name="notes" required>{{formdata.other_report}}</textarea>
+                        </div>
+                    </div>
+                    <br>
+                    {% if type=='edit' %}
+                    <button type="submit">Update</button>
+                    {% endif %}
+                </form>
+            </div>
+        </section>
+    </section>
+    {% endif %}
+</body>
+<script src="https://www.click-hr.com/static/js/onereport.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.min.js"></script>
+
+<script>
+
+<!--display sweetalert(popup)-->
+    document.querySelector('form').addEventListener('submit', function (event) {
+        event.preventDefault();
+
+        fetch('/otherfinal', {
+            method: 'POST',
+            body: new FormData(event.target)
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.message === 'success') {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success!',
+                    text: 'Form updated successfully!',
+                }).then(() => {
+                    window.location.href = '{{ url_for('forms') }}';
+                });
+            } else {
+                alert(data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('An error occurred while updating the form.');
+        });
+    });
+</script>
+
+</html>

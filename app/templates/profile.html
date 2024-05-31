@@ -1,0 +1,686 @@
+{% extends "base.html" %}
+
+{% block title %} Tables {% endblock %}
+
+{% block content %}
+<style>
+
+   tr{
+   margin-top:20px;
+   border-bottom: 1px solid black;
+
+   }
+  th{
+  text-align:center;
+  color: #19355f;
+    padding:5px
+  }
+   td{
+  text-align:center;
+  color: #19355f;
+    padding:5px
+  }
+.export {
+    list-style: none;
+    padding: 10px;
+    color: black;
+    box-shadow: 0px 2px 9px 0px gray;
+    position: absolute;
+    right: 3px;
+    top: 48px;
+}
+.export p {
+    color: black;
+    cursor: pointer;
+    padding: 5px 0px;
+}
+
+.export li:hover p{
+    background: #19355f;
+    color: #ffffff;
+}
+.selectcountryfilter{
+    margin-top: 20px;
+    padding-left: 15px;
+    margin-right: 17px;
+    border: none;
+}
+.selectcountryfilterform{
+        width: 100%;
+    text-align: end;
+}
+.active-button {
+      background-color: green;
+    }
+    .search {
+    padding: 5px;
+    display: none;
+    outline: none;
+    border: none;
+    border-bottom: 1px solid black;
+
+}
+    .hicon {
+    margin-right: 20px;
+    font-size: 22px !important;
+    position: relative;
+}
+
+.hicon:nth-child(1):after {
+    content: '';
+    position: absolute;
+    width: 7px;
+    height: 7px;
+    background: red;
+    border-radius: 10px;
+    left: 13px;
+    top: 7px;
+    transform: scale(0.5);
+    box-shadow: 0 0 0 0 rgba(255, 82, 82, 1);
+    animation: pulse-red 2s infinite;
+    cursor: pointer;
+
+}
+
+@keyframes pulse-red {
+    0% {
+        transform: scale(0.85);
+        box-shadow: 0 0 0 0 rgba(255, 82, 82, 0.7);
+    }
+
+    70% {
+        transform: scale(1);
+        box-shadow: 0 0 0 25px rgba(255, 82, 82, 0);
+    }
+
+    100% {
+        transform: scale(0.85);
+        box-shadow: 0 0 0 0 rgba(255, 82, 82, 0);
+    }
+}
+
+.search-div{
+display: flex;
+align-items: baseline;
+ margin-top: 20px;
+ position: relative;
+ padding-left: 15px
+}
+.data-row.unread {
+    background-color: #f0f0f0; /* Apply a different background color for read rows */
+}
+.pagination{
+justify-content: flex-end;
+}
+.document-list {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+@media screen and (max-width: 600px) {
+    .document-list li {
+        width: 45%; /* Adjust as needed */
+    }
+}
+
+@media screen and (max-width: 400px) {
+    .document-list li {
+        width: 100%; /* Full width on smaller screens */
+    }
+}
+
+</style>
+ <div class="content">
+  <div class="row">
+    <div class="col-md-12">
+        <div class="card ">
+            <div style="display: flex; justify-content:space-between;">
+                 {% if alldata|length > 0 %}
+                  <div class="card-header">
+                      <h4 class="card-title">Candidate Info:- </h4>
+
+                          <h5 class="card-title" style="text-transform: none;">Name: {{ alldata[0].sender_name }} <br> Email: {{ alldata[0].email }} <br> Phone: {{ alldata[0].phone_number }} <br>
+
+                          </h5>
+
+
+                  </div>
+                   <form class="form" style="    margin-top: 20px;
+    margin-right: 10px;" method="post" action="{{ url_for('upload_file', id=alldata[0].id) }}" enctype="multipart/form-data" id="uploadForm">
+                      <label for="file" style="color: #19355f;
+    font-size: 15px;
+    font-weight: 700;
+    margin-left: 10px;">Upload Docs:</label> <br>
+                    <div style="display:flex">
+                          <input type="file" style="    padding: 10px;
+    background: linear-gradient(0deg, #19355f 10%, #4372b8 100%);
+    color: #ffff;" id="fileInput" name="myFile" multiple>
+                      <input type="submit" id="submitButton" value="Upload" style="display: none;margin-left: 5px;
+    padding: 0px 20px;
+    border: 2px solid gray;
+    font-weight: 600;">
+                    </div>
+                  </form>
+
+
+            {% endif %}
+
+            </div>
+
+            {% if document_data|length > 0 %}
+
+             <div class="card-header">
+                 <h3 class="card-title">Documents:</h3>
+
+                 <ol class="document-list">
+                     {% for document in document_data %}
+                <li style="color:#19355f; margin-left:20px; cursor: pointer;cursor: pointer;
+   padding: 5px 24px;
+    background: antiquewhite;
+    text-decoration: underline;position:relative"><a onclick="openDocument('{{ document.file_name }}', '{{ document.id }}')">{{ document.file_name }}</a>
+                    <a style="position: absolute;top: 0px;right: 1px;" data-toggle="tooltip" title="Delete document" href="#" data-document-id="{{ document.id }}" class="delete-document"><i style="font-size: 12px;" class="fas fa-window-close" ></i></a>
+
+                </li>
+
+                     {% endfor %}
+                 </ol>
+             </div>
+            {% endif %}
+            <div class="card-body">
+            <div class="">
+                <div class="card-header">
+                <h4 class="card-title">Applied History:- </h4>
+                </div>
+
+              <table style="overflow-x: auto;" id="dataTable" >
+                    <thead>
+                        <tr>
+                            <th scope="col" width="8%">Date</th>
+                            <th scope="col" width="15%">Job Detail</th>
+                           <th scope="col" width="10%">Resumes</th>
+
+                        </tr>
+                    </thead>
+                    <tbody id="emailDataBody">
+                      {% if alldata|length > 0 %}
+                       {% for name in alldata %}
+                         <tr class="data-row{% if name.is_read %} read{% else %} unread{% endif %}" data-email-id="{{ name.id }}">
+                             <td data-label="Amount">{{ name.formatted_date  }}</td>
+                            <td data-label="Amount">{{ name.subject_part2  }} <br>{{ name.subject_part1  }}</td>
+                             <td data-label="Amount">
+                                 {% if name.file_content is none and name.pdf_content_json is none %}
+                                     No PDF
+                                 {% else %}
+                                     <a href="#" style="padding-bottom:2px; border-bottom: 1px solid #19355f;"
+                                        {% if name.file_content  is none %}
+                                            onclick="return false;"
+                                        {% else %}
+                                            onclick="markEmailAsRead('{{ name.id }}'); showPdf('{{ name.id }}'); return false;"
+                                        {% endif %}
+                                     >
+                                         View PDF
+                                     </a>
+                               {% endif %}
+                             </td>
+
+                        </tr>
+                       {% endfor %}
+                      {% else %}
+                         <tr>
+                          <td class="text-center" colspan="5">Empty</td>
+                         </tr>
+                      {% endif %}
+                    </tbody>
+              </table>
+                <div class="card-header">
+              <h4 class="card-title">Employment History:- </h4>
+                </div>
+              <table style="overflow-x: auto;" id="dataTable" >
+                    <thead>
+                        <tr>
+                            <th scope="col" width="10%">Date</th>
+                             <th scope="col" width="15%">Status</th>
+                             <th scope="col" width="8%">Company</th>
+                             <th scope="col" width="10%">Position</th>
+
+
+                        </tr>
+                    </thead>
+                     <tbody id="emailDataBody">
+                      {% if recruiting|length > 0 %}
+                       {% for name in recruiting %}
+                         <tr class="data-row">
+                             <td data-label="Amount">
+                                {{name.created_at}}
+                            </td>
+                             <td data-label="Amount">  <a style="text-decoration:underline" href="{{ url_for('view', form_id=name.id, form_type='Person Placement') }}">{{ name.did_you  }}</a>
+ </td>
+                            <td data-label="Amount">{{ name.company }}</td>
+                            <td data-label="Amount">{{ name.position   }}</td>
+
+
+                        </tr>
+                       {% endfor %}
+                      {% else %}
+                         <tr>
+                          <td class="text-center" colspan="5">Empty</td>
+                         </tr>
+                      {% endif %}
+                    </tbody>
+              </table>
+                 <div class="card-header" style="display:flex; justify-content:space-between; align-items:center">
+              <h4 class="card-title">Note:- </h4>
+              <button id="addNotesBtn">+ Add Notes</button>
+                </div>
+                <div id="notesDiv" style="display: none;">
+                    {% if alldata|length > 0 %}
+                    <div style="display: flex; align-items: end; justify-content: flex-end;">
+                        <form class="notes" id="notes" method="post" action="{{ url_for('fillnotes', id=alldata[0].id) }}">
+                            <label for="text">Notes:</label> <br>
+                            <textarea name="notes" id="notesTextarea" cols="50" rows="6"></textarea>
+                            <br>
+
+                            <input style="padding: 0px 23px;" type="submit" value="add">
+
+                        </form>
+                    </div>
+                     {% endif %}
+                </div>
+              <table style="overflow-x: auto;" id="dataTable" >
+                    <thead>
+                        <tr>
+                              <th scope="col" width="10%">Date</th>
+                             <th scope="col" width="15%">Description</th>
+                             <th scope="col" width="8%">Add by</th>
+
+
+                        </tr>
+                    </thead>
+                     <tbody id="emailDataBody">
+                         {% if notes_data|length > 0 %}
+                       {% for name in notes_data %}
+                         <tr class="data-row">
+                              <td data-label="Amount">
+                                {{name.created_at}}
+                            </td>
+                             <td data-label="Amount">{{ name.notes   }}</td>
+                            <td data-label="Amount">
+                                {{name.name}}
+                            </td>
+
+
+                        </tr>
+                       {% endfor %}
+                      {% else %}
+                         <tr>
+                          <td class="text-center" colspan="5">Empty</td>
+                         </tr>
+                      {% endif %}
+                    </tbody>
+              </table>
+              <div id="pdfViewer" style="display: none;">
+                 <object id="pdfObject" type="application/pdf" width="100%" height="800px"></object>
+              </div>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+{% endblock content %}
+{% block javascripts %}
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+    crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>
+
+<script>
+    document.getElementById('addNotesBtn').addEventListener('click', function() {
+    var notesDiv = document.getElementById('notesDiv');
+    if (notesDiv.style.display === 'none') {
+        notesDiv.style.display = 'block';
+    } else {
+        notesDiv.style.display = 'none';
+    }
+});
+    document.getElementById("fileInput").addEventListener("change", function() {
+    if (this.files.length > 0) {
+        document.getElementById("submitButton").style.display = "block";
+    }
+});
+
+       function openDocument(fileName, documentId) {
+        window.open('/view_document/' + documentId);
+    }
+</script>
+<script>
+    // Render the ID into a JavaScript variable
+    {% if alldata %}
+    var id = {{ alldata[0].id }};
+{% endif %}
+
+
+    // Your JavaScript code here
+    document.querySelector('form').addEventListener('submit', function (event) {
+        event.preventDefault();
+
+        fetch('/upload_docs/' + id, { // Use the rendered ID in the URL
+            method: 'POST',
+            body: new FormData(event.target)
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.message === 'success') {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success!',
+                    text: 'Uploaded!',
+                }).then(() => {
+                    window.location.reload();
+                });
+            } else {
+                alert(data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('An error occurred while updating the form.');
+        });
+    });
+    // Your JavaScript code here
+   document.getElementById('notes').addEventListener('submit', function (event) {
+        event.preventDefault();
+
+        fetch('/fillnotes/' + id, { // Use the rendered ID in the URL
+            method: 'POST',
+            body: new FormData(event.target)
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.message === 'success') {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success!',
+                    text: 'Added!',
+                }).then(() => {
+                    window.location.reload();
+                });
+            } else {
+                alert(data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('An error occurred while updating the form.');
+        });
+    });
+</script>
+
+
+<script>
+    window.addEventListener('load', function() {
+     console.log("hello nisa")
+      var currentUrl = window.location.pathname;
+      var candidateButton = document.getElementById("candidate-button");
+      var selectedButton = document.getElementById("selected-button");
+      if (currentUrl === "{{ url_for('candidate') }}") {
+        candidateButton.style.backgroundColor = "#19355f";
+        candidateButton.style.color = "#ffffff";
+      }
+      if (currentUrl === "{{ url_for('selecteddata') }}") {
+        selectedButton.style.backgroundColor = "#19355f";
+         selectedButton.style.color = "#ffffff";
+      }
+});
+    function showPdf(emailId) {
+       markEmailAsRead(emailId);
+       updateRowStatus(emailId, true);
+       pdfWindow = window.open(`/pdf_content/${emailId}`);
+       pdfWindow.addEventListener('beforeunload', () => {
+           markEmailAsRead(emailId); // Call markEmailAsRead when PDF tab/window is closed
+       });
+}
+
+    function markEmailAsRead(emailId) {
+        fetch(`/mark_as_read/${emailId}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    updateRowStatus(emailId, true); // Update the row status
+                    localStorage.setItem(`email_${emailId}`, 'true');
+                }
+            })
+            .catch(error => {
+                console.error('Error marking email as read:', error);
+            });
+}
+
+    function updateRowStatus(emailId, isRead) {
+        const row = document.querySelector(`tr[data-email-id="${emailId}"]`);
+        if (row) {
+            row.classList.remove('unread', 'read');
+            row.classList.add(isRead ? 'read' : 'unread');
+        }
+}
+    window.addEventListener('load', function() {
+        const rows = document.querySelectorAll('.data-row');
+        rows.forEach(row => {
+            const emailId = row.getAttribute('data-email-id');
+            const isRead = localStorage.getItem(`email_${emailId}`);
+            if (isRead !== null) {
+                updateRowStatus(emailId, isRead === 'true');
+            }
+        });
+});
+
+   function handleSelectionChange(id, selectedOption) {
+    console.log(selectedOption);
+    if (selectedOption == 'Interested' || selectedOption == 'Reverse changes' || selectedOption == 'move to applied') {
+      fetch('/updatemail', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ id: id, selectedOption: selectedOption }), // Include the 'id' parameter here
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.message) {
+          window.location.href = "{{ url_for('selecteddata') }}";
+          }
+          // Handle the response from the server if needed
+          console.log(data);
+        })
+        .catch((error) => {
+          // Handle errors if any
+          console.error('Error:', error);
+        });
+    } else {
+      fetch('/deletemail', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ id: id }), // Include the 'id' parameter here
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.message) {
+           window.location.href = "{{ url_for('candidate') }}";
+          }
+          // Handle the response from the server if needed
+          console.log(data);
+        })
+        .catch((error) => {
+          // Handle errors if any
+          console.error('Error:', error);
+        });
+    }
+ }
+
+
+
+    function exportMore() {
+       var exportDiv = document.getElementById("export");
+       exportDiv.style.display = exportDiv.style.display === "none" ? "block" : "none";
+       console.log("exportDiv.style.display = 'block'");
+};
+
+    $(document).ready(function () {
+       $(".sicon").click(function () {
+          $(".search").toggle(1000);
+       });
+});
+
+   document.getElementById("searchKeyword").addEventListener("keyup", function (event) {
+    console.log("hello")
+    if (event.key === "Enter") {
+        searchPdf();
+    }
+});
+
+  function searchPdf() {
+    const keywordInput = document.getElementById("searchKeyword");
+    const loadingIndicator = document.getElementById("loadingIndicator");
+
+    if (!keywordInput || !loadingIndicator) {
+        console.error("Required elements not found in the DOM.");
+        return;
+    }
+
+    const keyword = keywordInput.value.trim();
+
+    if (keyword === "") {
+        console.error("Please enter a valid keyword.");
+        return;
+    }
+
+    loadingIndicator.style.display = "block";
+
+    fetch(`/search_pdf?keyword=${encodeURIComponent(keyword)}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`Request failed with status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            loadingIndicator.style.display = "none";
+            console.log("Search Results:", data);
+            displaySearchResults(data);
+        })
+        .catch(error => {
+            loadingIndicator.style.display = "none";
+            console.error('Error:', error);
+        });
+}
+
+  function displaySearchResults(results) {
+    const emailDataBody = document.getElementById("emailDataBody");
+    emailDataBody.innerHTML = "";
+
+    if (results.length === 0) {
+        emailDataBody.innerHTML = "<tr><td colspan='6'>No matching PDFs found.</td></tr>";
+    } else {
+        results.forEach(email => {
+            console.log("Email:", email);
+
+            const actionColumn = `
+                <td data-label="Action">
+                    ${email.action === 'Interested' ? `
+                        <a href="" data-toggle="tooltip" title="Remove from Select" onclick="handleSelectionChange('${email.id}', 'Reverse changes')">
+                            <i style="font-size:20px;" class="fas fa-undo"></i>
+                        </a>
+                    ` : `
+                        <a href="" data-toggle="tooltip" title="Select candidate" onclick="handleSelectionChange('${email.id}', 'Interested')">
+                            <i style="font-size:20px; margin-right:8px;" class="fas fa-check-square"></i>
+                        </a>
+                    `}
+                </td>
+            `;
+
+            // Combine both columns
+            const row = `
+                <tr>
+                    <td data-label="Applicant Info">
+                        ${email.sender_name} <br>
+                        ${email.email == 'No Email!' ? `<span style="color: red;">${email.email}</span>` : email.email} <br>
+                        <a href="tel:${email.phone_number}">${email.phone_number}</a>
+                    </td>
+                    <td data-label="Job Detail">${email.subject_part2}<br>${email.subject_part1}</td>
+                    <td data-label="Date">${email.formatted_date}</td>
+                    <td data-label="Resumes">
+                        <a href="#" style="padding-bottom:2px; border-bottom: 1px solid #19355f;" onclick="showPdf(${email.id}); return false;">View PDF</a>
+                    </td>
+                    <td data-label="Current Status">${email.status}</td>
+                    ${actionColumn}
+                </tr>
+            `;
+
+            emailDataBody.innerHTML += row;
+        });
+    }
+}
+
+
+</script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const deleteLinks = document.querySelectorAll('.delete-document');
+    console.log(deleteLinks,"deleteLinks")
+
+    deleteLinks.forEach(link => {
+        link.addEventListener('click', function (event) {
+            event.preventDefault();
+            const documentId = this.getAttribute('data-document-id');
+
+            Swal.fire({
+                icon: 'warning',
+                title: 'Delete document',
+                text: 'Are you sure you want to delete this document?',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: 'grey',
+                confirmButtonText: 'Delete'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    fetch(`/deletedocuments/${documentId}`, {
+                        method: 'POST',
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.message === 'Document Deleted!') {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Success!',
+                                text: 'document deleted successfully!',
+                            }).then(() => {
+                                window.location.reload();
+                            });
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: data.message,
+                            });
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'An error occurred while deleting the document.',
+                        });
+                    });
+                }
+            });
+        });
+    });
+});
+</script>
+
+<script src="{{ url_for('static', filename='/js/demo/candidate.js') }}"></script>
+{% endblock javascripts %}
+
