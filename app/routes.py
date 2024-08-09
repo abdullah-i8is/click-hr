@@ -481,6 +481,12 @@ def route_default():
 
 @app.route("/", methods=["GET", "POST"])
 def landing():
+    email = request.args.get('email')
+    password = request.args.get('password')
+
+    if email and password:
+        return redirect(url_for("login", email=email, password=password))
+
     return render_template("landing.html")
 
 
@@ -707,13 +713,24 @@ def privacypolicy():
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
+    # Check if the user is already logged in
     if "user_id" in session:
         return redirect(url_for("index"))
 
+    email = None
+    password = None
+
+    # Handle POST request
     if request.method == "POST":
         email = request.form.get("email")
         password = request.form.get("password")
 
+    # Handle GET request or fallback
+    elif request.method == "GET":
+        email = request.args.get('email')
+        password = request.args.get('password')
+
+    if email and password:
         # Locate user by email
         user = Users.query.filter_by(email=email).first()
         if user:
