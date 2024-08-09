@@ -1,0 +1,104 @@
+
+    <div class="sidebar">
+        <div class="sidebar-wrapper">
+            <div class="logo">
+                <a href="" class="simple-text logo-normal">
+                    {{ session['org_name'] }}
+                </a>
+            </div>
+            <ul class="nav">
+                 <li class="{% if request.path == '/index' %}active{% endif %}">
+                <a href="/index">
+                    <i class="fas fa-bars"></i>
+                    <p>Dashboard</p>
+                </a>
+            </li>
+        {% if session['role']=='CEO' %}
+            <li class="{% if request.path == '/organizations' %}active{% endif %}">
+                <a href="/organizations">
+                 <i class="fas fa-users"></i>
+                    <p>Organizations</p>
+                </a>
+            </li>
+        {% endif %}
+        {% if session['role']!='user' %}
+            <li class="{% if request.path == '/members' %}active{% endif %}">
+                <a href="/members">
+                 <i class="fas fa-address-book	"></i>
+                    <p>Members</p>
+                </a>
+            </li>
+        {% endif %}
+                <li class="{% if request.path == '/candidate' or request.path == '/selecteddata' or request.path == '/placedcandidates' %}active{% endif %}">
+                    <a href="/candidate">
+                        <i class="fas fa-retweet"></i>
+                       <p>Candidates</p>
+                  </a>
+               </li>
+       {% if session['org_name'] == 'Hands HR' %}
+            <li class="{% if request.path == '/jobs' %} active {% endif %}">
+                <a href="/jobs">
+                    <i class="fas fa-gamepad"></i>
+                    <p>Posted jobs</p>
+                </a>
+            </li>
+	{% endif %}
+            <li class="{% if request.path == '/jobOders'%} active {% endif %}">
+                <a href="/jobOders">
+                    <i class="fas fa-tasks"></i>
+                    <p>Job Orders</p>
+                </a>
+            </li>
+            <li class="{% if request.path == '/Companies' %} active {% endif %}">
+                <a href="/Companies">
+                    <i class="fas fa-building"></i>
+                    <p>Companies</p>
+                </a>
+            </li>
+                <li class="{% if request.path == '/OneReportingForm' %}active{% endif %}">
+                    <a href="/OneReportingForm">
+                    <i class="fas fa-book"></i>
+                        <p>One Reporting Form</p>
+                    </a>
+                </li>
+
+                <li class="{% if request.path == '/forms' %}active{% endif %}">
+                <a href="/forms">
+                    <i class="fas fa-file"></i>
+                    <p>Forms History</p>
+                </a>
+                </li>
+                <li class="{% if request.path == '/target' %}active{% endif %}">
+                <a href="/target">
+                    <i class="fas fa-dot-circle"></i>
+                    <p>Target History</p>
+                </a>
+                </li>
+
+                {% if session['role']!='user' %}
+                    <li class="{% if request.path == '/activity_log' %}active{% endif %}">
+                        <a href="/activity_log">
+                            <i class="fas fa-history"></i>
+                            <p>Activity Log</p>
+                        </a>
+                        </li>
+                {% endif %}
+
+                {% if session['role']=='user' %}
+                  <li class="{% if request.path == '/user' %}active{% endif %}">
+                     <a href="/user">
+                        <i class="fas fa-user-circle"></i>
+                         <p>Profile</p>
+                     </a>
+                 </li>
+                {% endif %}
+
+                <li class="{% if request.path == '/logout' %}active{% endif %}">
+                    <a href="/logout">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <p>Logout</p>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>

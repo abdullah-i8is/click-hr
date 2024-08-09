@@ -1,0 +1,294 @@
+{% extends "base.html" %}
+
+{% block title %} User Profile {% endblock %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+{% if session['role']!='user' %}
+<div class="content">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="title">Edit Profile</h5>
+                </div>
+
+                <div class="card-body">
+                    {% if data %}
+<form action="/savemember" method="post">
+    <p style="text-align: end; color:gray;">created_at: {{data.created_at}}</p>
+    <div class="row">
+        <div class="col-md-6 pr-md-1">
+            <div class="form-group">
+                <label>First Name</label>
+                <input type="text" class="form-control" name="fname" placeholder="First Name" value="{{data.fname}}">
+                <input type="text" class="form-control" name="id" placeholder="id" hidden value="{{data.id}}">
+            </div>
+        </div>
+        <div class="col-md-6 pl-md-1">
+            <div class="form-group">
+                <label>Last Name</label>
+                <input type="text" class="form-control" name="lname" placeholder="Last Name" value="{{data.lname}}">
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 pr-md-1">
+            <div class="form-group">
+                <label class="form-label">Email Address</label>
+                <input type="email" name="email" class="form-control" placeholder="email Here" value="{{data.email}}">
+            </div>
+        </div>
+        <input type="hidden" name="org_id" class="form-control" placeholder="your organization" value="{{data.org_id}}" readonly>
+        <div class="col-md-6 pr-md-1">
+            <div class="form-group">
+                <label class="form-label">Organization</label>
+                <input type="text" name="org" class="form-control" placeholder="your organization" value="{{data.org_name}}" readonly>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group">
+                <label>Role</label>
+                <select name="selected_role" class="form-control" id="roleSelect">
+                    <option value="{{ data.role }}">{{ data.role }}</option>
+                    {% for user_role in roles %}
+                        {% if user_role.role_name != data.role and user_role.role_name != 'owner' %}
+                            <option value="{{ user_role.role_name }}">{{ user_role.role_name }}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group">
+                <label>Designation</label>
+                <select name="selected_designation" class="form-control">
+                    <option>{{data.designation}}</option>
+                    {% for d in designations %}
+                        {% if d.designation != data.designation and d.designation != 'owner' %}
+                            <option value="{{ d.designation }}">{{ d.designation }}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="row" id="pass-div2" style="display:none;">
+        <div class="col-md-12">
+            <div class="form-group">
+                <label>Add password</label>
+                <input type="password" id="pass-div1" class="form-control forfas" value="hello" name="password" placeholder="Enter Password">
+            </div>
+        </div>
+    </div>
+    <div style="display:flex; justify-content:space-between; align-items:center">
+        <div class="card-footer">
+            <p class="btn btn-fill btn-primary reset-pass" data-member-id="{{ data.id }}" id="reset-id">Rest Password</p>
+        </div>
+        <div class="card-footer">
+            <button type="submit" class="btn btn-fill btn-primary">Save</button>
+        </div>
+    </div>
+</form>
+{% else %}
+<form action="/savemember" method="post">
+    <div class="row">
+        <div class="col-md-6 pr-md-1">
+            <div class="form-group">
+                <label>First Name</label>
+                <input type="text" class="form-control" name="fname" placeholder="First Name">
+            </div>
+        </div>
+        <div class="col-md-6 pl-md-1">
+            <div class="form-group">
+                <label>Last Name</label>
+                <input type="text" class="form-control" name="lname" placeholder="Last Name">
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 pr-md-1">
+            <div class="form-group">
+                <label class="form-label">Email Address</label>
+                <input type="email" name="email" class="form-control" placeholder="email Here">
+            </div>
+        </div>
+        <div class="col-md-6 pr-md-1">
+            <div class="form-group">
+                <label class="form-label">Organization</label>
+                <input type="text" name="org" class="form-control" placeholder="{{org_name}}" value="{{org_name}}" readonly>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group">
+                <label>Role</label>
+                <select name="selected_role" class="form-control" id="roleSelect">
+                    {% for user_role in roles %}
+                        {% if user_role.role_name != 'owner' %}
+                            <option value="{{ user_role.role_name }}">{{ user_role.role_name }}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group">
+                <label>Designation</label>
+                <select name="selected_designation" class="form-control">
+                    {% for d in designations %}
+                        {% if d.designation != 'owner' %}
+                            <option value="{{ d.designation }}">{{ d.designation }}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group">
+                <label>Add password</label>
+                <input type="password" class="form-control forfas" name="password" id="newPassword" placeholder="Enter password">
+            </div>
+        </div>
+    </div>
+    <div class="card-footer">
+        <button type="submit" class="btn btn-fill btn-primary">Save</button>
+    </div>
+</form>
+{% endif %}
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const resetLinks = document.querySelectorAll('.reset-pass');
+    resetLinks.forEach(link => {
+        link.addEventListener('click', function (event) {
+            event.preventDefault();
+            const memberId = this.getAttribute('data-member-id');
+
+            Swal.fire({
+                icon: 'warning',
+                title: 'Reset Password',
+                text: 'Are you sure you want to Reset Password?',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: 'grey',
+                confirmButtonText: 'Reset'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    fetch(`/restpassword/${memberId}`, {
+                        method: 'POST',
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                         document.getElementById('pass-div2').style.display = 'block';
+                         document.getElementById('reset-id').style.display = 'none';
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'An error occurred while resetting the password.',
+                        });
+                    });
+                }
+            });
+        });
+    });
+});
+</script>
+
+<script>
+    document.querySelector('form').addEventListener('submit', function (event) {
+        event.preventDefault();
+<!--       / Check if the form is for editing an existing member-->
+    const isEditForm = document.querySelector('input[name="id"]') !== null;
+
+    if (isEditForm) {
+        var passwordField = document.getElementById('pass-div1');
+        if (passwordField.style.display !== 'none' && (passwordField.value === null || passwordField.value === "")) {
+            alert("Please set password.");
+            return false; // Prevent form submission
+        }
+    }
+
+    // Create FormData object and append form data
+    const formData = new FormData(event.target);
+
+    // Remove password field from FormData if it's empty and not being updated
+    if (!isEditForm || (passwordField.style.display !== 'none' && (passwordField.value !== null && passwordField.value !== ""))) {
+        formData.delete('password');
+    }
+
+        fetch('/savemember', {
+            method: 'POST',
+            body: new FormData(event.target)
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.message) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success!',
+                    text: data.message,
+                }).then(() => {
+                    window.location.href = "{{ url_for('members') }}";
+                });
+            } else if (data.error) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error!',
+                    text: data.error,
+                });
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('An error occurred while saving the member.');
+        });
+    });
+</script>
+<script>
+        const toggleNewPassword = document.getElementById("toggleNewPassword");
+    const newPassword = document.getElementById("newPassword");
+
+    toggleNewPassword.addEventListener("click", function () {
+        togglePasswordVisibility(newPassword, toggleNewPassword);
+    });
+
+    function togglePasswordVisibility(inputElement, toggleElement) {
+        if (inputElement.type === "password") {
+            inputElement.type = "text";
+            toggleElement.classList.remove("fa-eye-slash");
+            toggleElement.classList.add("fa-eye");
+        } else {
+            inputElement.type = "password";
+            toggleElement.classList.remove("fa-eye");
+            toggleElement.classList.add("fa-eye-slash");
+        }
+    }
+
+</script>
+{% endif %}
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}{% endblock javascripts %}

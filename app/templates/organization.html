@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+
+{% block title %} Members {% endblock %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block content %}
+{% if session['role']!='user' %}
+<style>
+   tr{
+   margin-top:20px;
+   border-bottom: 1px solid black;
+   width:100%;
+   cursor:pointer;
+   }
+  th{
+  text-align:center;
+  color: #19355f;
+  }
+   td{
+  text-align:center;
+  color: #19355f;
+  }
+
+.active-button {
+      background-color: green;
+    }
+    .inactive-member td{
+    color:#ac9999;
+    }
+</style>
+  <div class="content">
+    <div class="row">
+      <div class="" style="    display: flex; justify-content:space-between;    background-color: #ffffff;
+      width: 100%;
+      margin-left: 10px;border: 0.0625rem solid rgba(34, 42, 66, 0.05);
+      border-radius: 0.2857rem; height:100vh">
+        <div class="card " style="width:75%;border:none;border-radius:0px">
+         <div style="display: flex; justify-content: space-between; align-items: center;">
+          <div class="card-header">
+            <h4 class="card-title">Organizations</h4>
+          </div>
+         </div>
+          <div class="card-body" style="overflow: auto; max-height: 60vh;" >
+                <table>
+                    <thead>
+                        <tr>
+                            <th scope="col" width="10%">Name</th>
+                            <th scope="col" width="15%">Email</th>
+                            <th scope="col" width="15%">Website</th>
+                            <th scope="col" width="20%">Address</th>
+                           <th scope="col" width="10%">Contact Number</th>
+                            <th scope="col" width="10%">Status</th>
+                        </tr>
+                    </thead>
+                   <tbody>
+    {% for name in organizations %}
+        {% if name.status == 'Request' %}
+            <tr class="active-member" data-company-id="{{ name.id }}" class="list-item">
+                <td data-label="Due Date">{{ name.company }}</td>
+                <td data-label="Amount">{{ name.com_email }}</td>
+                <td data-label="Amount"><a href="{{ name.com_web }}" target="_blank">{{ name.com_web }}</a></td>
+                <td data-label="Amount">{{ name.com_address }}</td>
+                <td data-label="Amount">{{ name.com_number }}</td>
+                <td style="color:blue" data-label="Amount">{{ name.status }}</td>
+            </tr>
+        {% elif name.status == 'Approved' %}
+            <tr class="active-member" data-company-id="{{ name.id }}" class="list-item">
+                <td data-label="Due Date">{{ name.company }}</td>
+                <td data-label="Amount">{{ name.com_email }}</td>
+                <td data-label="Amount"><a href="{{ name.com_web }}" target="_blank">{{ name.com_web }}</a></td>
+                <td data-label="Amount">{{ name.com_address }}</td>
+                <td data-label="Amount">{{ name.com_number }}</td>
+                <td style="color:green" data-label="Amount">{{ name.status }}</td>
+            </tr>
+        {% elif name.status == 'Pending' %}
+            <tr class="active-member" data-company-id="{{ name.id }}" class="list-item">
+                <td data-label="Due Date">{{ name.company }}</td>
+                <td data-label="Amount">{{ name.com_email }}</td>
+                <td data-label="Amount"><a href="{{ name.com_web }}" target="_blank">{{ name.com_web }}</a></td>
+                <td data-label="Amount">{{ name.com_address }}</td>
+                <td data-label="Amount">{{ name.com_number }}</td>
+                <td style="color:yellow" data-label="Amount">{{ name.status }}</td>
+            </tr>
+        {% endif %}
+    {% endfor %}
+</tbody>
+                </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+<script>
+    // Add event listener to all <tr> elements with the class "active-member"
+    document.querySelectorAll('tr.active-member').forEach(function(tr) {
+        tr.addEventListener('click', function() {
+            // Get the value of the data-company-id attribute
+            const companyId = this.getAttribute('data-company-id');
+
+            // Redirect to the moredetails page with the companyId
+            window.location.href = '/moredetails/' + companyId;
+        });
+    });
+</script>
+  {% endif %}
+{% endblock content %}
+{% block javascripts %}{% endblock javascripts %}

@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign-Up CLick HR</title>
+    <link rel="icon" href="https://www.click-hr.com/static/img/titleicon.png">
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<!--    <link rel="stylesheet" href="{{url_for('static', filename='css/signupstyle.css')}}">-->
+    <link rel="stylesheet" href="https://www.click-hr.com/static/css/signupstyle.css">
+
+</head>
+<style>
+    .swal2-styled.swal2-confirm {
+    border: 0;
+    border-radius: .25em;
+    background: initial;
+    background-color: #19355f;
+    color: #fff;
+    font-size: 1em;
+    padding: 7px 35px;
+}
+</style>
+<body>
+
+    <!------ Include the above in your HEAD tag ---------->
+
+    <div class="container register">
+        <div class="row">
+            <div class="col-md-3 register-left">
+                <img src="https://www.click-hr.com/static/img/white.png" class="w-100" alt="" />
+                <!-- <h3>Welcome</h3> -->
+                <h4>Empower Your Recruitment - Where Technology Meets Talent</h4>
+
+                <a href="/login"><input type="button" name="" value="Login" /></a><br />
+            </div>
+
+                <div class="col-md-9 register-right">
+                     <form class="form" role="form" method="post" action="/addorg" onsubmit="return validateForm()">
+                    <div class="tab-content" id="myTabContent">
+                        <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                            <h3 class="register-heading">Register Your Company On Click-HR NOW!</h3>
+                            <div class="row register-form">
+                                <div class="col-md-6">
+                                    <h6>Company Detail:</h6>
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" placeholder="Company Name *" value=""
+                                            name="company" required />
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" placeholder="Company Website URL *"
+                                            name="com_web" value="" required />
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" placeholder="Company Address *"
+                                            name="com_address" value="" required />
+                                    </div>
+
+                                </div>
+                                <div class="col-md-6">
+                                    <br>
+                                    <div class="form-group">
+                                        <input type="email" class="form-control" placeholder="Company Email *"
+                                            name="com_email" value="" required />
+                                    </div>
+                                    <div class="form-group">
+                                        <select class="form-control" name="nemp" id="nempSelect">
+                                            <option value="" class="hidden" selected disabled>Select number of employees</option>
+                                            <option value="5to10">5 to 10</option>
+                                            <option value="10to20">10 to 20</option>
+                                            <option value="20to50">20 to 50</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" placeholder="Company Contact Number *"
+                                            name="com_number" oninput="this.value = this.value.replace(/[^0-9]/g, '')" value="" required />
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12">
+                                    <p>Please select from where candidate data will be fetched for your company:</p>
+                                    <div class="form-group">
+                                        <input type="checkbox" name="lkd" id="lkdCheckbox" value="1" />
+                                        <label for="lkdCheckbox">Indeed Attached Email</label>
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="checkbox" name="zpr" id="zprCheckbox" value="2" />
+                                        <label for="zprCheckbox">ZipRecruiter Attached Email</label>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <h6>Contact Person Detail:</h6>
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" placeholder="First Name *" name="fname"
+                                            value="" required />
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="email" class="form-control" placeholder="Email *"
+                                            name="email" value="" required />
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="password" class="form-control" placeholder="Password*"
+                                            name="password" id="passwordField" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <br>
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" placeholder="Last Name *" name="lname"
+                                            value="" required />
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="text" class="form-control"
+                                            placeholder="Phone Number *"  oninput="this.value = this.value.replace(/[^0-9]/g, '')"name="num" value="" required />
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="password" class="form-control" placeholder="Repeat Password*"
+                                            name="rpassword" id="repeatPasswordField" required>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12">
+                                    <input id="reg" type="submit" class="btnRegister" value="Register" />
+                                </div>
+                                <p><b>Note:</b> Login will be with your company email and password.</p>
+                            </div>
+                        </div>
+                    </div>
+                    </form>
+                </div>
+
+        </div>
+
+    </div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>
+<script>
+    function validateForm() {
+        var password = document.getElementById('passwordField').value;
+        var repeatPassword = document.getElementById('repeatPasswordField').value;
+        var selectedValue = document.getElementById('nempSelect').value;
+
+        if (selectedValue === null || selectedValue === "") {
+            alert("Please select number of employees.");
+            return false; // Prevent form submission
+        }
+
+        // Check if passwords match
+        if (password !== repeatPassword) {
+            alert("Passwords do not match. Please enter matching passwords.");
+            return false; // Prevent form submission
+        }
+
+        // Check if at least one checkbox is checked
+        var lkdChecked = document.getElementById('lkdCheckbox').checked;
+        var zprChecked = document.getElementById('zprCheckbox').checked;
+        if (!lkdChecked && !zprChecked) {
+            alert("Please select at least one option from where candidate data will be fetched.");
+            return false; // Prevent form submission
+        }
+
+        return true; // Allow form submission if all validations pass
+    }
+
+    document.querySelector('form').addEventListener('submit', function (event) {
+        event.preventDefault(); // Prevent the default form submission
+        document.getElementById('reg').disabled = true;
+
+        if (validateForm()) { // Only proceed if validation passes
+            fetch('/addorg', {
+                method: 'POST',
+                body: new FormData(event.target)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.message) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Registration Completed!',
+                        text: data.message,
+                    }).then(() => {
+                        // Redirect to landing page
+                        window.location.href = '/';
+                    });
+                } else if (data.error) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error!',
+                        text: data.error,
+                    }).then(() => {
+                        window.location.reload();
+                    });
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred while signing up.');
+            });
+
+        }
+    });
+</script>
+
+</html>

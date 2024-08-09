@@ -1,0 +1,155 @@
+<footer class="footer px-5 py-4 fixed-bottom">
+  <div class="copyright mx-auto float-none text-center">
+
+    <div id="subdiv" onclick="report()" style="
+  display: flex;
+  background: #19355F;
+  padding:25PX;
+  border-radius: 100%;
+  align-self: end;
+  position:fixed;
+right:25px;    bottom: 5px;box-shadow: rgb(150 156 165) 3px 0px 4px 2px;
+  align-items: center;    font-size: 16px;cursor:pointer;">
+      <i class="fas fa-bullhorn" style=" font-size:larger;"></i>
+    </div>
+
+    <div id="maindiv" style="box-shadow: 3px 0px 4px 2px #19355f; display:none; align-self: end;
+  position:fixed;
+right:25px;    bottom: 5px;width:350px; background:#ffff;padding:20px; border-radius:10px">
+      <div style="display:flex; align-items:center">
+        <i class="fas fa-bullhorn" style=" font-size:20px; color: #19355f"></i>
+        <p style="font-weight:600;margin-top: 0px;
+  margin-bottom: 0px;color: #19355f;font-size:20px;">Report a Bug</p>
+      </div>
+      <div style="margin-top:25px;">
+        <form id="bugReportForm" action="/bugreport" method="post" enctype="multipart/form-data">
+          <div>
+            <label style="width:100%; color: #19355f; text-align:left;">Your Name</label>
+            <input name="user_name" required placeholder="Your Name" style="width:100%;    padding: 8px;
+  border-radius: 10px;
+  outline: none;
+  border: 1px solid gray;">
+          </div>
+          <div>
+            <label style="width:100%; color: #19355f;text-align:left;">Your Email</label>
+            <input name="user_email" required type="email" placeholder="youremail@example.com" style="width:100%;    padding: 8px;
+  border-radius: 10px;
+  outline: none;
+  border: 1px solid gray;">
+          </div>
+          <div>
+            <label style="width:100%; color: #19355f;text-align:left;">Description</label>
+            <textarea name="description" required placeholder="Describe the bug. what did you expect?" style="width:100%;    padding: 8px;
+  border-radius: 10px;
+  outline: none;
+  border: 1px solid gray;"></textarea>
+          </div>
+          <div>
+            <label style="width:100%; color: #19355f; text-align:left;">Upload Screenshots(optional)</label>
+            <input type="file" name="myfiles" multiple
+              style="width:100%; padding: 8px; "
+              onchange="displayFileNames(this)">
+            <ul id="file-names" style="color: #19355f; margin-top: 5px; list-style-type: none; padding: 0;"></ul>
+          </div>
+          <div>
+            <input style="    width: 100%;
+  padding: 6px;
+  border-radius: 7px;
+  outline: none;
+  border: none;
+  background: #19355f;
+  color: #ffff;
+  font-size: 16px;margin-top:20px" type="submit" value="Send a report">
+          </div>
+          <div>
+            <input style="width: 100%;
+  padding: 6px;
+  border-radius: 7px;
+  outline: none;
+  border: none;
+  background: gray;
+  color: #ffff;
+  font-size: 16px; text-align:center; margin-top:8px; cursor:pointer" onclick="cancel()" value="cancel">
+          </div>
+          <form>
+      </div>
+    </div>
+
+
+  </div>
+  <script>
+    function displayFileNames(input) {
+      const fileNamesList = document.getElementById('file-names');
+      fileNamesList.innerHTML = ''; // Clear the list
+
+      Array.from(input.files).forEach(file => {
+        const listItem = document.createElement('li');
+        listItem.textContent = file.name;
+        listItem.style.color = '#19355f';
+        fileNamesList.appendChild(listItem);
+      });
+    }
+
+    function report() {
+      document.getElementById('maindiv').style.display = 'block';
+      document.getElementById('subdiv').style.display = 'none';
+    }
+    function cancel() {
+      document.getElementById('maindiv').style.display = 'none';
+      document.getElementById('subdiv').style.display = 'flex';
+
+    }
+  </script>
+  <script>
+  $(document).ready(function () {
+  $('#bugReportForm').on('submit', function (e) {
+    e.preventDefault(); // Prevent the form from submitting in the traditional way
+
+    var formData = new FormData(this); // Use FormData to handle file uploads
+
+    // Update the submit button text to indicate loading
+    var submitBtn = $(this).find('input[type="submit"]');
+    var originalText = submitBtn.val(); // Store original button text
+    submitBtn.val('Sending...').prop('disabled', true); // Change button text and disable it
+
+    $.ajax({
+      type: "POST",
+      url: "/bugreport",
+      data: formData,
+      contentType: false, // Required for FormData
+      processData: false, // Required for FormData
+      success: function (response) {
+        // Handling a successful response
+        Swal.fire({
+          title: 'Success!',
+          text: response.msg, // Expecting a message from the server
+          icon: 'success',
+          confirmButtonText: 'Close'
+        }).then((result) => {
+          if (result.value) {
+            $('#bugReportForm')[0].reset(); // Reset the form after successful submission
+            document.getElementById('maindiv').style.display = 'none';
+            document.getElementById('subdiv').style.display = 'flex';
+          }
+        });
+      },
+      error: function () {
+        // Handling error
+        Swal.fire({
+          title: 'Error!',
+          text: 'Failed to send bug report.',
+          icon: 'error',
+          confirmButtonText: 'Close'
+        });
+      },
+      complete: function () {
+        // Reset button text and re-enable it regardless of success or failure
+        submitBtn.val(originalText).prop('disabled', false);
+      }
+    });
+  });
+});
+
+  </script>
+
+</footer>

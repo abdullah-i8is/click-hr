@@ -1,0 +1,289 @@
+{% extends "base.html" %}
+
+{% block title %} Dashboard {% endblock %}
+
+{% block content %}
+<style>
+    .selectcountryfilterform {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+label {
+  margin-right: 10px;
+}
+
+
+button[type="submit"] {
+  padding: 8px 20px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+button[type="submit"]:hover {
+  background-color: #0056b3;
+}
+
+    .order-scroll{
+    max-height: 90vh;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    border-radius:10px;
+    list-style:none;
+    padding:0px 10px;
+
+
+    }
+     .order-scroll::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    .order-scroll::-webkit-scrollbar-track {
+        background:#174129;
+    }
+
+    .order-scroll::-webkit-scrollbar-thumb {
+        background-color: #19355f ;
+    }
+
+
+
+     .active-button {
+    background-color: green;
+  }
+   .btn-arc {
+    height: 30px;
+    margin-top: 7px;
+    margin-right: 7px;
+    background: none;
+    color: black;}
+
+.cd-btn {
+  background: linear-gradient(0deg, #19355f 10%, #4372b8 100%)!important;
+  border: none;
+  outline: none;
+  color: #ffff !important;
+  transition: background-color 1s;
+  border-bottom : 1ps solid #2d8c56;
+}
+
+.cd-btn:hover {
+  background: linear-gradient(-90deg, #19355f 10%, #4372b8 100%)!important;
+}
+   button{
+    border: none;
+    border-bottom: 1px solid black;
+    border-radius: 0px!important;
+    }
+
+    .cd-btn a{
+     color: #ffff !important;
+    }
+    p{
+    margin-left:10px;
+    color:black;
+    }
+    .order-scroll{
+    border-radius:10px;
+    list-style:none;
+    padding:0px 10px;
+    }
+
+
+ tr{
+   margin-top:20px;
+   border-bottom: 1px solid black;
+
+   }
+  th{
+  color: #19355f;
+    padding:5px 14px;
+  }
+   td{
+  color: #19355f;
+    padding:5px;
+    cursor: pointer;
+  }
+   .list-item:hover{
+       background-color: #7fba96;
+   }
+    .candidate-row:hover{
+       background-color: #7fba96;
+   }
+
+
+.card .card-header{
+color:black;
+}
+.pagination{
+justify-content: flex-end;
+}
+
+</style>
+    <div class="content">
+        <div class="row">
+             <div class="col-lg-12">
+                <div class="card card-chart">
+                   <div class="card-header">
+          <div>
+         <div style="display:flex; justify-content:flex-end; align-items:center;">
+<!--           <div style="display:flex; justify-contnent:space-between">-->
+<!--              <div class="card-header" style="margin-top:10px;">-->
+<!--                <button class="card-title {% if active_url == 'activity_log' %}active-button{% endif %}"-->
+<!--                  id="jobOders">ALL</button>-->
+<!--              </div>-->
+<!--           </div>-->
+             <div style="">
+          <form class="selectcountryfilterform">
+        <div>
+            <label for="startDate">Select any:</label> <br>
+        <select class="selectcountryfilter" id="filterSelect" name="filter">
+            <option value="">ALL</option>
+            <option value="users">Member Activity</option>
+            <option value="candidate">Candidate Activity</option>
+            <option value="orders">Job Orders Activity</option>
+            <option value="post">Website Jobs Activity</option>
+            <option value="deals">Companies Activity</option>
+            <option value="hr">HR Activity</option>
+            <option value="other">Other Report Activity</option>
+            <option value="del">Delete Reports</option>
+
+        </select>
+        </div>
+        <div style="margin-right:5px;margin-left:5px;">
+            <label for="startDate">Start Date:</label> <br>
+        <input type="date" id="startDate" name="startDate">
+        </div>
+        <div style="margin-right:5px;margin-left:5px;">
+            <label for="endDate">End Date:</label> <br>
+        <input type="date" id="endDate" name="endDate">
+        </div>
+        <button style="margin-top: 14px;" type="submit">Apply</button>
+    </form>
+</div>
+
+         </div>
+
+
+         </div>
+
+
+
+   <div class="order-scroll">
+    <table style="margin:auto;">
+        <thead class=" text-primary">
+            <tr>
+                <th scope="col" width="700px">Activity</th>
+                <th scope="col" width="200px">Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for note in all_notes %}
+            <tr>
+                <td>
+                    <p>{{ note.split('(')[:-1] | join('(') }}</p>
+                </td>
+                <td>
+                    <p>{{ note.split('(')[-1].split(')')[-2] }}</p>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+</div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var filterForm = document.getElementById("filterForm");
+        var filterSelect = document.getElementById("filterSelect");
+        var startDateInput = document.getElementById("startDate");
+        var endDateInput = document.getElementById("endDate");
+
+        function applyFilter() {
+            var selectedFilter = filterSelect.value;
+            var startDate = startDateInput.value;
+            var endDate = endDateInput.value;
+            var url = "/activity_log";
+
+            if (selectedFilter !== "") {
+                url += "?filter=" + selectedFilter;
+            }
+
+            if (startDate !== "") {
+                url += "&startDate=" + startDate;
+            }
+
+            if (endDate !== "") {
+                url += "&endDate=" + endDate;
+            }
+
+            window.location.href = url;
+        }
+
+        function setFilterFieldsFromUrl() {
+            var urlParams = new URLSearchParams(window.location.search);
+            var filterParam = urlParams.get('filter');
+            var startDateParam = urlParams.get('startDate');
+            var endDateParam = urlParams.get('endDate');
+
+            if (filterParam) {
+                filterSelect.value = filterParam;
+            }
+
+            if (startDateParam) {
+                startDateInput.value = startDateParam;
+            }
+
+            if (endDateParam) {
+                endDateInput.value = endDateParam;
+            }
+        }
+
+        setFilterFieldsFromUrl(); // Set filter fields from URL parameters when page loads
+
+        filterForm.addEventListener("submit", function(event) {
+            event.preventDefault();
+            applyFilter();
+        });
+    });
+</script>
+
+
+
+
+<script>
+
+window.addEventListener('load', function () {
+      console.log("hello nisa")
+      var currentUrl = window.location.pathname;
+      var candidateButton = document.getElementById("jobOders");
+      var selectedButton = document.getElementById("completed_orders");
+      var archived_orders = document.getElementById("archived_orders");
+
+      if (currentUrl === "{{ url_for('activity_log') }}") {
+        candidateButton.style.backgroundColor = "#19355f";
+        candidateButton.style.color = "#ffffff";
+      }
+
+
+    });
+</script>
+
+{% endblock content %}
+{% block javascripts %}
+
+
+
+{% endblock javascripts %}

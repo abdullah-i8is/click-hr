@@ -1,0 +1,265 @@
+{% extends "base.html" %}
+
+{% block title %} Members {% endblock %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block content %}
+{% if session['role']!='user' %}
+<style>
+   tr{
+   margin-top:20px;
+   border-bottom: 1px solid black;
+   width:100%;
+   }
+  th{
+  text-align:center;
+  color: #19355f;
+  }
+   td{
+  text-align:center;
+  color: #19355f;
+  }
+
+.active-button {
+      background-color: green;
+    }
+.inactive-member td{
+    color:#ac9999;
+    }
+</style>
+  <div class="content">
+    <div class="row">
+      <div class="" style="    display: flex; justify-content:space-between;    background-color: #ffffff;
+      width: 100%;
+      margin-left: 10px;border: 0.0625rem solid rgba(34, 42, 66, 0.05);
+      border-radius: 0.2857rem; height:100vh">
+        <div class="card " style="width:75%;border:none;border-radius:0px">
+         <div style="display: flex; justify-content: space-between; align-items: center;">
+          <div class="card-header">
+            <h4 class="card-title">All Members</h4>
+          </div>
+          <div class="card-header" style="background:#19355f;color: #ffff;
+    padding: 9px;
+    margin-top: 5px;">
+           <a href="{{ url_for('addmembers') }}"  style="display: flex;">
+            <i style="color: #ffff;margin-top:5px;margin-right:4px" class="fa fa-user-plus" aria-hidden="true"></i>
+            <h4 style="background:none;color: #ffff; padding:0px" class="card-title">Add Members</h4>
+           </a>
+          </div>
+         </div>
+          <div class="card-body" style="overflow: auto; max-height: 80vh;">
+                <table>
+                    <thead>
+                        <tr>
+                            <th scope="col" width="10%"><span class="sort-icon" onclick="sortCompanies()" style="cursor: pointer">▼</span>Name</th>
+                            <th scope="col" width="15%">Email</th>
+                            <th scope="col" width="15%">Organization</th>
+                            <th scope="col" width="8%">Designation</th>
+                           <th scope="col" width="10%">Role</th>
+                            <th scope="col" width="15%">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+    {% for name in members_data %}
+        {% if name.status == 'Active' %}
+            <tr class="active-member" >
+                <td data-label="Due Date">{{ name.fname }} {{ name.lname }}</td>
+                <td data-label="Amount">{{ name.email }}</td>
+                <td data-label="Amount">{{ name.org_name }}</td>
+                <td data-label="Amount">{{ name.designation }}</td>
+                <td data-label="Amount">{{ name.role }}</td>
+                <td data-label="Amount">
+                  {% if name.role == 'owner' %}
+                     -
+                    {% else %}
+                    <a data-toggle="tooltip" title="Edit Member" href="/updatemembers/{{ name.id }}"><i class="fas fa-edit"></i></a>
+                    <a data-toggle="tooltip" title="Archive Member" href="#" data-member-id="{{ name.id }}" class="delete-member"><i style="margin-left: 10px;" class="fas fa-archive" aria-hidden="true"></i></a>
+                   {% endif %}
+                </td>
+            </tr>
+        {% endif %}
+    {% endfor %}
+    {% for name in members_data %}
+        {% if name.status == 'Inactive' %}
+            <tr class="inactive-member" style="">
+                <td data-label="Due Date">{{ name.fname }} {{ name.lname }}</td>
+                <td data-label="Amount">{{ name.email }}</td>
+                <td data-label="Amount">{{ name.org_name }}</td>
+                <td data-label="Amount">{{ name.designation }}</td>
+                <td data-label="Amount">{{ name.role }}</td>
+                <td data-label="Amount">
+                    <a style=" color:red;" data-toggle="tooltip" title="Restore Member" href="#" data-member-id="{{ name.id }}" class="archive-member">Restore</a>
+                </td>
+            </tr>
+        {% endif %}
+    {% endfor %}
+</tbody>
+                </table>
+          </div>
+        </div>
+        <div class="card" style="width:24%;border:none;border-radius:0px">
+            <div class="card-header">
+               <h4 class="title" style="color:Black; height:70%">Activity</h4>
+           </div>
+           <div class="card-body" style="overflow: auto; max-height: 85vh;">
+                   <div id="activity">
+                       <ul>
+                          {% for memberhistory in memberhistory %}
+                          <li style="color:black; font-size:12px">{{ memberhistory.notes }}</li>
+                          {% endfor %}
+                       </ul>
+                   </div>
+
+           </div>
+
+       </div>
+      </div>
+
+    </div>
+  </div>
+<script>
+    var ascending = true; // Variable to track the sorting order
+
+    // Function to sort rows with custom order (Active first, then Inactive)
+    function sortCompanies() {
+        var rows = document.querySelectorAll("tbody tr");
+
+        var sortedRows = Array.from(rows).sort((a, b) => {
+            var textA = a.querySelector("td:nth-child(1)").textContent.trim();
+            var textB = b.querySelector("td:nth-child(1)").textContent.trim();
+            var statusA = a.classList.contains("active-member") ? 0 : 1;
+            var statusB = b.classList.contains("active-member") ? 0 : 1;
+
+            // Sort by status first (Active before Inactive), then by name
+            if (statusA !== statusB) {
+                return statusA - statusB;
+            } else {
+                return ascending ? textA.localeCompare(textB) : textB.localeCompare(textA);
+            }
+        });
+
+        // Reorder the rows in the table
+        var tbody = document.querySelector("tbody");
+        tbody.innerHTML = "";
+        sortedRows.forEach(row => tbody.appendChild(row));
+
+        // Toggle sorting order
+        ascending = !ascending;
+
+        // Change the sort icon based on the sorting order
+        var sortIcon = document.querySelector(".sort-icon");
+        sortIcon.textContent = ascending ? "▼" : "▲";
+    }
+
+    // Sort companies alphabetically when the page loads (default)
+    window.addEventListener('DOMContentLoaded', (event) => {
+        sortCompanies();
+    });
+</script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const deleteLinks = document.querySelectorAll('.delete-member');
+    const archiveLinks = document.querySelectorAll('.archive-member');
+
+    deleteLinks.forEach(link => {
+        link.addEventListener('click', function (event) {
+            event.preventDefault();
+            const memberId = this.getAttribute('data-member-id');
+
+            Swal.fire({
+                icon: 'warning',
+                title: 'Archive Member',
+                text: 'Are you sure you want to archive this member?',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: 'grey',
+                confirmButtonText: 'Archive'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    fetch(`/deletemembers/${memberId}`, {
+                        method: 'POST',
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.message === 'Member Archive!') {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Success!',
+                                text: 'Member Archive successfully!',
+                            }).then(() => {
+                                window.location.href = "{{ url_for('members') }}";
+                            });
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: data.message,
+                            });
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'An error occurred while archiving the member.',
+                        });
+                    });
+                }
+            });
+        });
+    });
+
+    archiveLinks.forEach(link => {
+        link.addEventListener('click', function (event) {
+            event.preventDefault();
+            const memberId = this.getAttribute('data-member-id');
+
+            Swal.fire({
+                icon: 'warning',
+                title: 'Restore Member',
+                text: 'Are you sure you want to restore this member?',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: 'grey',
+                confirmButtonText: 'Restore'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    fetch(`/unarchivedmember/${memberId}`, {
+                        method: 'POST',
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.message === 'Member Restore!') {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Success!',
+                                text: 'Member Restore successfully!',
+                            }).then(() => {
+                                window.location.href = "{{ url_for('members') }}";
+                            });
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: data.message,
+                            });
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'An error occurred while restoring the member.',
+                        });
+                    });
+                }
+            });
+        });
+    });
+});
+</script>
+  {% endif %}
+{% endblock content %}
+{% block javascripts %}{% endblock javascripts %}

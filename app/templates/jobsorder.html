@@ -1,0 +1,337 @@
+{% extends "base.html" %}
+
+{% block title %} Dashboard {% endblock %} 
+
+{% block content %}
+<style>
+    .order-scroll{
+    max-height: auto;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    border-radius:10px;
+    list-style:none;
+    padding:0px 10px;
+
+
+    }
+     .order-scroll::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    .order-scroll::-webkit-scrollbar-track {
+        background:#174129;
+    }
+
+    .order-scroll::-webkit-scrollbar-thumb {
+        background-color: #19355f ;
+    }
+
+
+
+     .active-button {
+    background-color: green;
+  }
+   .btn-arc {
+    height: 30px;
+    margin-top: 7px;
+    margin-right: 7px;
+    background: none;
+    color: black;}
+
+.cd-btn {
+  background: linear-gradient(0deg, #19355f 10%, #4372b8 100%)!important;
+  border: none;
+  outline: none;
+  color: #ffff !important;
+  transition: background-color 1s;
+  border-bottom : 1ps solid #2d8c56;
+}
+
+.cd-btn:hover {
+  background: linear-gradient(-90deg, #19355f 10%, #4372b8 100%)!important;
+}
+   button{
+    border: none;
+    border-bottom: 1px solid black;
+    border-radius: 0px!important;
+    }
+
+    .cd-btn a{
+     color: #ffff !important;
+    }
+    p{
+    margin-left:10px;
+    color:black;
+    }
+    .order-scroll{
+    border-radius:10px;
+    list-style:none;
+    padding:0px 10px;
+    }
+
+
+ tr{
+   margin-top:20px;
+   border-bottom: 1px solid black;
+
+   }
+  th{
+  text-align:center;
+  color: #19355f;
+    padding:5px
+  }
+   td{
+  text-align:center;
+  color: #19355f;
+    padding:5px;
+    cursor: pointer;
+  }
+   .list-item:hover{
+       background-color: #7fba96;
+   }
+    .candidate-row:hover{
+       background-color: #7fba96;
+   }
+
+
+.card .card-header{
+color:black;
+}
+.pagination{
+justify-content: flex-end;
+}
+
+</style>
+    <div class="content">
+        <div class="row">
+             <div class="col-lg-12">
+                <div class="card card-chart">
+                   <div class="card-header">
+          <div>
+         <div style="display:flex; justify-content:space-between; align-items:center;">
+           <div style="display:flex; justify-contnent:space-between">
+                <form action="{{ url_for('jobOders') }}" method="">
+              <div class="card-header" style="margin-top:10px;">
+                <button class="card-title {% if active_url == 'jobOders' %}active-button{% endif %}"
+                  id="jobOders">Active</button>
+              </div>
+            </form>
+                 <form action="{{ url_for('completed_orders') }}" method="">
+              <div class="card-header" style="margin-top:10px;">
+                <button class="card-title {% if active_url == 'completed_orders' %}active-button{% endif %}"
+                  id="completed_orders">Completed</button>
+              </div>
+            </form>
+                 <form action="{{ url_for('archived_orders') }}" method="">
+              <div class="card-header" style="margin-top:10px;">
+                <button class="card-title {% if active_url == 'archived_orders' %}active-button{% endif %}"
+                  id="archived_orders">Archived</button>
+              </div>
+            </form>
+           </div>
+
+
+
+        <div class="card-header" style="display:flex;">
+
+            <button class="card-title cd-btn" id="jobOders">
+                <a href="/onereporting"><i class="fas fa-plus"></i> Add Job Orders</a>
+            </button>
+
+
+        </div>
+    </div>
+
+
+{% if  url_for('jobOders') == request.path %}
+<form method="POST" action="{{ url_for('archive_jobs') }}">
+    <div class="order-scroll">
+              <button id="archive-btn" type="submit" style="display: none;
+    background: red;
+    padding: 3px 24px;
+    color: white;
+    border-bottom: none;
+    margin-left: 5px;">Archive</button>
+
+
+        <table style="margin:auto;">
+            <thead class=" text-primary">
+                <tr>
+                    <th scope="col" width="20px">Select</th>
+                    <th scope="col" width="250px">Posted On</th>
+                    <th scope="col" width="150px">Pay Rate</th>
+                    <th scope="col" width="150px">Shift</th>
+                    <th scope="col" width="40px">Slots</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for job_order in jobsorders %}
+                <tr
+                    data-toggle="tooltip"
+                    class="list-item red-tooltip"
+                    data-id="{{ job_order.company_id }}"
+                    data-archived="{{ job_order.archived }}"
+                >
+                    <td>
+                        <input type="checkbox" name="selected_jobs[]" value="{{ job_order.id }}">
+                    </td>
+                    <td data-toggle="tooltip" title=" " onclick="openUrl('/editjoborder/{{ job_order.id }}/arc')">
+                        <span style="color: blue;">{{ job_order.created_at.strftime('%m-%d-%Y') }}</span><br>
+                        <span style="font-weight: 600">{{ job_order.company_name }}</span><br>
+                        needs: {{ job_order.title }}
+                    </td>
+                    <td data-toggle="tooltip" title=" " onclick="openUrl('/editjoborder/{{ job_order.id }}/arc')">${{ job_order.payrate }} ({{ job_order.salarytype }})</td>
+                    <td>{{ job_order.starttime }} to {{ job_order.endtime }}</td>
+                    <td class="text-center">{{ job_order.filled_vacancy }}/{{ job_order.vacancy }}</td>
+
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</form>
+{% elif  url_for('completed_orders') == request.path %}
+<form method="POST" action="">
+        <table style="margin:auto;">
+            <thead class=" text-primary">
+                <tr>
+                    <th scope="col" width="250px">Posted On</th>
+                    <th scope="col" width="150px">Pay Rate</th>
+                    <th scope="col" width="150px">Shift</th>
+                    <th scope="col" width="40px">Slots</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for job_order in completed_job_orders %}
+                <tr
+                    data-toggle="tooltip"
+                    class="list-item red-tooltip"
+                    data-id="{{ job_order.company_id }}"
+                    data-archived="{{ job_order.archived }}"
+                >
+
+                    <td data-toggle="tooltip" title=" " onclick="openUrl('/editjoborder/{{ job_order.id}}/com')">
+                        <span style="color: blue;">{{ job_order.created_at.strftime('%m-%d-%Y') }}</span><br>
+                        <span style="font-weight: 600">{{ job_order.company_name }}</span><br>
+                        needs: {{ job_order.title }}
+                    </td>
+                    <td data-toggle="tooltip" title=" " onclick="openUrl('/editjoborder/{{ job_order.id}}/com')">${{ job_order.payrate }} ({{ job_order.salarytype }})</td>
+                    <td>{{ job_order.starttime }} to {{ job_order.endtime }}</td>
+                    <td class="text-center">{{ job_order.filled_vacancy }}/{{ job_order.vacancy }}</td>
+
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+</form>
+{% else %}
+<form method="POST" action="{{ url_for('archive_jobs') }}">
+    <div class="order-scroll">
+              <button id="unarchive-btn" type="submit" style="display: none;
+    background: red;
+    padding: 3px 14px;
+    color: white;
+    border-bottom: none;
+    margin-left: 5px;">UnArchive</button>
+
+        <table style="margin:auto;">
+            <thead class=" text-primary">
+                <tr>
+                    <th scope="col" width="20px">Select</th>
+                    <th scope="col" width="250px">Posted On</th>
+                    <th scope="col" width="150px">Pay Rate</th>
+                    <th scope="col" width="150px">Shift</th>
+                    <th scope="col" width="40px">Slots</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for job_order in archived_orders %}
+                <tr
+                    data-toggle="tooltip"
+                    class="list-item red-tooltip"
+                    data-id="{{ job_order.company_id }}"
+                    data-archived="{{ job_order.archived }}"
+                >
+                    <td>
+                        <input type="checkbox" name="selected_jobs[]" value="{{ job_order.id }}">
+                    </td>
+                    <td data-toggle="tooltip" title=" " onclick="openUrl('/editjoborder/{{ job_order.id}}/unarc')">
+                        <span style="color: blue;">{{ job_order.created_at.strftime('%m-%d-%Y') }}</span><br>
+                        <span style="font-weight: 600">{{ job_order.company_name }}</span><br>
+                        needs: {{ job_order.title }}
+                    </td>
+                    <td data-toggle="tooltip" title=" " onclick="openUrl('/editjoborder/{{ job_order.id }}/unarc')">${{ job_order.payrate }} ({{ job_order.salarytype }})</td>
+                    <td>{{ job_order.starttime }} to {{ job_order.endtime }}</td>
+                    <td class="text-center">{{ job_order.filled_vacancy }}/{{ job_order.vacancy }}</td>
+
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</form>
+{% endif %}
+</div>
+
+                </div>
+            </div>
+        </div>
+
+{% endblock content %}
+{% block javascripts %}
+<script>
+
+     function openUrl(url) {
+     console.log(url)
+        window.location.href = url;
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        var checkboxes = document.querySelectorAll('input[type="checkbox"][name="selected_jobs[]"]');
+        var archiveBtn = document.getElementById('archive-btn');
+        var unarchiveBtn = document.getElementById('unarchive-btn');
+
+        checkboxes.forEach(function(checkbox) {
+            checkbox.addEventListener('change', function() {
+                var atLeastOneChecked = Array.prototype.some.call(checkboxes, function(checkbox) {
+                    return checkbox.checked;
+                });
+                if (atLeastOneChecked) {
+                    var currentUrl = window.location.pathname;
+                    console.log(currentUrl)
+                    if (currentUrl === "{{ url_for('archived_orders') }}") {
+                       unarchiveBtn.style.display = 'block';
+                    } else if (currentUrl === "{{ url_for('jobOders') }}"){
+                        archiveBtn.style.display = 'block';
+                    }
+                }
+
+            });
+        });
+    });
+window.addEventListener('load', function () {
+      console.log("hello nisa")
+      var currentUrl = window.location.pathname;
+      var candidateButton = document.getElementById("jobOders");
+      var selectedButton = document.getElementById("completed_orders");
+      var archived_orders = document.getElementById("archived_orders");
+
+      if (currentUrl === "{{ url_for('jobOders') }}") {
+        candidateButton.style.backgroundColor = "#19355f";
+        candidateButton.style.color = "#ffffff";
+      }
+      if (currentUrl === "{{ url_for('completed_orders') }}") {
+        selectedButton.style.backgroundColor = "#19355f";
+        selectedButton.style.color = "#ffffff";
+      }
+      if (currentUrl === "{{ url_for('archived_orders') }}") {
+        archived_orders.style.backgroundColor = "#19355f";
+        archived_orders.style.color = "#ffffff";
+      }
+
+    });
+</script>
+
+
+{% endblock javascripts %}

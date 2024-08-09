@@ -1,0 +1,402 @@
+{% extends "base.html" %}
+
+{% block title %} Tables {% endblock %}
+
+{% block content %}
+<style>
+
+   tr{
+   margin-top:20px;
+   border-bottom: 1px solid black;
+
+   }
+  th{
+  text-align:center;
+  color: #19355f;
+    padding:5px
+  }
+   td{
+  text-align:center;
+  color: #19355f;
+    padding:5px
+  }
+.export {
+    list-style: none;
+    padding: 10px;
+    color: black;
+    box-shadow: 0px 2px 9px 0px gray;
+    position: absolute;
+    right: 3px;
+    top: 48px;
+}
+.export p {
+    color: black;
+    cursor: pointer;
+    padding: 5px 0px;
+}
+
+.export li:hover p{
+    background: #19355f;
+    color: #ffffff;
+}
+.selectcountryfilter{
+    margin-top: 20px;
+    padding-left: 15px;
+    margin-right: 17px;
+    border: none;
+}
+.selectcountryfilterform{
+        width: 100%;
+    text-align: end;
+}
+.active-button {
+      background-color: green;
+    }
+    .search {
+    padding: 5px;
+    display: none;
+    outline: none;
+    border: none;
+    border-bottom: 1px solid black;
+
+}
+    .hicon {
+    margin-right: 20px;
+    font-size: 22px !important;
+    position: relative;
+}
+
+.hicon:nth-child(1):after {
+    content: '';
+    position: absolute;
+    width: 7px;
+    height: 7px;
+    background: red;
+    border-radius: 10px;
+    left: 13px;
+    top: 7px;
+    transform: scale(0.5);
+    box-shadow: 0 0 0 0 rgba(255, 82, 82, 1);
+    animation: pulse-red 2s infinite;
+    cursor: pointer;
+
+}
+
+@keyframes pulse-red {
+    0% {
+        transform: scale(0.85);
+        box-shadow: 0 0 0 0 rgba(255, 82, 82, 0.7);
+    }
+
+    70% {
+        transform: scale(1);
+        box-shadow: 0 0 0 25px rgba(255, 82, 82, 0);
+    }
+
+    100% {
+        transform: scale(0.85);
+        box-shadow: 0 0 0 0 rgba(255, 82, 82, 0);
+    }
+}
+
+.search-div{
+display: flex;
+align-items: baseline;
+ margin-top: 20px;
+ position: relative;
+ padding-left: 15px
+}
+.data-row.unread {
+    background-color: #f0f0f0; /* Apply a different background color for read rows */
+}
+.pagination{
+justify-content: flex-end;
+}
+
+</style>
+ <div class="content">
+  <div class="row">
+    <div class="col-md-12">
+        <div class="card ">
+            <div style="display: flex; justify-content:space-between;">
+                  <div class="card-header">
+                      <h4 class="card-title">Candidate Info:- </h4>
+                      {% if alldata|length > 0 %}
+                          <h5 class="card-title" style="text-transform: none;">Name: {{ alldata[0].sender_name }} <br> Email: {{ alldata[0].email }} <br> Phone: {{ alldata[0].phone_number }} <br>
+                               <span style="display:flex; align-items:center">Current Status: {{alldata[0].status}}
+                          </span>
+                          </h5>
+
+                      {% endif %}
+                  </div>
+            <a class="backtodashboard" href="/logout" style="display:flex;margin-top: 20px;">
+             <i class="fas fa-sign-out-alt" style="margin-right:10px;"></i>
+             <p style="margin-bottom: 0px;margin-right:10px; color:black">Logout </p>
+           </a>
+
+            </div>
+            <div class="card-body">
+            <div class="">
+                <div class="card-header">
+              <h4 class="card-title">Employment History:- </h4>
+                </div>
+              <table style="overflow-x: auto;" id="dataTable" >
+                    <thead>
+                        <tr>
+                             <th scope="col" width="15%">Status</th>
+                             <th scope="col" width="8%">Company</th>
+                             <th scope="col" width="10%">Position</th>
+                             <th scope="col" width="10%">Date</th>
+
+                        </tr>
+                    </thead>
+                    <tbody id="emailDataBody">
+                      {% if recruiting|length > 0 %}
+                       {% for name in recruiting %}
+                         <tr class="data-row">
+                             <td data-label="Amount">  <a>{{ name.did_you  }}</a>
+                             </td>
+                            <td data-label="Amount">{{ name.company }}</td>
+                            <td data-label="Amount">{{ name.position   }}</td>
+                            <td data-label="Amount">
+                                {% if name.companydate %}
+                                    {{ name.companydate }}
+                                {% elif name.starttime %}
+                                   {{ name.starttime }}
+                                {% elif name.interviewdate %}
+                                   {{ name.interviewdate }}
+                                {% endif %}
+                            </td>
+
+
+                        </tr>
+                       {% endfor %}
+                      {% else %}
+                         <tr>
+                          <td class="text-center" colspan="5">Empty</td>
+                         </tr>
+                      {% endif %}
+                    </tbody>
+              </table>
+              <div id="pdfViewer" style="display: none;">
+                 <object id="pdfObject" type="application/pdf" width="100%" height="800px"></object>
+              </div>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+{% endblock content %}
+{% block javascripts %}
+<script>
+    window.addEventListener('load', function() {
+     console.log("hello nisa")
+      var currentUrl = window.location.pathname;
+      var candidateButton = document.getElementById("candidate-button");
+      var selectedButton = document.getElementById("selected-button");
+      if (currentUrl === "{{ url_for('candidate') }}") {
+        candidateButton.style.backgroundColor = "#19355f";
+        candidateButton.style.color = "#ffffff";
+      }
+      if (currentUrl === "{{ url_for('selecteddata') }}") {
+        selectedButton.style.backgroundColor = "#19355f";
+         selectedButton.style.color = "#ffffff";
+      }
+});
+    function showPdf(emailId) {
+       markEmailAsRead(emailId);
+       updateRowStatus(emailId, true);
+       pdfWindow = window.open(`/pdf_content/${emailId}`);
+       pdfWindow.addEventListener('beforeunload', () => {
+           markEmailAsRead(emailId); // Call markEmailAsRead when PDF tab/window is closed
+       });
+}
+
+    function markEmailAsRead(emailId) {
+        fetch(`/mark_as_read/${emailId}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    updateRowStatus(emailId, true); // Update the row status
+                    localStorage.setItem(`email_${emailId}`, 'true');
+                }
+            })
+            .catch(error => {
+                console.error('Error marking email as read:', error);
+            });
+}
+
+    function updateRowStatus(emailId, isRead) {
+        const row = document.querySelector(`tr[data-email-id="${emailId}"]`);
+        if (row) {
+            row.classList.remove('unread', 'read');
+            row.classList.add(isRead ? 'read' : 'unread');
+        }
+}
+    window.addEventListener('load', function() {
+        const rows = document.querySelectorAll('.data-row');
+        rows.forEach(row => {
+            const emailId = row.getAttribute('data-email-id');
+            const isRead = localStorage.getItem(`email_${emailId}`);
+            if (isRead !== null) {
+                updateRowStatus(emailId, isRead === 'true');
+            }
+        });
+});
+
+   function handleSelectionChange(id, selectedOption) {
+    console.log(selectedOption);
+    if (selectedOption == 'Interested' || selectedOption == 'Reverse changes' || selectedOption == 'move to applied') {
+      fetch('/updatemail', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ id: id, selectedOption: selectedOption }), // Include the 'id' parameter here
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.message) {
+          window.location.href = "{{ url_for('selecteddata') }}";
+          }
+          // Handle the response from the server if needed
+          console.log(data);
+        })
+        .catch((error) => {
+          // Handle errors if any
+          console.error('Error:', error);
+        });
+    } else {
+      fetch('/deletemail', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ id: id }), // Include the 'id' parameter here
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.message) {
+           window.location.href = "{{ url_for('candidate') }}";
+          }
+          // Handle the response from the server if needed
+          console.log(data);
+        })
+        .catch((error) => {
+          // Handle errors if any
+          console.error('Error:', error);
+        });
+    }
+ }
+
+
+
+    function exportMore() {
+       var exportDiv = document.getElementById("export");
+       exportDiv.style.display = exportDiv.style.display === "none" ? "block" : "none";
+       console.log("exportDiv.style.display = 'block'");
+};
+
+    $(document).ready(function () {
+       $(".sicon").click(function () {
+          $(".search").toggle(1000);
+       });
+});
+
+   document.getElementById("searchKeyword").addEventListener("keyup", function (event) {
+    console.log("hello")
+    if (event.key === "Enter") {
+        searchPdf();
+    }
+});
+
+  function searchPdf() {
+    const keywordInput = document.getElementById("searchKeyword");
+    const loadingIndicator = document.getElementById("loadingIndicator");
+
+    if (!keywordInput || !loadingIndicator) {
+        console.error("Required elements not found in the DOM.");
+        return;
+    }
+
+    const keyword = keywordInput.value.trim();
+
+    if (keyword === "") {
+        console.error("Please enter a valid keyword.");
+        return;
+    }
+
+    loadingIndicator.style.display = "block";
+
+    fetch(`/search_pdf?keyword=${encodeURIComponent(keyword)}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`Request failed with status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            loadingIndicator.style.display = "none";
+            console.log("Search Results:", data);
+            displaySearchResults(data);
+        })
+        .catch(error => {
+            loadingIndicator.style.display = "none";
+            console.error('Error:', error);
+        });
+}
+
+  function displaySearchResults(results) {
+    const emailDataBody = document.getElementById("emailDataBody");
+    emailDataBody.innerHTML = "";
+
+    if (results.length === 0) {
+        emailDataBody.innerHTML = "<tr><td colspan='6'>No matching PDFs found.</td></tr>";
+    } else {
+        results.forEach(email => {
+            console.log("Email:", email);
+
+            const actionColumn = `
+                <td data-label="Action">
+                    ${email.action === 'Interested' ? `
+                        <a href="" data-toggle="tooltip" title="Remove from Select" onclick="handleSelectionChange('${email.id}', 'Reverse changes')">
+                            <i style="font-size:20px;" class="fas fa-undo"></i>
+                        </a>
+                    ` : `
+                        <a href="" data-toggle="tooltip" title="Select candidate" onclick="handleSelectionChange('${email.id}', 'Interested')">
+                            <i style="font-size:20px; margin-right:8px;" class="fas fa-check-square"></i>
+                        </a>
+                    `}
+                </td>
+            `;
+
+            // Combine both columns
+            const row = `
+                <tr>
+                    <td data-label="Applicant Info">
+                        ${email.sender_name} <br>
+                        ${email.email == 'No Email!' ? `<span style="color: red;">${email.email}</span>` : email.email} <br>
+                        <a href="tel:${email.phone_number}">${email.phone_number}</a>
+                    </td>
+                    <td data-label="Job Detail">${email.subject_part2}<br>${email.subject_part1}</td>
+                    <td data-label="Date">${email.formatted_date}</td>
+                    <td data-label="Resumes">
+                        <a href="#" style="padding-bottom:2px; border-bottom: 1px solid #19355f;" onclick="showPdf(${email.id}); return false;">View PDF</a>
+                    </td>
+                    <td data-label="Current Status">${email.status}</td>
+                    ${actionColumn}
+                </tr>
+            `;
+
+            emailDataBody.innerHTML += row;
+        });
+    }
+}
+
+
+</script>
+<script src="{{ url_for('static', filename='/js/demo/candidate.js') }}"></script>
+{% endblock javascripts %}
+

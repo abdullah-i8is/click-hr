@@ -1,0 +1,1090 @@
+{% extends "base.html" %}
+
+{% block title %} Dashboard {% endblock %}
+
+{% block content %}
+<style>
+    .cd-btn {
+        background: linear-gradient(0deg, #19355f 10%, #4372b8 100%) !important;
+        border: none;
+        outline: none;
+        color: #ffff !important;
+        transition: background-color 1s;
+    }
+
+    .cd-btn:hover {
+        background: linear-gradient(-90deg, #19355f 10%, #4372b8 100%) !important;
+    }
+
+    .cd-btn a {
+        color: #ffff !important;
+    }
+
+    button {
+        border: none;
+        border-bottom: 1px solid black;
+        border-radius: 0px !important;
+    }
+
+    p {
+        margin-left: 10px;
+        color: black;
+    }
+
+    .order-scroll {
+        max-height: 200px;
+        overflow-y: auto;
+        scrollbar-width: thin;
+        border-radius: 10px;
+        list-style: none;
+        padding: 0px 10px;
+
+
+    }
+
+    .order-scroll::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    .order-scroll::-webkit-scrollbar-track {
+        background: #174129;
+    }
+
+    .order-scroll::-webkit-scrollbar-thumb {
+        background-color: #19355f;
+    }
+
+    .order-scroll2 {
+        max-height: 400px;
+        overflow-y: auto;
+        scrollbar-width: thin;
+        border-radius: 10px;
+        list-style: none;
+        padding: 0px 10px;
+
+
+    }
+
+    .order-scroll2::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    .order-scroll2::-webkit-scrollbar-track {
+        background: #174129;
+    }
+
+    .order-scroll2::-webkit-scrollbar-thumb {
+        background-color: #19355f;
+    }
+
+    tr {
+        margin-top: 20px;
+        border-bottom: 1px solid black;
+
+    }
+
+    th {
+        text-align: center;
+        color: #19355f;
+        padding: 5px
+    }
+
+    td {
+        text-align: center;
+        color: #19355f;
+        padding: 5px;
+        cursor: pointer;
+    }
+
+    .list-item:hover {
+        background-color: #5d95c9;
+    }
+
+    .candidate-row:hover {
+        background-color: #5d95c9;
+    }
+
+    < !-- .selected-list-item {
+        -->< !-- background-color: #5d95c9;
+        -->< !--
+    }
+
+    -->< !-- .selected-list-item2 {
+        -->< !-- background-color: #5d95c9;
+        -->< !--
+    }
+
+    -->.selectedcandidate {
+        display: none;
+        position: absolute;
+        top: 15%;
+        left: 25%;
+        z-index: 9999;
+    }
+
+    .card .card-header {
+        color: black;
+    }
+
+    .count-div {
+        width: 24%
+    }
+</style>
+<div class="content">
+    <div class="row" style="justify-content: space-between;padding-left: 10px;">
+        <div class="count-div">
+            <div class="card card-chart">
+                {% if session['role'] == 'user' %}
+
+                <div class="card-header" style="padding:10px 0px;">
+                    <div onclick="placedcandidates()">
+                        <h4 class="card-title">Candidate Placed<i style="font-size:18px;margin-left:10px"
+                                class="fa fa-users" aria-hidden="true"></i>
+                            <span style="font-size:18px">{{ data_array.counters.candidateplace }}</span>
+                        </h4>
+                    </div>
+                </div>
+                {% elif session['role'] != 'user' %}
+                <div class="card-header" style="padding:10px 0px;">
+                    <div onclick="clickmember()">
+                        <h4 class="card-title">Members<i style="font-size:18px;margin-left:10px" class="fa fa-users"
+                                aria-hidden="true"></i>
+                            <span style="font-size:18px">{{ data_array.counters.total_users }}</span>
+                        </h4>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        <div class="count-div" onclick="selectedcandidate()">
+            <div class="card card-chart">
+                <div class="card-header" style="padding:10px 0px;">
+                    <div>
+                        <h4 class="card-title">Selected Candidate<i style="font-size:18px;margin-left:10px"
+                                class="fas fa-address-card" aria-hidden="true"></i>
+                            <span style="font-size:18px">{{ data_array.counters.totalcandidate }}</span>
+                        </h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="count-div" onclick="submitforms()">
+            <div class="card card-chart">
+                <div class="card-header" style="padding:10px 0px;">
+                    <div>
+                        <h4 class="card-title">Submitted Forms<i style="font-size:18px;margin-left:10px"
+                                class="fas fa-file-alt" aria-hidden="true"></i>
+                            <span style="font-size:15px">{{ data_array.counters.totalforms}}</span>
+                        </h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% if session['role'] != 'user' %}
+        <div class="count-div" onclick="placedcandidates()">
+            <div class="card card-chart">
+                <div class="card-header" style="padding:10px 0px;">
+                    <div>
+                        <h4 class="card-title">Placements<i style="font-size:18px;margin-left:10px"
+                                class="fas fa-file-alt" aria-hidden="true"></i>
+                            <span style="font-size:15px">{{ data_array.counters.candidateplace }}</span>
+                        </h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card card-chart">
+                <div class="card-header">
+                    <div>
+                        <div style="display:flex; justify-content:space-between; align-items:center;">
+                            <h4 class="card-title" onclick="joborder()">Job Orders</h4>
+                            <div class="card-header" style="display:flex;">
+                                <button style="margin-right:10px" class="card-title" id="candidate-button"><a
+                                        href="/jobOders">
+                                        <i class="fas fa-eye"></i> View all</a></button>
+                                <button class="card-title cd-btn" id="candidate-button"><a href="/onereporting?order">
+                                        <i class="fas fa-plus"></i> add job orders</a></button>
+                            </div>
+                        </div>
+
+                        <div class="order-scroll">
+                            <table style="margin:auto;">
+                                <thead class=" text-primary">
+                                    <tr>
+                                        <th scope="col" width="250px">Posted On</th>
+                                        <th scope="col" width="150px">Pay Rate</th>
+                                        <th scope="col" width="150px">Shift</th>
+                                        <th scope="col" width="40px">Slots</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for job_order in jobsorder %}
+                                    <tr data-toggle="tooltip" class="list-item red-tooltip"
+                                        data-id="{{ job_order.company_id }}" data-archived="{{ job_order.archived }}">
+                                        <td data-toggle="tooltip">
+                                            <span style="color: blue;">{{ job_order.created_at.strftime('%m-%d-%Y')
+                                                }}</span><br>
+                                            <span style="font-weight: 600">{{ job_order.company }}</span><br>
+                                            needs: {{ job_order.title }}
+                                        </td>
+                                        <td data-toggle="tooltip">${{ job_order.payrate }} ({{ job_order.salarytype }})
+                                        </td>
+                                        <td data-toggle="tooltip">{{ job_order.starttime }} to {{ job_order.endtime }}
+                                        </td>
+                                        <td data-toggle="tooltip" class="text-center">{{ job_order.vacancy }}</td>
+
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row selectedcandidate">
+        <div style="margin:auto;" class="col-lg-9 ">
+            <div class="card card-chart">
+                <div class="card-header">
+                    <div>
+                        <div style="display:flex; justify-content:space-between; align-items:center;">
+                            <h4 class="card-title">Select Candidates</h4>
+                            <i onclick="close()" style="margin-bottom:10px; margin-right:30px"
+                                class="fas fa-window-close"></i>
+                        </div>
+                        <div class="order-scroll2">
+                            <table style="margin:auto;">
+                                <thead>
+                                    <tr>
+                                        <th scope="col" width="20%">Applicant Info</th>
+                                        <th scope="col" width="25%">Job Detail</th>
+                                        <th scope="col" width="10%">Resumes</th>
+                                        <th scope="col" width="25%">Current Status</th>
+
+                                    </tr>
+                                </thead>
+                                <tbody data-toggle="tooltip" title="click to fill form">
+                                    {% if alldata|length > 0 %}
+                                    {% for name in alldata %}
+                                    <tr class="candidate-row" data-id="{{ name.id }}-{{ name.status }}">
+                                        <td data-label="Due Date">
+                                            {{ name.sender_name }} <br>
+                                            {% if name.email == 'No Email!' %}
+                                            <span style="color: red;">{{ name.email }}</span> <br>
+                                            {% else %}
+                                            {{ name.email }} <br>
+                                            {% endif %}
+                                            {{ name.phone_number }}
+                                        </td>
+                                        <td data-label="Amount">{{ name.subject_part1 }} <br> From: {{
+                                            name.subject_part2 }}</td>
+                                        <td data-label="Amount">
+                                            <a href="#" style=" padding-bottom:2px; border-bottom: 1px solid #19355f;"
+                                                onclick="showPdf('{{ name.id }}'); return false;">
+                                                View PDF
+                                            </a>
+                                        </td>
+                                        <td> {{name.status}}</td>
+                                    </tr>
+                                    {% endfor %}
+                                    {% else %}
+                                    <tr>
+                                        <td class="text-center" colspan="5">Empty</td>
+                                    </tr>
+                                    {% endif %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% if session['role']!='user' %}
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card card-chart">
+                <div style="display:flex; align-items:center">
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col-sm-12 text-left">
+                                <h4 class="card-title" onclick="target()">Targets Reports:- current
+                                    week({{weekstart}}-{{weekend}})</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body" style="margin:auto;">
+                    <table id="targetTable" class="order-scroll">
+                        <tr>
+                            <th>Name</th>
+                            <th>
+                                <div class="center"></i><span>Achieved /Total Target</span></div>
+                            </th>
+                            <th>
+                                <div class="center"></i><span>Achieved/Total Score </span></div>
+                            </th>
+                            <th>
+                                <div class="center"></i><span>Percentage</span></div>
+                            </th>
+                        </tr>
+                        {% for name in members_data %}
+                        <tr class="targetDataRow" data-week="">
+                            <td>{{ name.name }}</td>
+                            <td>{{ name.target_achieve }}/{{ name.target }}</td>
+                            <td>{{ name.score_achieve }}/ {{ name.score }}</td>
+                            <td>{{ name.achieve_percentage }}%</td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6">
+            <div class="card card-chart">
+                <div style="display:flex; align-items:center">
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col-sm-12 text-left">
+                                <h4 class="card-title">Deal Graphs</h4>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col-sm-12 text-left">
+                                <label>Date:</label>
+                                <select id="dealdateFilter">
+                                    <option value="thisweek">This Week</option>
+                                    <option value="lastweek">Last Week</option>
+                                    <option value="custom">Custom</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-6 text-left" id="customDateFilterfordeal" style="display:none;background: #e4e2e2;padding: 8px;position: absolute;margin-top: 52px;width: auto;">
+                                    <label>Start Date:</label><br>
+                                    <input type="text" id="dealstartDate"><br>
+                                    <label>End Date:</label><br>
+                                    <input type="text" id="dealendDate"><br>
+                                    <button style="margin-top:5px" id="dealapplyDateRange">Apply Dates</button>
+                                </div>
+                            </div>
+                        </div>
+                </div>
+                <div class="card-body">
+                    <div class="chart-area" style="height: 390px;">
+                        <canvas id="myChart2" style="width:100%; height:350px;"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="card card-chart">
+                <div style="display:flex; align-items:center">
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col-sm-12 text-left">
+                                <h4 class="card-title">Candidates Graphs</h4>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col-sm-12 text-left">
+                                <label>Date:</label>
+                                <select id="candateFilter">
+                                    <option value="thisweek">This Week</option>
+                                    <option value="lastweek">Last Week</option>
+                                    <option value="custom">Custom</option>
+                                </select>
+                            </div>
+                               <div class="col-sm-6 text-left" id="customDateFilterforcan" style="display:none;background: #e4e2e2;padding: 8px;position: absolute;margin-top: 52px;width: auto;">
+                                    <label>Start Date:</label><br>
+                                    <input type="text" id="canstartDate"><br>
+                                    <label>End Date:</label><br>
+                                    <input type="text" id="canendDate"><br>
+                                    <button style="margin-top:5px" id="canapplyDateRange">Apply Dates</button>
+                                </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="chart-area" style="height: 390px;">
+                        <canvas id="myChart1" style="width:100%; height:350px;"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-12">
+            <div class="card card-chart">
+                <div style="display:flex; align-items:center">
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col-sm-12 text-left">
+                                <h4 class="card-title">Placement Graphs</h4>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col-sm-6 text-left">
+                                <label>Date:</label>
+                                <select id="redateFilter">
+                                    <option value="thisweek">This Week</option>
+                                    <option value="lastweek">Last Week</option>
+                                    <option value="custom">Custom</option>
+
+                                </select>
+                            </div>
+                            <div class="col-sm-6 text-left" id="customDateFilter" style="display:none;background: #e4e2e2;
+    padding: 8px;position: absolute;
+    margin-top: 52px;
+    width: auto;">
+                                <label>Start Date:</label><br>
+                                <input type="text" id="startDate"><br>
+                                <label>End Date:</label><br>
+                                <input type="text" id="endDate"><br>
+                                <button style="margin-top:5px" id="applyDateRange">Apply Dates</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="chart-area" style="height: 500px;">
+                        <canvas id="myChart" style="margin:auto;width:100%;max-width:600px"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    {% endif %}
+</div>
+{% endblock content %}
+{% block javascripts %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+<script>
+    console.log("hello nisa");
+    var allusers = JSON.parse('{{ allusers | tojson | safe }}');
+    var placed = JSON.parse('{{ placed | tojson | safe }}');
+
+    console.log(placed, allusers);
+
+    function generateColors(numColors) {
+        const colors = [];
+        for (let i = 0; i < numColors; i++) {
+            colors.push(`hsl(${Math.floor(Math.random() * 360)}, 100%, 75%)`);
+        }
+        return colors;
+    }
+
+    function countResumesForUser(userId, filterDate, startDate = null, endDate = null) {
+        const userData = allusers.find(user => user.id === userId);
+        let count = 0;  // Default to zero placed for users without data
+
+        const userResumeData = placed.find(resume => resume.user_id === userId);
+        if (userResumeData) {
+            count = userResumeData.placement_by_date.reduce((sum, record) => {
+                const recordDate = new Date(record.date);
+
+                if (filterDate === 'custom' && startDate && endDate) {
+                    const start = new Date(startDate);
+                    const end = new Date(endDate);
+		    end.setDate(end.getDate() + 1);
+                    if (recordDate >= start && recordDate <= end) {
+                        return sum + record.count;
+                    }
+                } else {
+                    const today = new Date();
+                    const thisWeekStart = getMonday(new Date(today));
+                    const thisWeekEnd = new Date(thisWeekStart);
+                    thisWeekEnd.setDate(thisWeekEnd.getDate() + 6);
+
+                    const lastWeekStart = new Date(thisWeekStart);
+                    lastWeekStart.setDate(lastWeekStart.getDate() - 7);
+                    const lastWeekEnd = new Date(lastWeekStart);
+                    lastWeekEnd.setDate(lastWeekEnd.getDate() + 6);
+
+                    if ((filterDate === 'lastweek' && recordDate >= lastWeekStart && recordDate <= lastWeekEnd) ||
+                        (filterDate === 'thisweek' && recordDate >= thisWeekStart && recordDate <= thisWeekEnd)) {
+                        sum += record.count;
+                    }
+                }
+
+                return sum;
+            }, 0);
+        }
+
+        return count;
+    }
+
+    function getMonday(date) {
+        const day = date.getDay();
+        const diff = date.getDate() - day + (day === 0 ? -6 : 1);
+        return new Date(date.setDate(diff));
+    }
+
+    $(function () {
+        $("#startDate, #endDate").datepicker({
+            dateFormat: "yy-mm-dd"
+        });
+    });
+
+    document.getElementById('redateFilter').addEventListener('click', function () {
+        const selectedFilter = this.value;
+        if (selectedFilter === 'custom') {
+            document.getElementById('customDateFilter').style.display = 'block';
+        } else {
+            document.getElementById('customDateFilter').style.display = 'none';
+            updateChart(selectedFilter);
+        }
+    });
+
+    document.getElementById('applyDateRange').addEventListener('click', function () {
+        const startDate = document.getElementById('startDate').value;
+        const endDate = document.getElementById('endDate').value;
+        if (new Date(startDate) <= new Date(endDate)) {
+            updateChart('custom', startDate, endDate);
+            document.getElementById('customDateFilter').style.display = 'none';
+        } else {
+            alert('End date must be after start date.');
+            document.getElementById('customDateFilter').style.display = 'none';
+        }
+    });
+
+    function updateChart(filterDate, startDate = null, endDate = null) {
+        let filteredUsers = [];
+        const today = new Date();
+        const startOfThisWeek = getMonday(new Date());
+        const startOfLastWeek = new Date(startOfThisWeek.getFullYear(), startOfThisWeek.getMonth(), startOfThisWeek.getDate() - 7);
+
+        if (filterDate === 'lastweek') {
+            filteredUsers = allusers.filter(user => new Date(user.updated_at).toDateString() == new Date(user.created).toDateString() || new Date(user.updated_at) >= startOfLastWeek )
+            console.log("lastweek", filteredUsers);
+        } else if (filterDate === 'thisweek') {
+            filteredUsers = allusers.filter(user => user.status === 'Active');
+            console.log("thisweek", filteredUsers);
+        } else if (filterDate === 'custom') {
+            const sDate = new Date(startDate);
+            const eDate = new Date(endDate);
+            filteredUsers = allusers.filter(user => {
+        const createdAt = new Date(user.created);
+        const updatedAt = new Date(user.updated_at);
+
+        // Normalize the dates to ignore time components
+        const createdDateOnly = new Date(createdAt.getFullYear(), createdAt.getMonth(), createdAt.getDate());
+        const updatedDateOnly = new Date(updatedAt.getFullYear(), updatedAt.getMonth(), updatedAt.getDate());
+
+        if (createdDateOnly.getTime() === updatedDateOnly.getTime()) {
+            // User is not deleted (active), include if within the range or created before the start date
+            return (createdDateOnly >= sDate && createdDateOnly <= eDate) || (createdDateOnly < sDate);
+        } else {
+            // User is deleted or updated, include if:
+            // 1. The creation date is within the range
+            // 2. The updated date (delete date) is within the range
+            // 3. The user was created before the start date but updated within the range
+            return (createdDateOnly >= sDate && createdDateOnly <= eDate) ||
+                   (updatedDateOnly >= sDate && updatedDateOnly <= eDate) ||
+                   (createdDateOnly < sDate && updatedDateOnly >= sDate && updatedDateOnly <= eDate);
+        }
+    });            
+            console.log("custom", filteredUsers);
+        }
+
+        const yValues = filteredUsers.map(user => countResumesForUser(user.id, filterDate, startDate, endDate));
+        const barColors = generateColors(filteredUsers.length);
+        const ctx = document.getElementById('myChart').getContext('2d');
+
+        if (window.myChart instanceof Chart) {
+            window.myChart.destroy();
+        }
+
+        window.myChart = new Chart(document.getElementById('myChart').getContext('2d'), {
+        type: 'doughnut',
+        data: {
+            labels: filteredUsers.map(user => user.name),
+            datasets: [{
+                label: 'Placement Data',
+                data: yValues,
+                backgroundColor: barColors,
+                borderColor: barColors.map(color => color.replace('75%', '100%')), // Slightly darker border
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'right',
+                    labels: {
+                        boxWidth: 20,
+                        padding: 20,
+                        font: {
+                            size: 14
+                        }
+                    }
+                },
+                tooltip: {
+                    enabled: true,
+                    mode: 'index',
+                    intersect: false,
+                    callbacks: {
+                        label: function(tooltipItem) {
+                            return `${tooltipItem.label}: ${tooltipItem.parsed} placements`; // Customize tooltip
+                        }
+                    }
+                }
+            }
+        }
+    });
+    }
+
+    updateChart('thisweek');
+</script>
+
+
+
+
+
+<script>
+        var allusers = JSON.parse('{{ allusers | tojson | safe }}');
+        var resumes = JSON.parse('{{ resumes | tojson | safe }}');
+        var interviews = JSON.parse('{{ interviews | tojson | safe }}');
+        var helps = JSON.parse('{{ helps | tojson | safe }}');
+
+        console.log(helps, interviews, resumes, allusers);
+
+        const barColors1 = ["#19355f", "#9ea60d", "#4d0202"];
+
+        function countDataForUser(dataArray, userId, filterDate, startDate = null, endDate = null) {
+            const userData = dataArray.find(data => data.user_id === userId);
+            let count = 0;
+
+            if (userData) {
+                const dataPropertyName = Object.keys(userData).find(key => key.includes('_by_date'));
+
+                if (dataPropertyName) {
+                    count = userData[dataPropertyName].reduce((sum, record) => {
+                        const recordDate = new Date(record.date);
+
+                        if (filterDate === 'custom' && startDate && endDate) {
+                            const start = new Date(startDate);
+                            const end = new Date(endDate);
+                            end.setDate(end.getDate() + 1);
+                            if (recordDate >= start && recordDate <= end) {
+                                return sum + record.count;
+                            }
+                        } else {
+                            const today = new Date();
+                            const thisWeekStart = getMonday(new Date(today));
+                            const thisWeekEnd = new Date(thisWeekStart);
+                            thisWeekEnd.setDate(thisWeekEnd.getDate() + 6);
+
+                            const lastWeekStart = new Date(thisWeekStart);
+                            lastWeekStart.setDate(lastWeekStart.getDate() - 7);
+                            const lastWeekEnd = new Date(lastWeekStart);
+                            lastWeekEnd.setDate(lastWeekEnd.getDate() + 6);
+
+                            if ((filterDate === 'lastweek' && recordDate >= lastWeekStart && recordDate <= lastWeekEnd) ||
+                                (filterDate === 'thisweek' && recordDate >= thisWeekStart && recordDate <= thisWeekEnd)) {
+                                sum += record.count;
+                            }
+                        }
+
+                        return sum;
+                    }, 0);
+                }
+            }
+
+            return count;
+        }
+
+        function getMonday(date) {
+            const day = date.getDay();
+            const diff = date.getDate() - day + (day === 0 ? -6 : 1);
+            return new Date(date.setDate(diff));
+        }
+
+        $(function() {
+            $("#canstartDate, #canendDate").datepicker({
+                dateFormat: "yy-mm-dd"
+            });
+        });
+
+        document.getElementById('candateFilter').addEventListener('click', function () {
+            const selectedFilter = this.value;
+            if (selectedFilter === 'custom') {
+                document.getElementById('customDateFilterforcan').style.display = 'block';
+            } else {
+                document.getElementById('customDateFilterforcan').style.display = 'none';
+                updateBarChart(selectedFilter);
+            }
+        });
+
+        document.getElementById('canapplyDateRange').addEventListener('click', function () {
+            const startDate = document.getElementById('canstartDate').value;
+            const endDate = document.getElementById('canendDate').value;
+            if (new Date(startDate) <= new Date(endDate)) {
+                updateBarChart('custom', startDate, endDate);	
+		document.getElementById('customDateFilterforcan').style.display = 'none';
+            } else {
+                alert('End date must be after start date.');
+            }
+        });
+
+        function updateBarChart(filterDate, startDate = null, endDate = null) {
+            let filteredUsers = [];
+            const today = new Date();
+            const startOfThisWeek = getMonday(new Date());
+            const startOfLastWeek = new Date(startOfThisWeek.getFullYear(), startOfThisWeek.getMonth(), startOfThisWeek.getDate() - 7);
+            if (filterDate === 'lastweek') {
+                 filteredUsers = allusers.filter(user => new Date(user.updated_at).toDateString() == new Date(user.created).toDateString() || new Date(user.updated_at) >= startOfLastWeek )
+                    console.log("lastweek", filteredUsers);
+                } else if (filterDate === 'thisweek') {
+                    filteredUsers = allusers.filter(user => user.status === 'Active');
+                    console.log("thisweek", filteredUsers);
+             } else if (filterDate === 'custom') {
+                    const sDate = new Date(startDate);
+                    const eDate = new Date(endDate);
+                     filteredUsers = allusers.filter(user => {
+        const createdAt = new Date(user.created);
+        const updatedAt = new Date(user.updated_at);
+
+        // Normalize the dates to ignore time components
+        const createdDateOnly = new Date(createdAt.getFullYear(), createdAt.getMonth(), createdAt.getDate());
+        const updatedDateOnly = new Date(updatedAt.getFullYear(), updatedAt.getMonth(), updatedAt.getDate());
+
+        if (createdDateOnly.getTime() === updatedDateOnly.getTime()) {
+            // User is not deleted (active), include if within the range or created before the start date
+            return (createdDateOnly >= sDate && createdDateOnly <= eDate) || (createdDateOnly < sDate);
+        } else {
+            // User is deleted or updated, include if:
+            // 1. The creation date is within the range
+            // 2. The updated date (delete date) is within the range
+            // 3. The user was created before the start date but updated within the range
+            return (createdDateOnly >= sDate && createdDateOnly <= eDate) ||
+                   (updatedDateOnly >= sDate && updatedDateOnly <= eDate) ||
+                   (createdDateOnly < sDate && updatedDateOnly >= sDate && updatedDateOnly <= eDate);
+        }
+    });
+                 console.log("custom", filteredUsers);
+             }
+
+            const xValues = filteredUsers.map(user => user.name);
+            const yValues1 = filteredUsers.map(user => countDataForUser(resumes, user.id, filterDate, startDate, endDate));
+            const yValues2 = filteredUsers.map(user => countDataForUser(interviews, user.id, filterDate, startDate, endDate));
+            const yValues3 = filteredUsers.map(user => countDataForUser(helps, user.id, filterDate, startDate, endDate));
+
+            const ctx = document.getElementById('myChart1').getContext('2d');
+
+            if (window.myChart1 instanceof Chart) {
+                window.myChart1.destroy();
+            }
+
+            window.myChart1 = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: xValues,
+                    datasets: [
+                        {
+                            label: "Resumes",
+                            backgroundColor: barColors1[0],
+                            data: yValues1
+                        },
+                        {
+                            label: "Interviews",
+                            backgroundColor: barColors1[1],
+                            data: yValues2
+                        },
+                        {
+                            label: "Help",
+                            backgroundColor: barColors1[2],
+                            data: yValues3
+                        }
+                    ]
+                },
+                options: {
+                    scales: {
+                        xAxes: [{
+                            gridLines: {
+                                display: false // This will hide the grid lines for the x-axis
+                            }
+                        }],
+                        
+                    },
+                     legend: { display: true },
+                    title: {
+                        display: true,
+                        text: `Candidate Chart for ${filterDate}`
+                    }
+                }
+            });
+        }
+
+        updateBarChart('thisweek');  // Initialize the chart with this week's data
+    </script>
+
+ <script>
+        var allusers = JSON.parse('{{ allusers | tojson | safe }}');
+        var sign = JSON.parse('{{ sign | tojson | safe }}');
+        var notsign = JSON.parse('{{ notsign | tojson | safe }}');
+        var reopen = JSON.parse('{{ reopen | tojson | safe }}');
+
+        console.log(reopen, notsign, sign, allusers);
+
+        const barColors2 = ["#19355f", "#9ea60d", "#4d0202"];
+
+        function countDataForUser2(dataArray, userId, filterDate, startDate = null, endDate = null) {
+            const userData = dataArray.find(data => data.user_id === userId);
+            let count = 0;
+
+            if (userData) {
+                const dataPropertyName = Object.keys(userData).find(key => key.includes('_by_date'));
+
+                if (dataPropertyName) {
+                    count = userData[dataPropertyName].reduce((sum, record) => {
+                        const recordDate = new Date(record.date);
+
+                        if (filterDate === 'custom' && startDate && endDate) {
+                            const start = new Date(startDate);
+                            const end = new Date(endDate);
+                            end.setDate(end.getDate() + 1);
+                            if (recordDate >= start && recordDate <= end) {
+                                return sum + record.count;
+                            }
+                        } else {
+                            const today = new Date();
+                            const thisWeekStart = getMonday(new Date(today));
+                            const thisWeekEnd = new Date(thisWeekStart);
+                            thisWeekEnd.setDate(thisWeekEnd.getDate() + 6);
+
+                            const lastWeekStart = new Date(thisWeekStart);
+                            lastWeekStart.setDate(lastWeekStart.getDate() - 7);
+                            const lastWeekEnd = new Date(lastWeekStart);
+                            lastWeekEnd.setDate(lastWeekEnd.getDate() + 6);
+
+                            if ((filterDate === 'lastweek' && recordDate >= lastWeekStart && recordDate <= lastWeekEnd) ||
+                                (filterDate === 'thisweek' && recordDate >= thisWeekStart && recordDate <= thisWeekEnd)) {
+                                sum += record.count;
+                            }
+                        }
+
+                        return sum;
+                    }, 0);
+                }
+            }
+
+            return count;
+        }
+
+        function getMonday(date) {
+            const day = date.getDay();
+            const diff = date.getDate() - day + (day === 0 ? -6 : 1);
+            return new Date(date.setDate(diff));
+        }
+
+        $(function() {
+            $("#dealstartDate, #dealendDate").datepicker({
+                dateFormat: "yy-mm-dd"
+            });
+        });
+
+        document.getElementById('dealdateFilter').addEventListener('click', function () {
+            const selectedFilter = this.value;
+            if (selectedFilter === 'custom') {
+                document.getElementById('customDateFilterfordeal').style.display = 'block';
+            } else {
+                document.getElementById('customDateFilterfordeal').style.display = 'none';
+                updateBarChart2(selectedFilter);
+            }
+        });
+
+        document.getElementById('dealapplyDateRange').addEventListener('click', function () {
+            const startDate = document.getElementById('dealstartDate').value;
+            const endDate = document.getElementById('dealendDate').value;
+            if (new Date(startDate) <= new Date(endDate)) {
+                updateBarChart2('custom', startDate, endDate);
+		document.getElementById('customDateFilterfordeal').style.display = 'none'; 
+           } else {
+                alert('End date must be after start date.');
+            }
+        });
+
+        function updateBarChart2(filterDate, startDate = null, endDate = null) {
+            let filteredUsers = [];
+            const today = new Date();
+            const startOfThisWeek = getMonday(new Date());
+            const startOfLastWeek = new Date(startOfThisWeek.getFullYear(), startOfThisWeek.getMonth(), startOfThisWeek.getDate() - 7);
+
+            if (filterDate === 'lastweek') {
+                 filteredUsers = allusers.filter(user => new Date(user.updated_at).toDateString() == new Date(user.created).toDateString() || new Date(user.updated_at) >= startOfLastWeek )
+                    console.log("lastweek", filteredUsers);
+                } else if (filterDate === 'thisweek') {
+                    filteredUsers = allusers.filter(user => user.status === 'Active');
+                    console.log("thisweek", filteredUsers);
+             } else if (filterDate === 'custom') {
+                    const sDate = new Date(startDate);
+                    const eDate = new Date(endDate);
+                     filteredUsers = allusers.filter(user => {
+        const createdAt = new Date(user.created);
+        const updatedAt = new Date(user.updated_at);
+
+        // Normalize the dates to ignore time components
+        const createdDateOnly = new Date(createdAt.getFullYear(), createdAt.getMonth(), createdAt.getDate());
+        const updatedDateOnly = new Date(updatedAt.getFullYear(), updatedAt.getMonth(), updatedAt.getDate());
+
+        if (createdDateOnly.getTime() === updatedDateOnly.getTime()) {
+            // User is not deleted (active), include if within the range or created before the start date
+            return (createdDateOnly >= sDate && createdDateOnly <= eDate) || (createdDateOnly < sDate);
+        } else {
+            // User is deleted or updated, include if:
+            // 1. The creation date is within the range
+            // 2. The updated date (delete date) is within the range
+            // 3. The user was created before the start date but updated within the range
+            return (createdDateOnly >= sDate && createdDateOnly <= eDate) ||
+                   (updatedDateOnly >= sDate && updatedDateOnly <= eDate) ||
+                   (createdDateOnly < sDate && updatedDateOnly >= sDate && updatedDateOnly <= eDate);
+        }
+    });
+                 console.log("custom", filteredUsers);
+             }
+
+            const xValues = filteredUsers.map(user => user.name);
+            const yValues1 = filteredUsers.map(user => countDataForUser2(sign, user.id, filterDate, startDate, endDate));
+            const yValues2 = filteredUsers.map(user => countDataForUser2(notsign, user.id, filterDate, startDate, endDate));
+            const yValues3 = filteredUsers.map(user => countDataForUser2(reopen, user.id, filterDate, startDate, endDate));
+
+            const ctx = document.getElementById('myChart2').getContext('2d');
+
+            if (window.myChart2 instanceof Chart) {
+                window.myChart2.destroy();
+            }
+
+            window.myChart2 = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: xValues,
+                    datasets: [
+                        {
+                            label: "sign",
+                            backgroundColor: barColors2[0],
+                            data: yValues1
+                        },
+                        {
+                            label: "notsign",
+                            backgroundColor: barColors2[1],
+                            data: yValues2
+                        },
+                        {
+                            label: "Reopen",
+                            backgroundColor: barColors2[2],
+                            data: yValues3
+                        }
+                    ]
+                },
+                options: {
+                    scales: {
+                        xAxes: [{
+                            gridLines: {
+                                display: false // This will hide the grid lines for the x-axis
+                            }
+                        }],
+
+                    },
+                    legend: { display: true },
+                    title: {
+                        display: true,
+                        text: `Deal Chart for ${filterDate}`
+                    }
+                }
+            });
+        }
+
+        updateBarChart2('thisweek');  // Initialize the chart with this week's data
+    </script>
+<script>
+    (function () {
+        // Overwrite the window.print function with an empty function
+        window.print = function () {
+            // You can also place a console.log here to see if something is trying to call print.
+            console.log('Print dialog blocked');
+        };
+    })();
+
+    function clickmember() {
+        window.location.href = "{{ url_for('members') }}";
+    }
+    function selectedcandidate() {
+        window.location.href = "{{ url_for('selecteddata') }}";
+    }
+    function submitforms() {
+        window.location.href = "{{ url_for('forms') }}";
+    }
+    function placedcandidates() {
+        window.location.href = "{{ url_for('placedcandidates') }}";
+    }
+    function joborder() {
+        window.location.href = "{{ url_for('jobOders') }}";
+    }
+    function target() {
+        window.location.href = "{{ url_for('target') }}";
+    }
+</script>
+{% if msg == "task not set" %}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Reminder',
+            text: 'Please add weekly target!',
+        })
+    });
+</script>
+{% endif %}
+
+<script>
+    var userRole = "{{ session['role'] }}";
+    console.log("userRole", userRole)
+
+    document.addEventListener("DOMContentLoaded", function () {
+        debugger
+        var orderScroll = document.querySelector(".order-scroll");
+
+        if (userRole === "user") {
+            orderScroll.style.maxHeight = "500px";
+        } else if (userRole === "admin") {
+            orderScroll.style.maxHeight = "200px";
+        }
+    });
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+    })
+    var dataFromServer = {{ data_array| tojson }};
+
+    $(document).ready(function () {
+        // Javascript method's body can be found in js/demos.js
+        demo.initDashboardPageCharts();
+    });
+    document.addEventListener("click", function (event) {
+        const closeIcon = event.target.closest(".fas.fa-window-close");
+        if (closeIcon) {
+            const selectedCandidateDiv = document.querySelector('.selectedcandidate');
+            selectedCandidateDiv.style.display = 'none';
+        }
+    });
+</script>
+
+{% endblock javascripts %}

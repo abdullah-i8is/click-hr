@@ -1,0 +1,297 @@
+{% extends "base.html" %}
+
+{% block title %} Tables {% endblock %}
+
+{% block content %}
+<style>
+   #loadingOverlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(255, 255, 255, 0.8); /* Adjust the opacity and color as needed */
+        z-index: 1000; /* Adjust the z-index to ensure it's above other elements */
+    }
+
+    #loadingIndicator {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        text-align: center;
+        z-index: 1001; /* Ensure the spinner is above the overlay */
+    }
+
+    .custom-spinner {
+        border: 10px solid rgba(0, 0, 0, 0.1);
+        border-radius: 50%;
+        border-top: 8px solid #19355f;
+        width: 60px;
+        height: 60px;
+        animation: spin 1s linear infinite;
+        margin: 20px auto;
+    }
+
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+
+.export {
+    list-style: none;
+    padding: 10px;
+    color: #19355f;
+    box-shadow: 0px 2px 9px 0px gray;
+    position: absolute;
+    right: 3px;
+    top: 48px;
+}
+.export p {
+    color: #19355f;
+    cursor: pointer;
+    padding: 5px 0px;
+}
+
+.export li:hover p{
+    background: #19355f;
+    color: #ffffff;
+}
+.selectcountryfilter{
+    margin-top: 20px;
+    padding-left: 15px;
+    margin-right: 17px;
+    border: none;
+}
+.selectcountryfilterform{
+        width: 100%;
+    text-align: end;
+}
+.active-button {
+      background-color: green;
+    }
+    .search {
+    padding: 5px;
+    display: none;
+    outline: none;
+    border: none;
+    border-bottom: 1px solid #19355f;
+
+}
+    .hicon {
+    margin-right: 20px;
+    font-size: 22px !important;
+    position: relative;
+}
+
+.hicon:nth-child(1):after {
+    content: '';
+    position: absolute;
+    width: 7px;
+    height: 7px;
+    background: red;
+    border-radius: 10px;
+    left: 13px;
+    top: 7px;
+    transform: scale(0.5);
+    box-shadow: 0 0 0 0 rgba(255, 82, 82, 1);
+    animation: pulse-red 2s infinite;
+    cursor: pointer;
+
+}
+
+@keyframes pulse-red {
+    0% {
+        transform: scale(0.85);
+        box-shadow: 0 0 0 0 rgba(255, 82, 82, 0.7);
+    }
+
+    70% {
+        transform: scale(1);
+        box-shadow: 0 0 0 25px rgba(255, 82, 82, 0);
+    }
+
+    100% {
+        transform: scale(0.85);
+        box-shadow: 0 0 0 0 rgba(255, 82, 82, 0);
+    }
+}
+
+.search-div{
+display: flex;
+align-items: baseline;
+ margin-top: 20px;
+ position: relative;
+ padding-left: 15px
+}
+.data-row.unread {
+    background-color: #f0f0f0; /* Apply a different background color for read rows */
+}
+.pagination{
+justify-content: flex-end;
+}
+.green{
+color:#4372b8;
+margin-right:5px;
+}
+.orange{
+color:green;
+margin-right:5px;
+}
+.yellow{
+color:orange;
+margin-right:5px;
+}
+    .center{
+    display:flex;
+    align-items:center;
+    justify-content: center;
+   }
+    .score-div{
+    background: white;
+    padding: 2px 15px;
+    border-radius: 15px;
+    position: fixed;
+    right: 30px;
+    
+    opacity: 0.5;
+}
+     .score-div:hover{
+    opacity:1
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  border: 1px solid #ddd;
+}
+
+th, td {
+  text-align: center;
+  padding: 8px;
+}
+
+</style>
+ <div class="content">
+  <div class="row">
+    <div class="col-md-12">
+        <div class="card ">
+            <div style="display: flex;">
+
+                  <div class="card-header">
+                       <h4 class="card-title">Targets</h4>
+
+                  </div>
+
+                {% if session['role'] != 'user' %}
+                <div class="card-header" style="margin-top:10px">
+                    <h4><a href="/addtarget" class="card-tite" style="color:#19355f;text-decoration:underline;font-weight:600;">+ Create New Target</a></h4>
+                   </div>
+                {% endif %}
+               <div class="clearfix"></div>
+            </div>
+            <div class="card-body">
+            <div class="">
+                <div style="overflow-x:auto;">
+
+{% if members_data|length > 0 %}
+<div style="display: flex; justify-content: space-between;">
+    <div style="display: flex; justify-content: space-between; align-items: center; width: 270px; padding: 10px 10px; border: 1px solid #e1d7d7; margin-bottom: 8px; background: #DFE2E6; border-radius: 5px;">
+        <select id="weekDropdown" style="width: 100%; border: none; background: none; font-size: 17px;" onchange="filterData()">
+            {% set unique_weeks = [] %}
+            {% for member in members_data %}
+                {% if member.weekstart not in unique_weeks %}
+                    <option value="{{ member.weekstart }}">{{ member.weekstart.strftime('%Y-%m-%d') }} - {{ member.weekend.strftime('%Y-%m-%d') }}</option>
+                    {% set _ = unique_weeks.append(member.weekstart) %}
+                {% endif %}
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class="card-header" style="margin-top:10px">
+<h4><a href="#" class="card-tite" style="color:#19355f;text-decoration:underline;font-weight:600;" onclick="redirectToEdit(event)">Edit Target</a></h4>
+    </div>
+</div>
+{% endif %}
+  <table id="targetTable">
+    <tr>
+      <th>Name</th>
+      <th><div class="center"><i class="fas fa-circle green"></i><span>New Contrat</span></div></th>
+      <th><div class="center"><i class="fas fa-circle orange"></i><span>Not signed</span></div></th>
+      <th><div class="center"><i class="fas fa-circle yellow"></i><span>ReopenDeals</span></div></th>
+      <th><div class="center"><i class="fas fa-circle orange"></i><span>ResumeSents</span></div></th>
+      <th><div class="center"><i class="fas fa-circle orange"></i><span>Interviews</span></div></th>
+      <th><div class="center"><i class="fas fa-circle green"></i><span>Placements</span></div></th>
+      <th><div class="center"><i class="fas fa-circle yellow"></i><span>Helping Forms</span></div></th>
+      <th>Total</th>
+
+    </tr>
+          {% for name in members_data %}
+
+    <tr class="targetDataRow" data-week="{{ name.weekstart }}">
+                <td>{{ name.name }}</td>
+           <td>{{ name.new_achieve }}/{{ name.new }}</td>
+                 <td>{{ name.notsigned_achieve }}/{{ name.notsigned }}</td>
+           <td>{{ name.reopen_achieve }}/{{ name.reopen }}</td>
+                 <td>{{ name.resume_achieve }}/{{ name.resume }}</td>
+           <td>{{ name.interview_achieve }}/{{ name.interview }}</td>
+                 <td>{{ name.placement_achieve }}/{{ name.placement }}</td>
+           <td>{{ name.helping_achieve }}/{{ name.helping }}</td>
+                 <td>Target: {{ name.target_achieve }}/{{ name.target }} <br> Score:{{ name.score_achieve }}/ {{ name.score }} <br> Percentage: {{ name.achieve_percentage }}%</td>
+
+
+    </tr>
+ {% endfor %}
+  </table>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+     <div class="score-div">
+         <h3 style="font-size:16px; color:#19355f;text-decoration:underline;font-weight:600; margin:0px;" class="card-tite" >Scores</h3>
+             <p style="color:#4372b8; margin-top:8px"><i class="fas fa-circle green"></i>3 Points</p>
+             <p style="color:#4372b8; margin-top:8px"><i class="fas fa-circle orange"></i>2 Points</p>
+             <p style="color:#4372b8; margin-top:8px"><i class="fas fa-circle yellow"></i>1 Points</p>
+
+     </div>
+</div>
+     <script>
+ function filterData() {
+        var selectedWeek = document.getElementById("weekDropdown").value;
+        var tableRows = document.getElementsByClassName("targetDataRow");
+
+        for (var i = 0; i < tableRows.length; i++) {
+            var row = tableRows[i];
+            var rowWeek = row.getAttribute("data-week");
+
+            if (rowWeek === selectedWeek) {
+                row.style.display = "table-row";
+            } else {
+                row.style.display = "none";
+            }
+        }
+ }
+
+    function redirectToEdit(event) {
+    if (event) {
+        event.preventDefault();
+        var selectedWeek = document.getElementById("weekDropdown").value;
+        var url = "/edit_target?selectedWeek=" + encodeURIComponent(selectedWeek);
+        window.location.href = url;
+    }
+}
+
+
+
+    // Call the filterData function with the default value
+    filterData();
+
+</script>
+{% endblock content %}
+{% block javascripts %}
+
+{% endblock javascripts %}
+

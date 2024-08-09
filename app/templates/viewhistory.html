@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width='device-width', initial-scale=1.0">
+        <link rel="stylesheet" href="https://www.click-hr.com/static/css/viewhistory.css">
+     <link rel="icon" href="https://www.click-hr.com/static/img/titleicon.png">
+
+
+
+    <title>Document</title>
+</head>
+
+<body style="padding:50px">
+    <div class="candidateInfoMain">
+        <div class="logoutButtonMain">
+<!--            <button class="logoutButton">Logout</button>-->
+            <a class="logoutButton" href="/logoutforcandidate">Logout</a>
+            <div class="status">
+                <p class="statusMain">Status:</p>
+              {% if alldata|length > 0 %}
+                <button class="logoutButton statusButton">{{ alldata[0].status  }}</button>
+                {% endif %}
+            </div>
+        </div>
+        <div class="candidateinfoHeading">
+            <h3 class="candidateinfoHeadingMain">
+                Candidate Info:-
+            </h3>
+        </div>
+        <div class="candidateName">
+             {% if alldata|length > 0 %}
+               <p class="candidateNameContent">Name:<span class="candidateNameMainContent">{{ alldata[0].sender_name }}</span></p>
+               <p class="candidateNameContent">Email:<span class="candidateNameMainContent">{{ alldata[0].email }}</span></p>
+               <p class="candidateNameContent">Phone:<span class="candidateNameMainContent">{{ alldata[0].phone_number }}</span></p>
+             {% endif %}
+        </div>
+    </div>
+    <div class="tableMain">
+        <h3 class="tableHeadingMain textCenter">Applied History</h3>
+        <div class="tablewrapper">
+            <table class="tableMainContent">
+                <thead>
+                    <tr>
+                        <td class="textCenter tableHeading">Job Detail</td>
+                        <td class="textCenter tableHeading">Date</td>
+                        <td class="textCenter tableHeading">Resumes</td>
+                    </tr>
+                </thead>
+                <tbody>
+                {% if alldata|length > 0 %}
+                  {% for name in alldata %}
+                    <tr>
+                        <td class="tableDecprition bg textCenter">{{ name.subject_part2  }} <br> {{ name.subject_part1  }}</td>
+                        <td class="tableDecprition bg textCenter">{{ name.formatted_date  }}</td>
+                        <td class="tableDecprition bg textCenter">{{ name.file_name }}</td>
+                    </tr>
+                  {% endfor %}
+                      {% else %}
+                         <tr>
+                          <td class="text-center" colspan="5">Empty</td>
+                         </tr>
+                {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="tableMain">
+        <h3 class="tableHeadingMain textCenter">Employment History</h3>
+        <div class="tablewrapper">
+            <table class="tableMainContent">
+                <thead>
+                    <tr>
+                        <td class="textCenter tableHeading">Status</td>
+                        <td class="textCenter tableHeading">Company</td>
+                        <td class="textCenter tableHeading">Position</td>
+                        <td class="textCenter tableHeading">Date</td>
+                    </tr>
+                </thead>
+                <tbody id="emailDataBody">
+                {% if recruiting|length > 0 %}
+                     {% for name in recruiting %}
+                       <tr>
+                        <td class="tableDecprition bg textCenter">{{ name.did_you  }}</td>
+                        <td class="tableDecprition bg textCenter">{{ name.company }}</td>
+                        <td class="tableDecprition bg textCenter">{{ name.position   }}</td>
+                        <td class="tableDecprition bg textCenter">
+                            {% if name.companydate %}
+                                    {{ name.companydate }}
+                            {% elif name.starttime %}
+                                   {{ name.starttime }}
+                            {% elif name.interviewdate %}
+                                   {{ name.interviewdate }}
+                            {% endif %}</td>
+                        </tr>
+                     {% endfor %}
+                {% else %}
+                         <tr>
+                             <td class="tableDecprition bg textCenter">-</td>
+                             <td class="tableDecprition bg textCenter">-</td>
+                             <td class="tableDecprition bg textCenter">-</td>
+                             <td class="tableDecprition bg textCenter">-</td>
+
+
+                         </tr>
+                {% endif %}
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

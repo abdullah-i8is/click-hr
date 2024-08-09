@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link rel="stylesheet" href="https://www.click-hr.com/static/css/forms.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="icon" href="https://www.click-hr.com/static/img/titleicon.png">
+
+
+</head>
+<style>
+    .container .form {
+    width: 100%;
+}
+ .container{
+ width:40%}
+.days-div{
+ margin-top:10px;
+ display:flex;
+ justify-content:space-between;
+  align-items:center;
+ }
+
+ .days-div span{
+ margin-left:8px; color:black
+ }
+
+ .days-div input{
+ margin: 0px; padding: 0px; height: 20px;
+ }
+    span{
+     color:red;
+    }
+    .remove-job-button {
+    width: 25%!important;
+    display: block;
+    margin-left: auto;
+    margin-top: 10px;
+  }
+</style>
+<body>
+    {% if session['role'] %}
+
+{% if type=='view'%}
+<script>
+    // Function to disable all form elements within the "Marketing" form
+    function disableFormElements() {
+        // Get the form elements container with the ID "Marketing"
+        var marketingForm = document.getElementById('Marketing');
+
+        // Get all form elements inside the "Marketing" form
+        var formElements = marketingForm.querySelectorAll('input, textarea, select');
+
+        // Loop through each form element and disable them
+        for (var i = 0; i < formElements.length; i++) {
+            formElements[i].disabled = true;
+        }
+    }
+
+    // Call the function to disable form elements when the page loads
+    window.onload = disableFormElements;
+</script>
+{% endif %}
+     <section class="container">
+       <div class="form-head">
+        <a href="/index"><img class="logo" src="https://www.click-hr.com/static/img/clickhr.png" alt=""></a>
+           <a class="backtodashboard" href="{{ url_for('forms') }}">
+             <i class="fa fa-arrow-left"></i>
+             <p style="margin-bottom: 0px">Form History</p>
+           </a>
+       </div>        <header>One reporting form</header>
+        <p>Each incident would have one report per occurrence.</p>
+        <section class="form">
+
+            <div class="Marketing" id="Marketing">
+                <form action="/marketing" method="post" class="form" enctype="multipart/form-data">
+                    <div class="forsubform">
+                        <div class="input-box">
+                            <label>Form Filled By<span>*</span></label>
+                            <input type="text" placeholder="Enter full name" name="name" value="{{formdata.name}}"
+                                readonly />
+                            <input type="text" placeholder="Enter Your name" name="user_id" hidden
+                                value="{{session['user_id']}}" />
+                            <input type="text" placeholder="Enter Your name" value="{{formdata.id}}" name="id" hidden />
+                        </div>
+                        <div class="gender-box">
+                            <h3>Which form<span>*</span><br>
+                            </h3>
+                            <div class="gender-option">
+                                <div class="gender">
+                                    <input type="radio" id="Marketing-radio" name="gender"
+                                        onchange="showmaincontent('Marketing')" checked disabled />
+                                    <label for="Marketing-radio">Marketing</label>
+                                </div>
+                                <div class="gender">
+                                    <input type="radio" id="HRforms-radio" name="gender"
+                                        onchange="showmaincontent('HRForms')" disabled />
+                                    <label for="HRforms-radio">HR forms</label>
+                                </div>
+                                <div class="gender">
+                                    <input type="radio" id="Other-radio" name="gender"
+                                        onchange="showmaincontent('Otherreport')" disabled />
+                                    <label for="Other-radio">Other</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    </br>
+                    <div class="Marketing-content">
+                        <div class="subform-content-head">
+                            <h2>Marketing</h2>
+                        </div>
+                        <div class="input-box">
+                            <label>Company name ( deal name)
+                                <span>*</span></label>
+                            <input type="text" placeholder="Enter full name" name="company" required
+                                value="{{formdata.company}}" />
+                        </div>
+                        <div class="input-box">
+                            <label>Contact person (deal) <span>*</span></label>
+                            <input type="text" placeholder="Enter full name" name="cperson" value="{{formdata.cperson}}"
+                                required />
+                        </div>
+                        <div class="input-box">
+                            <label>Contact person phone <span>*</span></label>
+                            <input type="text" placeholder="Enter phone number"
+                                oninput="this.value = this.value.replace(/[^0-9]/g, '')" value="{{formdata.cphone}}"
+                                name="phone" required />
+                        </div>
+                        <!-- # 8-8-2023 start -->
+                        <div id="jobs-container">
+                            <label>Job 1 <span>*</span></label>
+
+                            {% for data in jobsdata %}
+                            <input type="hidden" value="{{data.id}}" name="jobid">
+                            <div class="input-box">
+                                <label>Title<span>*</span></label>
+                                <input type="text" placeholder="Job Title" name="job_title" value="{{data.title}}"
+                                    required />
+                            </div>
+                            <div class="inputsfor">
+                                <div class="input-box">
+                                    <label>Pay Rate <span>*</span></label>
+                                    <input type="number" placeholder="Pay Rate" name="pay_rate"
+                                        value="{{data.payrate}}" required />
+                                </div>
+                                <div class="input-box">
+                                    <label>Pay Rate <span>*</span></label>
+                                    <select class="select-box" name="pay_rate_type">
+                                        <option value="Monthly" {% if data.salarytype=="Monthly" %} selected {%
+                                            endif %}>Monthly</option>
+                                        <option value="Yearly" {% if data.salarytype=="Yearly" %} selected {% endif
+                                            %}>Yearly</option>
+                                        <option value="Hourly" {% if data.salarytype=="Hourly" %} selected {% endif
+                                            %}>Hourly</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="inputsfor">
+                                   <div class="input-box">
+                                       <label>selected days</label>
+                                       <div class="days-div">
+                                           <label>
+                                               <span> M</span>
+                                               <input type="checkbox" id="mon" name="days-{{loop.index}}[]" value="mon" {% if 'mon' in data.days %}checked{% endif %}>
+                                           </label>
+                                           <label>
+                                               <span> T</span>
+                                               <input type="checkbox" id="tues" name="days-{{loop.index}}[]" value="tues" {% if 'tues' in data.days %}checked{% endif %}>
+                                           </label>
+                                           <label>
+                                               <span> W</span>
+                                               <input type="checkbox" id="wed" name="days-{{loop.index}}[]" value="wed" {% if 'wed' in data.days %}checked{% endif %}>
+                                           </label>
+                                           <label>
+                                               <span> T</span>
+                                               <input type="checkbox" id="thur" name="days-{{loop.index}}[]" value="thur" {% if 'thur' in data.days %}checked{% endif %}>
+                                           </label>
+                                           <label>
+                                               <span> F</span>
+                                               <input type="checkbox" id="fri" name="days-{{loop.index}}[]" value="fri" {% if 'fri' in data.days %}checked{% endif %}>
+                                           </label>
+                                           <label>
+                                               <span> S</span>
+                                               <input type="checkbox" id="sat" name="days-{{loop.index}}[]" value="sat" {% if 'sat' in data.days %}checked{% endif %}>
+                                           </label>
+                                           <label>
+                                               <span> S</span>
+                                               <input type="checkbox" id="sun" name="days-{{loop.index}}[]" value="sun" {% if 'sun' in data.days %}checked{% endif %}>
+                                                                             </label>
+                                       </div>
+                                   </div>
+                            </div>
+                            <div class="inputsfor">
+                                <div class="input-box">
+                                    <label>Shifts<span>*</span></label>
+                                    <div class="inputsfor">
+                                        <input type="time" name="shift_start" value="{{data.starttime}}"
+                                            required />
+                                        To
+                                        <input type="time" required name="shift_end" value="{{data.endtime}}" />
+                                    </div>
+
+                                </div>
+                                <div class="input-box">
+                                    <label>Total Vacancies <span>*</span></label>
+                                    <input type="number" name="total_vacancies" placeholder="0"
+                                        value="{{data.vacancy}}" />
+                                </div>
+                            </div>
+
+                            {% endfor %}
+                        </div>
+<!--                        {% if type=='edit'%}-->
+<!--                        <div>-->
+<!--                            <button id="add-job-button"-->
+<!--                                style="width:25%; display: block; margin-left: auto; margin-top:10px">+ add more-->
+<!--                                jobs</button>-->
+<!--                        </div>-->
+<!--                        {% endif %}-->
+                        <div class="input-box">
+                            <label>Job Location<span>*</span></label>
+                            <input type="text" placeholder="Enter location" name="location"
+                                value="{{formdata.location}}" required />
+                        </div>
+                        <!-- # 8-8-2023 end  -->
+                        <div class="input-box">
+                             <label>Markup<span>*</span></label>
+                                <div style="position:relative;">
+                                <input type="" placeholder="Enter Markup in numbers"
+                                oninput="this.value = this.value.replace(/[^0-9]/g, '')" value="{{formdata.Markup}}"
+                                name="markup" value="{{formdata.Markup}}" />
+                                 <span style="position: absolute; right: 18px; top: 16px;color:#a7a2a2">%</span>
+                                </div>
+                        </div>
+                        <div class="gender-box">
+                            <h3>Status
+                                <span>*</span><br>
+                            </h3>
+                            <div>
+                                <div class="gender">
+                                    <input type="radio" id="Newdeal" name="Status"
+                                        value="New deal opened and contract signed" {% if
+                                        formdata.status=='New deal opened and contract signed' %} checked {% endif %}>
+                                    <label for="Newdeal">New deal opened and contract signed</label>
+                                </div><br>
+                                <div class="gender">
+                                    <input type="radio" id="Newdealnot" name="Status"
+                                        value="New deal and contract not signed" {% if
+                                        formdata.status=='New deal and contract not signed' %} checked {% endif %}>
+                                    <label for="Newdealnot">New deal and contract not signed</label>
+                                </div><br>
+                                <div class="gender">
+                                    <input type="radio" id="Reopeneddeals" name="Status" value="Reopened deals" {% if
+                                        formdata.status=='Reopened deals' %} checked {% endif %}>
+                                    <label for="Reopeneddeals">Reopened deals {% if formdata.substatus %} ({{ formdata.substatus }}) {% else %} (-) {% endif %}</label>
+                                </div>
+
+
+
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="final-content">
+                        <div class="subform-content-head">
+                            <h2>Final</h2>
+                        </div>
+                        <div class="input-box">
+                            <label>Other report</label>
+                            <textarea class="area-box" id="otherreport" name="otherreport"
+                                >{{formdata.otherReport}}</textarea>
+                        </div>
+
+                        <div class="input-box">
+                            <label>Notes</label>
+                            <textarea class="area-box" id="notes" name="notes" >{{formdata.Notes}}</textarea>
+                        </div>
+                    </div>
+                    <br>
+                    {% if type=='edit' %}
+                    <button type="submit">Update</button>
+                    {% endif %}
+                </form>
+            </div>
+
+        </section>
+    </section>
+
+    {% endif %}
+
+<script src="https://www.click-hr.com/static/js/onereport.js"> </script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.min.js"></script>
+
+<script>
+        const addJobButton = document.getElementById('add-job-button');
+  const jobsContainer = document.getElementById('jobs-container');
+
+  addJobButton.addEventListener('click', () => {
+    let jobCount = parseInt(document.getElementById('job_count').value);
+
+    jobCount++;
+    document.getElementById('job_count').value = jobCount;
+    const newJobSection = document.createElement('div');
+    newJobSection.classList.add('job-section');
+    newJobSection.innerHTML = `
+      <div>
+        <label>Job ${jobCount}<span>*</span></label>
+        <div class="input-box">
+          <label>Title</label>
+          <input type="text" placeholder="Job Title" name="job_title" required />
+        </div>
+        <div class="inputsfor">
+          <div class="input-box">
+            <label>Pay Rate</label>
+            <input type="number" placeholder="Pay Rate" name="pay_rate" required />
+          </div>
+          <div class="input-box">
+            <label>Pay Rate</label>
+            <select class="select-box" name="pay_rate_type">
+              <option>Monthly</option>
+              <option>Yearly</option>
+              <option>Hourly</option>
+            </select>
+          </div>
+        </div>
+        <div class="inputsfor">
+          <div class="input-box">
+            <label>Shifts</label>
+            <div class="inputsfor">
+              <input type="time" name="shift_start" required />
+              <input type="time" required name="shift_end" />
+            </div>
+          </div>
+          <div class="input-box">
+            <label>Total Vacancies</label>
+            <input type="number" placeholder="0" name="total_vacancies" required />
+          </div>
+        </div>
+             <button class="remove-job-button">Remove</button>
+
+      </div>
+    `;
+    const removeJobButton = newJobSection.querySelector('.remove-job-button');
+    removeJobButton.addEventListener('click', () => {
+      jobsContainer.removeChild(newJobSection);
+    });
+
+    jobsContainer.appendChild(newJobSection);
+  });
+    </script>
+<script>
+
+<!--display sweetalert(popup)-->
+    document.querySelector('form').addEventListener('submit', function (event) {
+        event.preventDefault();
+
+        fetch('/marketing', {
+            method: 'POST',
+            body: new FormData(event.target)
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.message === 'success') {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success!',
+                    text: 'Form updated successfully!',
+                }).then(() => {
+                    window.location.href = '{{ url_for('forms') }}';
+                });
+            } else {
+                alert(data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('An error occurred while updating the form.');
+        });
+    });
+</script>
+
+</html>

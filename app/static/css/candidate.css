@@ -1,0 +1,305 @@
+     p{
+      color:#193557;
+     }
+      .cell-div {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .cell-div label {
+        margin-bottom: 0px;
+        width: 79px;
+        text-align: left;
+    }
+
+    .cell-div input {
+        width: 21px
+    }
+
+    .select {
+        background-color: rgb(25, 53, 95);
+        color: rgb(255, 255, 255);
+        padding: 5px;
+    }
+
+    /* Pagination styles */
+    .pagination {
+        margin-top: 20px;
+        text-align: center;
+    }
+
+    .pagination-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: inline-block;
+    }
+
+    .pagination-list li {
+        display: inline-block;
+        margin-left: 5px;
+    }
+
+    .pagination-list li a {
+        display: inline-block;
+        padding: 5px 10px;
+        text-decoration: none;
+        color: #333;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+        background-color: #ffff;
+    }
+
+    .pagination-list li a:hover {
+        background-color: #f0f0f0;
+    }
+
+    /* Active page link */
+    .pagination-list li.active a {
+        background-color: #007bff;
+        color: #fff;
+        border-color: #007bff;
+    }
+
+    /* Disabled page link */
+    .pagination-list li.disabled a {
+        color: #ccc;
+        pointer-events: none;
+        /* Disable click events */
+        cursor: default;
+    }
+
+    /* Ellipsis (...) */
+    .pagination-list li.ellipsis::after {
+        content: '...';
+        padding: 5px;
+    }
+
+    @media (max-width: 1120px) {
+        .nisadisplay {
+            display: block;
+        }
+    }
+
+    /* Hide ellipsis on mobile devices */
+    @media (max-width: 768px) {
+        .pagination-list li.ellipsis {
+            display: none;
+        }
+    }
+
+    .previous {
+        text-decoration: none;
+        display: inline-block;
+        padding: 8px 16px;
+        width: 110px;
+    }
+
+    .previous:hover {
+        background-color: #ddd;
+        color: black;
+    }
+
+    .next {
+        text-decoration: none;
+        display: inline-block;
+        padding: 8px 16px;
+        width: 78px;
+    }
+
+    .next:hover {
+        background-color: #ddd;
+        color: black;
+    }
+
+    .previous {
+        background-color: #f1f1f1;
+        color: black;
+    }
+
+    .next {
+        background-color: #19355f;
+        color: white;
+    }
+
+    #loadingOverlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(255, 255, 255, 0.8);
+        /* Adjust the opacity and color as needed */
+        z-index: 1000;
+        /* Adjust the z-index to ensure it's above other elements */
+    }
+
+    #loadingIndicator {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        text-align: center;
+        z-index: 1001;
+        /* Ensure the spinner is above the overlay */
+    }
+
+    .custom-spinner {
+        border: 10px solid rgba(0, 0, 0, 0.1);
+        border-radius: 50%;
+        border-top: 8px solid #19355f;
+        width: 60px;
+        height: 60px;
+        animation: spin 1s linear infinite;
+        margin: 20px auto;
+    }
+
+    @keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+
+    tr {
+        margin-top: 20px;
+        border-bottom: 1px solid #19355f;
+
+    }
+
+    th {
+        text-align: center;
+        color: #19355f;
+        padding: 5px
+    }
+
+    td {
+        text-align: center;
+        color: #19355f;
+        padding: 5px
+    }
+
+    .export {
+        list-style: none;
+        padding: 10px;
+        color: #19355f;
+        box-shadow: 0px 2px 9px 0px gray;
+        position: absolute;
+        right: 20px;
+        top: 140px;
+    }
+
+    .export p {
+        color: #19355f;
+        cursor: pointer;
+        padding: 5px 0px;
+    }
+
+    .export li:hover p {
+        background: #19355f;
+        color: #ffffff;
+    }
+
+    .selectcountryfilter {
+        margin-top: 20px;
+        padding-left: 2px 0px;
+        margin-right: 17px;
+        border: 2px solid #19355f;
+        border-radius: 5px
+    }
+
+    .selectcountryfilterform {
+        width: 100%;
+    }
+
+    .active-button {
+        background-color: green;
+    }
+
+    .search {
+        /* <!--    padding: 5px;-->
+<!--    display: none;--> */
+        outline: none;
+        border: none;
+        border-bottom: 1px solid #19355f;
+
+    }
+
+    .hicon {
+        margin-right: 20px;
+        font-size: 22px !important;
+        position: relative;
+    }
+
+    .hicon:nth-child(1):after {
+        content: '';
+        position: absolute;
+        width: 7px;
+        height: 7px;
+        background: red;
+        border-radius: 10px;
+        left: 13px;
+        top: 7px;
+        transform: scale(0.5);
+        box-shadow: 0 0 0 0 rgba(255, 82, 82, 1);
+        animation: pulse-red 2s infinite;
+        cursor: pointer;
+
+    }
+
+    @keyframes pulse-red {
+        0% {
+            transform: scale(0.85);
+            box-shadow: 0 0 0 0 rgba(255, 82, 82, 0.7);
+        }
+
+        70% {
+            transform: scale(1);
+            box-shadow: 0 0 0 25px rgba(255, 82, 82, 0);
+        }
+
+        100% {
+            transform: scale(0.85);
+            box-shadow: 0 0 0 0 rgba(255, 82, 82, 0);
+        }
+    }
+
+    .search-div {
+        display: flex;
+        align-items: baseline;
+        margin-top: 20px;
+        position: relative;
+        padding-left: 15px
+    }
+
+    .data-row.unread {
+        background-color: #f0f0f0;
+        /* Apply a different background color for read rows */
+    }
+
+    .pagination {    }
+
+    .select2-results__option {
+        color: black !important;
+
+    }
+.foroverflow{
+overflow: auto;
+max-height: 60vh;
+overflow: auto;
+max-height: 60vh;
+width: 30%;
+margin-left: auto;
+margin-top: -25px;
+background-color: #fff;
+box-shadow: 7px 7px 5px -7px gray inset;
+display:none;
+position: absolute;
+right: 0;
+z-index: 1;
+}

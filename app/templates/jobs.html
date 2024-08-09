@@ -1,0 +1,209 @@
+{% extends "base.html" %}
+
+{% block title %} Tables {% endblock %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+{% if session['role'] %}
+<style>
+  .cd-btn{
+     background: linear-gradient(0deg, #19355f 10%, #4372b8 100%)!important;
+     border:none;
+     outline:none;
+     color: #ffff !important;
+    }
+    .cd-btn:hover{
+     background:linear-gradient(-90deg, #19355f 10%, #4372b8 100%)!important;
+    }
+    .cd-btn a{
+     color: #ffff !important;
+    }
+   tr{
+   margin-top:20px;
+   border-bottom: 1px solid black;
+   width:100%;
+   }
+  th{
+  text-align:center;
+  color: #19355f;
+  }
+   td{
+  text-align:center;
+  color: #19355f;
+  }
+
+.active-button {
+      background-color: green;
+    }
+</style>
+<div class="content">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card ">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <div class="card-header" style="display: flex;">
+            <h4 class="card-title">All Posted Jobs</h4>
+            <div class="parent-container">
+              <p onclick="showmymenu()" style="margin: 9px; font-size: 18px;">Filter  <i class="fa fa-angle-down"
+                 style="margin-left: 10px;  cursor: pointer;"></i></p>
+              <ul class="submenus" id="menu">
+                <li>Active Jobs</li>
+                <li>Inactive Jobs</li>
+              </ul>
+            </div>
+          </div>
+          {% if id %}
+          <form action="{{ url_for('selectjob', id=id) }}" method="post" id="submitBtn" style="display: none;">
+            <div class="card-header">
+                <input type="text" id="jobid" name="jobid" hidden>
+                <input type="text" name="candidate" value="{{id}}" hidden>
+                <button type="submit">Submit</button>
+            </div>
+        </form>
+        {% endif %}
+        {% if id is not defined %}
+          <div class="card-header" style="display:flex;">
+         <!-- <button style="margin-right:10px" class="card-title" id="candidate-button"><a href="/websitejobs">
+           <i class="fas fa-eye"></i> View jobs</a></button> -->
+         <button class="card-title cd-btn" id="candidate-button"><a href="/postnewjobs">
+           <i class="fas fa-edit"></i> Post New jobs</a></button>
+          </div>
+
+          {% endif %}
+        </div>
+        <div class="card-body">
+            <table>
+              <thead>
+                <tr>
+                  <th scope="col" width="10%">Job Title</th>
+                  <th scope="col" width="15%">Posted On</th>
+                  <th scope="col" width="8%">location</th>
+                  <th scope="col" width="10%">Status</th>
+                  <th scope="col" width="10%">Posted by</th>
+                  <th scope="col" width="10%">Action</th>
+
+              </tr>
+              </thead>
+              <tbody>
+              {% if alljobs|length > 0 %}
+                {% for jobs in alljobs %}
+                <tr>
+                  <td>{{ jobs.title }}</td>
+                  <td>{{ jobs.job_date }}</td>
+                  <td>{{ jobs.location }}</td>
+                  <td>{{ jobs.job_status }}</td>
+                  <td>{{ jobs.name }}</td>
+                  <td class="text-center">
+                    <a  data-toggle="tooltip" title="Edit Job" href="{{ url_for('editjob', id=jobs.id) }}"><i
+                      class="fas fa-edit"></i></a>
+<!--                    {% if session['role']== 'admin' %}-->
+<!--                      <a  data-toggle="tooltip" title="Delete Job" data-job-id="{{ jobs.id }}"-->
+<!--                        class="delete-job" ><i style="margin-left: 10px;" class="fa fa-trash" aria-hidden="true"></i></a>-->
+<!--                    {% endif %}-->
+                  </td>
+                </tr>
+                {% endfor %}
+              {% else %}
+               <tr>
+               <td class="text-center" colspan="5">Empty</td>
+               </tr>
+              {% endif %}
+
+              </tbody>
+            </table>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+<script>
+  function showmymenu() {
+    console.log("nisa")
+    var dropdown = document.getElementById('menu');
+    if (dropdown.style.display === "none") {
+      dropdown.style.display = "inline-block";
+    } else {
+      dropdown.style.display = "none";
+    }
+  }
+  function toggleSubmitButton() {
+    var checkboxes = document.getElementsByClassName('select-checkbox');
+    var checkedvalue = event.target.value
+    console.log(event.target.value);
+    document.getElementById('jobid').value=checkedvalue
+    var submitBtn = document.getElementById('submitBtn');
+
+    // Uncheck all checkboxes first
+    Array.from(checkboxes).forEach((checkbox) => {
+      checkbox.checked = false;
+    });
+
+    // Check the clicked checkbox
+    event.target.checked = true;
+
+    // Show or hide the submit button accordingly
+    submitBtn.style.display = event.target.checked ? 'block' : 'none';
+  }
+
+</script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const deleteLinks = document.querySelectorAll('.delete-job');
+    deleteLinks.forEach(link => {
+        link.addEventListener('click', function (event) {
+            event.preventDefault();
+            const jobId = this.getAttribute('data-job-id');
+
+            Swal.fire({
+                icon: 'warning',
+                title: 'Delete job',
+                text: 'Are you sure you want to delete this job?',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: 'grey',
+                confirmButtonText: 'Delete'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    fetch(`/deletejobs/${jobId}`, {
+                        method: 'POST',
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.message === 'job Deleted!') {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Success!',
+                                text: 'job deleted successfully!',
+                            }).then(() => {
+                                window.location.href = "{{ url_for('jobs') }}";
+                            });
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: data.message,
+                            });
+                        }
+                    })
+                    .catch(error => {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'An error occurred while deleting the job.',
+                        });
+                    });
+                }
+            });
+        });
+    });
+});
+</script>
+{% endif %}
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}{% endblock javascripts %}

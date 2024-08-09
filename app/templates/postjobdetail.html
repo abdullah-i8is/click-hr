@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Righteous&family=Roboto&display=swap" rel="stylesheet">
+    <link href='https://fonts.googleapis.com/css?family=Spartan' rel='stylesheet'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="https://www.click-hr.com/static/css/website.css">
+        <link rel="stylesheet" href="https://www.click-hr.com/static/css/headerfooter.css">
+          <link rel="icon" href="https://www.click-hr.com/static/img/titleicon.png">
+
+
+    <title>Geox Hr</title>
+</head>
+<style>
+        .jobTitleMain {
+            background-image: url("https://www.click-hr.com/static/img/page-header-default.jpg");
+            width: 100%;
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center;
+            padding: 150px 0;
+        }
+    </style>
+<body>
+<header id="hide-header">
+        <nav class="custom_menu navbar navbar-expand-lg">
+            <div class="container">
+                <a class="navbar-brand navbar_logo" href="https://geoxhr.com/" target="_blank">
+                        <img class="logoImg" src="https://www.click-hr.com/static/img/Logo2.png" alt=""></a>
+                <button class="navbar-toggler" id="mobile-menu-button" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false"
+                    aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="https://geoxhr.com/"
+                                target="_blank">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="https://geoxhr.com/about-us/" target="_blank">About Us</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="https://geoxhr.com/clients/" target="_blank">Clients</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="https://geoxhr.com/services/" target="_blank">Services</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" target="_blank">Apply</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="https://geoxhr.com/contact-us/" target="_blank">Contact Us</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="custom_login_button nav-link" href="https://geoxhr.com/reports/"
+                                target="_blank">Employee
+                                Login</a>
+                        </li>
+
+                    </ul>
+                </div>
+            </div>
+            <!-- <div class="mobile-menu">
+                <ul class="navlinks">
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">About</a></li>
+                    <li><a href="#">Blog</a></li>
+                    <li><a href="#">Contact</a></li>
+                    <li><a href="#">FAQ</a></li>
+                </ul>
+            </div> -->
+            <div class="mobile-menu">
+                <div class="logo"><a href="https://geoxhr.com/" target="_blank"><img src="./images/header_logo.png"
+                            alt=""></a><i class="fa-solid fa-circle-xmark" id="mobile_menu_close_button"></i></div>
+                <ul class="navbar-nav navlinks">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="https://geoxhr.com/"
+                            target="_blank">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://geoxhr.com/about-us/" target="_blank">About Us</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://geoxhr.com/clients/" target="_blank">Clients</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://geoxhr.com/services/" target="_blank">Services</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://geoxhr.com/apply/" target="_blank">Apply</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://geoxhr.com/contact-us/" target="_blank">Contact Us</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="custom_login_button nav-link" href="https://geoxhr.com/reports/"
+                            target="_blank">Employee Login</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="mobile_body_overlay"></div>
+        </nav>
+    </header>
+    <div class="mainWrapper">
+        <div class="header">
+            <div class="container">
+<!--                <div class="headerMain">-->
+<!--                    <div class="logoMain">-->
+<!--                        <img class="logoImg" src="https://www.click-hr.com/static/img/clickhr.png" alt="">-->
+<!--                    </div>-->
+<!--                    <div class="backToHome">-->
+<!--                        <button class="backToHomeButton">Back to Home</button>-->
+<!--                    </div>-->
+<!--                </div>-->
+            </div>
+        </div>
+        <div class="jobTitleMain">
+            <div class="container">
+                <div class="jobTitleContent">
+                    <div class="jobName">
+                        <h4>{{jobdetail.title.title()}}</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="jobDetails">
+            <div class="container">
+                <div class="jobDetailsMain">
+                    <div class="timeLocationPostMain">
+                        <div class="timeLength">
+                            <h6 class="timeLengthContent">{{jobdetail.job_type}}</h6>
+                        </div>
+                        <div class="locationMain">
+                            <div class="locationIconMain">
+                                <img class="locationIcon" src="https://www.click-hr.com/static/img/location.png" alt="location.png">
+                            </div>
+                            <h6 class="locationDetail">{{jobdetail.location.title()}}</h6>
+                        </div>
+                        <div class="locationMain">
+                            <div class="locationIconMain">
+                                <img class="locationIcon" src="https://www.click-hr.com/static/img/calendar.png" alt="calendar.png">
+                            </div>
+                            <h6 class="locationDetail">{{jobdetail.formatted_time}}</h6>
+                        </div>
+                    </div>
+<!--                    <div class="companyNamenTag">-->
+<!--                        <div class="companyName">-->
+<!--                            <h4 class="companyNameTag">Company Name : <span class="companyNameContent">{{jobdetail.company.title()}}</span></h4>-->
+<!--                        </div>-->
+<!--                    </div>-->
+                    <div class="jobDetailsnFreturedJobs">
+                        <div class="jobDetailsContent">
+                            {% if jobdetail.salary %}
+                            <div class="jobDetailsHeadingMain">
+                                <h3 class="jobDetailsHeading">Salary</h3>
+                                <div class="companyName">
+                                    <h4 class="companyNameTag">${{jobdetail.salary | safe}} {{jobdetail.salary_type}}</h4>
+                                </div>
+                            </div>
+                            {% endif %}
+
+                            <div class="jobDetailsHeadingMain">
+                                <h5 class="jobDetailsHeading">Experience:</h5>
+
+                                <div class="jobDetailsContentMainPoints">
+                                    {{jobdetail.experience | safe}}
+                                </div>
+                            </div>
+
+                            <div class="jobDetailsHeadingMain">
+                                <h5 class="jobDetailsHeading">Job Details:</h5>
+
+                                <div class="jobDetailsContentMainPoints">
+                                    {{jobdetail.formatted_description | safe}}
+                                </div>
+                            </div>
+                            <div class="jobDetailsHeadingMain">
+                                <h5 class="jobDetailsHeading">Work Conditions and Physical Capabilities:</h5>
+                                <div class="jobDetailsContentMainPoints">
+                                    {{jobdetail.formatted_eligibility | safe}}
+                                </div>
+                            </div>
+                            <div class="jobDetailsHeadingMain">
+                                <h5 class="jobDetailsHeading">Job Responsibilities</h5>
+                                <div class="jobDetailsContentMainPoints">
+                                    {{jobdetail.formatted_responsibility | safe}}
+                                </div>
+                            </div>
+                            {% if jobdetail.formatted_notes %}
+                            <div class="jobDetailsHeadingMain">
+                                <h5 class="jobDetailsHeading">Other Information</h5>
+                                <div class="jobDetailsContentMainPoints">
+                                    {{jobdetail.formatted_notes | safe}}
+                                </div>
+                            </div>
+                            {% endif %}
+<!--                            <p class="jobDetailsContentMain">Work Term: Permanent Work Language: French Hours: 80 hours bi-weekly</p>-->
+                        </div>
+<!--                        <div class="featuredJobs">-->
+<!--                            {% for new in latest_jobs %}-->
+<!--                              {% if new.id != jobdetail.id %}-->
+
+<!--                            <div class="freturedJobsMain" onclick="window.location='{{ url_for('jobdetail', id=new.id) }}'">-->
+<!--                                <div class="logoCompanyName">-->
+<!--                                    <div class="companyLogoMain">-->
+<!--                                <img class="locationIcon" src="https://www.click-hr.com/static/img/location.png" alt="location.png">-->
+<!--                                    </div>-->
+<!--                                    <div class="featuredJobContent">-->
+<!--                                        <h4 class="jobHeading">{{new.title.title()}}</h4>-->
+<!--                                        <div class="featuredCompanyNamenTag">-->
+<!--                                            <div class="featuredCompanyName">-->
+<!--&lt;!&ndash;                                                <h4 class="featuredCompanyNameTag">Company Name : <span class="companyNameContent">{{new.company.title()}}</span></h4>&ndash;&gt;-->
+<!--                                            </div>-->
+<!--                                        </div>-->
+<!--                                        <div class="timeLength">-->
+<!--                                            <h6 class="timeLengthContent">{{new.job_type}}</h6>-->
+<!--                                        </div>-->
+<!--                                        <div class="locationMain">-->
+<!--                                            <div class="locationIconMain">-->
+<!--                                  <img class="locationIcon" src="https://www.click-hr.com/static/img/calendar.png" alt="calendar.png">-->
+<!--                                            </div>-->
+<!--                                            <h6 class="locationDetail">{{new.location.title()}}</h6>-->
+<!--                                        </div>-->
+<!--                                        <div class="locationMain">-->
+<!--                                            <div class="locationIconMain">-->
+<!--                                            </div>-->
+<!--                                            <h6 class="locationDetail">{{new.format_time}}</h6>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                              {% endif %}-->
+<!--                            {% endfor %}-->
+<!--                        </div>-->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="applyNow">
+            <div class="container">
+                <div class="applyNowMainContent" id="applybtn">
+                    <button class="applyNowButton" onclick="applyjob(applybtn)">Apply Now</button>
+                </div>
+                <div class="applyNowForm" id="applydiv" style="display: none;">
+                    <form action="/apply" method="post" enctype="multipart/form-data">
+                        <div class="firstnLast">
+                            <div class="firstName">
+                                <label for="firstName">first Name</label>
+                                <input type="text" placeholder="first Name" name="firstName">
+                            </div>
+                            <div class="lastName">
+                                <label for="firstName">Last Name</label>
+                                <input type="text" placeholder="Last Name" name="lastName">
+                            </div>
+                        </div>
+                        <div class="firstnLast">
+                            <div class="firstName">
+                                <label for="firstName">Email</label>
+                                <input type="email" placeholder="Your Email" name="email">
+                            </div>
+                            <div class="lastName">
+                                <label for="firstName">Your Number</label>
+                                <input oninput="this.value = this.value.replace(/[^0-9]/g, '')"  placeholder="+1 654 654 654" name="number">
+                            </div>
+                        </div>
+                        <div class="firstnLastCenter">
+                            <div class="firstName">
+                                <label for="firstName">Position</label>
+                                <input type="text" placeholder="Applied Position" name="position" value="{{jobdetail.title}}" readonly>
+                                <input type="hidden" placeholder="Applied Position" name="jobid" value="{{jobdetail.id}}">
+                            </div>
+                            <div class="input-box">
+                                <label>Upload Cv<span>*</span></label>
+                            </div>
+                             <input type="file" id="fileInput" name="myFile" accept=".pdf">
+
+                                <span id="file-name"></span>
+                                <input type="hidden" name="filename" id="filename-input" />
+
+                        </div>
+
+                        <button type="submit" class="applyNowFormSubmit">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+<footer class="footer-main">
+        <div class="container">
+            <div class="address-main row">
+                <div class="col-lg-4 col-sm-12 col-xs-12">
+                    <div class="address-box clearfix">
+                        <div class="add-icon"><a href="https://geoxhr.com/" target="_blank">
+                                <img src="./images/footer_logo.png" alt=""></a>
+                        </div>
+                        <div class="add_content1 add-content">
+                            <h5>Branch Address</h5>
+                            <p class="custom_branch_address"><i aria-hidden="true"
+                                    class="custom_marker fas fa-map-marker-alt"></i><span
+                                    class="custom_icon_address_text">4370 Steeles Ave W Unit 204 ROOM A, Woodbridge, ON
+                                    L4L 4Y4, Canada.</span></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-sm-12 col-xs-12">
+                    <div class="address-box3 address-box clearfix">
+                        <div class="add_content3 add-content">
+                            <h5>Contact</h5>
+                            <p><a href="mailto:info@geoxhr.com" target="_blank" style="text-decoration:none"
+                                    class="footer_custom_icon_links"><i aria-hidden="true"
+                                        class="custom_envelope fas fa-envelope"></i><span
+                                        class="custom_icon_text">info@geoxhr.com</span></a></p>
+                            <p><a href="tel:+16475789336" target="_blank" style="text-decoration:none"
+                                    class="footer_custom_icon_links"><i aria-hidden="true"
+                                        class="custom_phone fas fa-phone"></i><span class="custom_icon_text">+1
+                                        647-578-9336</span></a></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-sm-12 col-xs-12">
+                    <div class="address-box2 address-box clearfix">
+                        <div class="add_content2 add-content">
+                            <h5>Quick Links</h5>
+                            <ul>
+                                <li><a href="https://geoxhr.com/" target="_blank">Home</a></li>
+                                <li><a href="https://geoxhr.com/about-us/" target="_blank">About Us</a></li>
+                                <li><a href="https://geoxhr.com/clients/" target="_blank">Clients</a></li>
+                                <li><a href="https://geoxhr.com/services/" target="_blank">Services</a></li>
+                                <li><a href="https://geoxhr.com/apply/" target="_blank">Apply</a></li>
+                                <li><a href="https://geoxhr.com/contact-us/" target="_blank">Contact Us</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Copyright Footer -->
+        <footer class="footer-second text-center text-white">
+            <!-- Copyright -->
+            <div class="text-center p-3">
+                <p>© 2023 GeoxHr. All Rights Reserved. <a class="poweredbyi8is" href="https://www.i8is.com"
+                        target="_blank" rel="noopener">Powered by i8is</a></p>
+            </div>
+            <!-- Copyright -->
+        </footer>
+    </footer>
+</body>
+<script>
+    document.getElementById('fileInput').addEventListener('change', function() {
+        var file = this.files[0];
+        if (file) {
+            var fileName = file.name;
+            var fileExtension = fileName.split('.').pop();
+            if (fileExtension.toLowerCase() !== 'pdf') {
+                alert('Please upload a PDF file.');
+                this.value = ''; // Clear the input field
+            }
+        }
+    });
+    function applyjob(para){
+       var div1 = document.getElementById('applydiv')
+       var div2 = document.getElementById('applybtn')
+
+       if(div2 === para){
+
+        div1.style.display = ['block']
+        div2.style.display = ['none']
+       }else{
+        div1.style.display = ['block']
+        div2.style.display = ['none']
+       }
+
+    }
+    function displayFileName(input) {
+        const fileNameSpan = document.getElementById('file-name');
+        const filenameInput = document.getElementById('filename-input');
+
+        if (input.files.length > 0) {
+            const fileName = input.files[0].name;
+            fileNameSpan.textContent = fileName;
+            filenameInput.value = fileName; // Set the filename input value
+        } else {
+            fileNameSpan.textContent = '';
+            filenameInput.value = ''; // Clear the filename input value
+        }
+    }
+</script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>
+<script>
+    document.querySelector('form').addEventListener('submit', function (event) {
+        event.preventDefault();
+
+        fetch('/apply', {
+            method: 'POST',
+            body: new FormData(event.target)
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.message === 'success') {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success!',
+                    text: 'Application Submitted Successfully!',
+                }).then(() => {
+                    window.location.href = '/websitejobs'; // Corrected URL
+                });
+            } else if (data.message === 'already_applied') {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Oops!',
+                    text: 'You have already applied for this position within the last month.',
+                });
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error!',
+                    text: 'An error occurred while submitting the application.',
+                });
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('An error occurred while updating the form.');
+        });
+    });
+</script>
+</html>

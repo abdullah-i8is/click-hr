@@ -1,0 +1,75 @@
+        <!-- Navbar -->
+        <nav class="navbar navbar-expand-lg navbar-absolute navbar-transparent">
+            <div class="container-fluid">
+                <div class="navbar-wrapper">
+                    <div class="navbar-toggle d-inline">
+                        <button type="button" class="navbar-toggler">
+                            <span class="navbar-toggler-bar bar1"></span>
+                            <span class="navbar-toggler-bar bar2"></span>
+                            <span class="navbar-toggler-bar bar3"></span>
+                        </button>
+                    </div>
+                    <a class="navbar-brand" style="width:13.5%;margin-left:0px" href="/index"><img style="width: 95%;" src="https://www.click-hr.com/static/img/Clcik Hr logo White.png" alt="Logo Photo"></a>
+                </div>
+               <!--  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-bar navbar-kebab"></span>
+                    <span class="navbar-toggler-bar navbar-kebab"></span>
+                    <span class="navbar-toggler-bar navbar-kebab"></span>
+                </button> -->
+                <div class="collapse navbar-collapse" id="navigation">
+
+                    <ul class="navbar-nav ml-auto">
+<!--                        <li class="search-bar input-group">-->
+<!--                            <button class="btn btn-link" id="search-button" data-toggle="modal"-->
+<!--                                    data-target="#searchModal"><i class="tim-icons icon-zoom-split"></i>-->
+<!--                                <span class="d-lg-none d-md-block">Search</span>-->
+<!--                            </button>-->
+<!--                        </li>-->
+                      <li>
+                           <div class="card-header" style="background: #ffff;padding: 9px;margin-top: 5px;">
+                            <a href="/addmanualemployee" class="card-tite"
+                              style="color:#19355f;font-weight:600">+ Add Candidate</a>
+                          </div>
+                      </li>
+                        <li class="dropdown nav-item">
+                            <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
+                                <div class="photo" style="    margin-left: 33px;">
+                                    <img src="https://www.click-hr.com/static/img/default-avatar.png" alt="Profile Photo">
+                                </div>
+                                <b<p style="font-weight: 600;color: rgba(255, 255, 255, 0.8);">{{session['user']}}</p></b>
+                                <p class="d-lg-none">
+                                    Log out
+                                </p>
+                            </a>
+                            <ul class="dropdown-menu dropdown-navbar">
+                                <li class="nav-link">
+                                    <a href="{{ url_for('user') }}" class="nav-item dropdown-item">Profile ({{session['role']}})</a>
+                                </li>
+                                <li class="dropdown-divider"></li>
+                                <li class="nav-link">
+                                    <a href="{{ url_for('logout') }}"
+                                       class="nav-item dropdown-item">Logout</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="separator d-lg-none"></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <div class="modal modal-search fade" id="searchModal" tabindex="-1" role="dialog" aria-labelledby="searchModal"
+             aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <input type="text" class="form-control" id="inlineFormInputGroup" placeholder="SEARCH">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <i class="tim-icons icon-simple-remove"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End Navbar -->
+        

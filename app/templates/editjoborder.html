@@ -1,0 +1,199 @@
+{% extends "base.html" %}
+
+{% block title %} User Profile {% endblock %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+{% if session['role'] %}
+<style>
+    .days-div span{
+    margin-left:10px;
+    margin-right:10px;
+    font-size:15px;
+    }
+</style>
+<div class="content">
+    <div class="row">
+        <div class="" style="    display: flex; justify-content:space-between;    background-color: #ffffff;
+    width: 100%;
+    margin-left: 10px;border: 0.0625rem solid rgba(34, 42, 66, 0.05);
+    border-radius: 0.2857rem; height:100vh">
+            <div class="card" style="width:75%;border:none;border-radius:0px">
+                <div class="card-header">
+                    <h4 class="title" style="color:Black;">Order Details</h4>
+                </div>
+                <div class="card-body">
+                    <form class="form" action="/updatejoborder" method="post">
+
+                        <div class="row">
+                            <div class="col-md-6 pr-md-1">
+                                <div class="form-group">
+                                    <label>Company</label>
+                                    <input type="text" class="form-control" name="company" placeholder="{{jobsdata.company_name}}"
+                                       value="{{jobsdata.company_name}}" readonly >
+                                    <input type="text" class="form-control" name="company_id" placeholder="{{jobsdata.company_id}}"
+                                       value="{{jobsdata.company_id}}" hidden="" >
+
+                                </div>
+                            </div>
+                            <div class="col-md-6 pr-md-1">
+                                <div class="form-group">
+                                    <label>Job Title</label>
+                                    <input type="text" class="form-control" name="title" placeholder="{{jobsdata.title}}"
+                                       value="{{jobsdata.title}}" {% if "com" in request.path %} readonly {% endif %} >
+                                    <input type="text" class="form-control" name="id" placeholder="{{jobsdata.id}}"
+                                       value="{{jobsdata.id}}" hidden="" >
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 pr-md-1">
+                                <div class="form-group">
+                                    <label>Pay Rate</label>
+                                    <input type="number" class="form-control" name="payrate" placeholder="{{jobsdata.payrate}}"
+                                       value="{{jobsdata.payrate}}" {% if "com" in request.path %} readonly {% endif %} >
+                                </div>
+                            </div>
+                            <div class="col-md-6 pl-md-1">
+                                <div class="form-group">
+                                    <label>Pay rate type</label>
+                                    <select class="form-control" name="pay_rate_type" {% if "com" in request.path %} disabled {% endif %}>
+    <option value="Monthly" {% if jobsdata.salarytype=="Monthly" %} selected {% endif %}>Monthly</option>
+    <option value="Yearly" {% if jobsdata.salarytype=="Yearly" %} selected {% endif %}>Yearly</option>
+    <option value="Hourly" {% if jobsdata.salarytype=="Hourly" %} selected {% endif %}>Hourly</option>
+</select>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 pr-md-1">
+                                <div class="form-group">
+                                    <label class="form-label">Total Vacancies</label>
+                                    <input type="number" name="vacancy" class="form-control" placeholder="{{jobsdata.vacancy}}" value="{{jobsdata.vacancy}}" {% if "com" in request.path %} readonly {% endif %}>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 pr-md-1">
+                                <div class="form-group">
+                                    <label>selected days</label>
+                                       <div class="days-div">
+    <label>
+        <span> M</span>
+        <input type="checkbox" id="mon" name="days[]" value="mon" {% if 'mon' in jobsdata.days %}checked{% endif %}
+        {% if "com" in request.path %} disabled {% endif %}>
+    </label>
+    <label>
+        <span> T</span>
+        <input type="checkbox" id="tues" name="days[]" value="tues" {% if 'tues' in jobsdata.days %}checked{% endif %}
+        {% if "com" in request.path %} disabled {% endif %}>
+    </label>
+    <label>
+        <span> W</span>
+        <input type="checkbox" id="wed" name="days[]" value="wed" {% if 'wed' in jobsdata.days %}checked{% endif %}
+        {% if "com" in request.path %} disabled {% endif %}>
+    </label>
+    <label>
+        <span> T</span>
+        <input type="checkbox" id="thur" name="days[]" value="thur" {% if 'thur' in jobsdata.days %}checked{% endif %}
+        {% if "com" in request.path %} disabled {% endif %}>
+    </label>
+    <label>
+        <span> F</span>
+        <input type="checkbox" id="fri" name="days[]" value="fri" {% if 'fri' in jobsdata.days %}checked{% endif %}
+        {% if "com" in request.path %} disabled {% endif %}>
+    </label>
+    <label>
+        <span> S</span>
+        <input type="checkbox" id="sat" name="days[]" value="sat" {% if 'sat' in jobsdata.days %}checked{% endif %}
+        {% if "com" in request.path %} disabled {% endif %}>
+    </label>
+    <label>
+        <span> S</span>
+        <input type="checkbox" id="sun" name="days[]" value="sun" {% if 'sun' in jobsdata.days %}checked{% endif %}
+        {% if "com" in request.path %} disabled {% endif %}>
+    </label>
+</div>
+
+                                </div>
+                            </div>
+                            <div class="col-md-6 pl-md-1">
+                                <div class="form-group">
+                                   <label>Shifts<span>*</span></label>
+                                   <div class="inputsfor">
+    <input type="time" name="shift_start" value="{{jobsdata.starttime}}" {% if "com" in request.path %} readonly {% endif %} required />
+    To
+    <input type="time" name="shift_end" value="{{jobsdata.endtime}}" {% if "com" in request.path %} readonly {% endif %} required />
+</div>
+
+                                </div>
+                            </div>
+                        </div>
+                        {% if "com" not in request.path %}
+                        <div class="card-footer">
+                            <button type="submit" class="btn btn-fill btn-primary">Save</button>
+                        </div>
+                        {% endif %}
+                    </form>
+                </div>
+
+            </div>
+             <div class="card" style="width:24%;border:none;border-radius:0px">
+                 <div class="card-header">
+                    <h4 class="title" style="color:Black; height:70%">Activity</h4>
+                </div>
+                <div class="card-body" style="overflow: auto; max-height: 60vh;">
+                        <div id="activity">
+                            <ul>
+                               {% for job_history in job_history %}
+                               <li style="color:black; font-size:12px">{{ job_history.notes }}</li>
+                               {% endfor %}
+                            </ul>
+                        </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    document.querySelector('form').addEventListener('submit', function (event) {
+        event.preventDefault();
+
+        fetch('/updatejoborder', {
+            method: 'POST',
+            body: new FormData(event.target)
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.message) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success!',
+                    text: data.message,
+                }).then(() => {
+                    window.location.reload();
+                });
+            } else if (data.error) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error!',
+                    text: data.error,
+                });
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('An error occurred while saving the joborder.');
+        });
+    });
+</script>
+{% endif %}
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}{% endblock javascripts %}

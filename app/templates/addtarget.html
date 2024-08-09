@@ -1,0 +1,333 @@
+{% extends "base.html" %}
+
+{% block title %} Tables {% endblock %}
+
+{% block content %}
+<style>
+   #loadingOverlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(255, 255, 255, 0.8); /* Adjust the opacity and color as needed */
+        z-index: 1000; /* Adjust the z-index to ensure it's above other elements */
+    }
+
+    #loadingIndicator {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        text-align: center;
+        z-index: 1001; /* Ensure the spinner is above the overlay */
+    }
+
+    .custom-spinner {
+        border: 10px solid rgba(0, 0, 0, 0.1);
+        border-radius: 50%;
+        border-top: 8px solid #19355f;
+        width: 60px;
+        height: 60px;
+        animation: spin 1s linear infinite;
+        margin: 20px auto;
+    }
+
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+   tr{
+   margin-top:20px;
+   border-bottom: 1px solid #19355f;
+
+   }
+
+.export {
+    list-style: none;
+    padding: 10px;
+    color: #19355f;
+    box-shadow: 0px 2px 9px 0px gray;
+    position: absolute;
+    right: 3px;
+    top: 48px;
+}
+.export p {
+    color: #19355f;
+    cursor: pointer;
+    padding: 5px 0px;
+}
+
+.export li:hover p{
+    background: #19355f;
+    color: #ffffff;
+}
+.selectcountryfilter{
+    margin-top: 20px;
+    padding-left: 15px;
+    margin-right: 17px;
+    border: none;
+}
+.selectcountryfilterform{
+        width: 100%;
+    text-align: end;
+}
+.active-button {
+      background-color: green;
+    }
+    .search {
+    padding: 5px;
+    display: none;
+    outline: none;
+    border: none;
+    border-bottom: 1px solid #19355f;
+
+}
+    .hicon {
+    margin-right: 20px;
+    font-size: 22px !important;
+    position: relative;
+}
+
+.hicon:nth-child(1):after {
+    content: '';
+    position: absolute;
+    width: 7px;
+    height: 7px;
+    background: red;
+    border-radius: 10px;
+    left: 13px;
+    top: 7px;
+    transform: scale(0.5);
+    box-shadow: 0 0 0 0 rgba(255, 82, 82, 1);
+    animation: pulse-red 2s infinite;
+    cursor: pointer;
+
+}
+
+@keyframes pulse-red {
+    0% {
+        transform: scale(0.85);
+        box-shadow: 0 0 0 0 rgba(255, 82, 82, 0.7);
+    }
+
+    70% {
+        transform: scale(1);
+        box-shadow: 0 0 0 25px rgba(255, 82, 82, 0);
+    }
+
+    100% {
+        transform: scale(0.85);
+        box-shadow: 0 0 0 0 rgba(255, 82, 82, 0);
+    }
+}
+
+.search-div{
+display: flex;
+align-items: baseline;
+ margin-top: 20px;
+ position: relative;
+ padding-left: 15px
+}
+.data-row.unread {
+    background-color: #f0f0f0; /* Apply a different background color for read rows */
+}
+.pagination{
+justify-content: flex-end;
+}
+.green{
+color:#4372b8;
+margin-right:5px;
+}
+.orange{
+color:green;
+margin-right:5px;
+}
+.yellow{
+color:orange;
+margin-right:5px;
+}
+    .center{
+    display:flex;
+    align-items:center;
+    justify-content: center;
+   }
+    .score-div{
+<!--    width: 7%;-->
+    background: white;
+    padding: 10px 15px;
+    border-radius: 15px;
+    position: fixed;
+    right: 15px;
+    bottom: 15px;
+    opacity: 0.5;
+}
+     .score-div:hover{
+    opacity:1
+}
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  border: 1px solid #ddd;
+}
+
+th, td {
+  text-align: center;
+  padding: 8px;
+}
+input{
+text-align: center;
+}
+    .submit{
+    position: absolute;
+    right: 31px;
+    top: 1%;
+    padding: 10px;
+    font-size: 15px;
+    font-weight: 600;
+    background: #4372b8;}
+
+    .editable-input[disabled] {
+        border: none;
+        outline:none;
+    }
+
+
+</style>
+ <div class="content">
+  <div class="row">
+    <div class="col-md-12">
+        <div class="card ">
+            <div style="display: flex;">
+                <form action="" method="">
+                  <div class="card-header" style="margin-top;10px">
+<!--                       <button class="card-title" id="registered-button">Edit Targets</button>-->
+                       <h4 class="card-title">Create Targets</h4>
+                  </div>
+                </form>
+               <div class="clearfix"></div>
+            </div>
+            <div class="card-body">
+            <div class="">
+                <div style="overflow-x:auto;">
+                 <table>
+                        <tr>
+                            <th>Name</th>
+                            <th><div class="center"><i class="fas fa-circle green"></i><span>New Contrat</span></div></th>
+                            <th><div class="center"><i class="fas fa-circle orange"></i><span>Not signed</span></div></th>
+                            <th><div class="center"><i class="fas fa-circle yellow"></i><span>ReopenDeals</span></div></th>
+                            <th><div class="center"><i class="fas fa-circle orange"></i><span>ResumeSents</span></div></th>
+                            <th><div class="center"><i class="fas fa-circle orange"></i><span>Interviews</span></div></th>
+                            <th><div class="center"><i class="fas fa-circle green"></i><span>Placements</span></div></th>
+                            <th><div class="center"><i class="fas fa-circle yellow"></i><span>Helping Forms</span></div></th>
+                            <th>Total</th>
+                        </tr>
+                  {% if selected_week_data %}
+                    <form id="form1"  action="/resettarget" method="post" name="targetForm">
+                          {% for name in selected_week_data %}
+                          <tr>
+                                <td style="display:none;" data-label="Amount">
+                                    <input type="hidden" name="id" value="{{ name.id }}">
+                                    <input type="hidden" name="user_id" value="{{ name.user_id }}">
+                                    <input type="hidden" name="weekstart" value="{{ name.weekstart }}">
+                                    <input type="hidden" name="weekend" value="{{ name.weekend }}">
+
+
+                                </td>
+                                <td>
+                                    <input style="border:none" name="name" value="{{ name.name }}" readonly>
+                                </td>
+                                <td><input name="new" value="{{name.new}}" placeholder=""></td>
+                                <td><input name="notsigned" value="{{name.notsigned}}" placeholder=""></td>
+                               <td><input name="reopen" value="{{name.reopen}}" placeholder=""></td>
+                                <td><input name="resume" value="{{name.resume}}" placeholder=""></td>
+                               <td><input name="interview" value="{{name.interview}}" placeholder=""></td>
+                               <td><input name="placement" value="{{name.placement}}" placeholder=""></td>
+                               <td><input name="helping" value="{{name.helping}}" placeholder=""></td>
+                               <td><div style="display:flex; justify-content:space-between">Target:<input style="border:none;"  name="target" value="0" placeholder="" readonly></div> <br> <div style="display:flex; justify-content:space-between">Score: <input style="border:none;"  name="score" value="0" placeholder="" readonly></div></td>
+                            </tr>
+                          {% endfor %}
+                             <input style="width:100px" type="submit" class="submit">
+<!--                        <button type="submit">submit</button>-->
+                    </form>
+                     {% else %}
+                     <form id="form1"  action="/savetarget" method="post" name="targetForm">
+                          {% for name in members_data %}
+                            <tr>
+                                <td style="display:none;" data-label="Amount">
+                                    <input type="hidden" name="user_id" value="{{ name.id }}">
+                                </td>
+                                <td>
+                                    <input style="border:none" name="name" value="{{ name.fname }} {{ name.lname }}" readonly>
+                                </td>
+                                <td><input name="new" placeholder="0"></td>
+                                <td><input name="notsigned" placeholder="0"></td>
+                               <td><input name="reopen" placeholder="0"></td>
+                                <td><input name="resume" placeholder="0"></td>
+                               <td><input name="interview" placeholder="0"></td>
+                               <td><input name="placement" placeholder="0"></td>
+                               <td><input name="helping" placeholder="0"></td>
+                               <td><div style="display:flex; justify-content:space-between">Target:<input style="border:none;"  name="target" placeholder="0"></div> <br> <div style="display:flex; justify-content:space-between">Score: <input style="border:none;"  name="score" placeholder="0"></div></td>
+                            </tr>
+                          {% endfor %}
+                          <input style="width:100px" type="submit" class="submit">
+                    </form>
+                  {% endif %}
+                 </table>
+                </div>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+{% endblock content %}
+{% block javascripts %}
+<script src="https://www.click-hr.com/static/js/onereport.js"> </script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.min.js"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var form1 = document.getElementById('form1');
+
+        form1.addEventListener('submit', function (event) {
+            event.preventDefault();
+            document.querySelector('.submit').disabled = true;
+
+            var formAction = form1.getAttribute('action');  // Get the form's action attribute
+
+            fetch(formAction, {
+                method: 'POST',
+                body: new FormData(event.target)
+            })
+            .then(response => response.json())
+            .then(data => {
+                var successMessage = (formAction.includes('resettarget')) ? 'Target updated!' : 'Target created!';
+
+                if (data.message === 'success') {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success!',
+                        text: successMessage,
+                    }).then(() => {
+                        window.location.href = '{{ url_for('target') }}';
+                    });
+                } else {
+                    alert(data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred while updating the form.');
+            });
+        });
+    });
+</script>
+
+
+
+{% endblock javascripts %}
+

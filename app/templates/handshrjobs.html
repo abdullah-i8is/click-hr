@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Righteous&family=Roboto&display=swap" rel="stylesheet">
+    <link href='https://fonts.googleapis.com/css?family=Spartan' rel='stylesheet'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="https://www.click-hr.com/static/css/handshrstyle.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <title>Hands Hr</title>
+
+</head>
+<style>
+    /* header end */
+  .banner{
+   background-image: url(https://www.click-hr.com/static/img/crossBanner.png);
+    background-attachment: fixed;
+    padding: 60px 0;
+
+
+  }
+  .jobcontainer{
+  margin-top: 50px;
+ 
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+}
+.job-field-new{
+  width: 350px;
+  border: 1px solid #7a7a7a;
+  border-radius: 5px;
+  padding: 20px 10px;
+  text-align: center;
+
+}
+#job-name-new a{
+  font-family: "Roboto", Sans-serif;
+  font-weight: 600;
+  font-size: 22px;
+  line-height: 2;
+}
+#job-name-new a:hover{
+  font-family: "Roboto", Sans-serif;
+  font-weight: 600;
+  font-size: 22px;
+  text-decoration: underline;
+  color: #0859D7;
+}
+.more-detail-new a{
+  font-family: "Roboto", Sans-serif;
+  font-weight: 400;
+  font-size: 15px;
+
+}
+.job-field-2-new h3{
+  font-family: "Roboto", Sans-serif;
+  font-weight: 500;
+  font-size: 15px;
+}
+
+.container-banner {
+  max-width: 1170px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.search-banner {
+  display: flex;
+  flex-wrap: wrap;
+  background-color: #840318;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.search-input-banner,
+.location-select-banner,
+.search-button-banner {
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  margin: 5px;
+}
+
+.search-input-banner {
+  flex: 1 1 60%;
+  max-width: 60%;
+}
+
+.location-select-banner {
+  flex: 1 1 20%;
+  max-width: 20%;
+}
+
+.search-button-banner {
+  flex: 1 1 15%;
+  max-width: 15%;
+  background-color: #ffffff;
+  border: 1px solid #ffffff;
+  color: rgb(24, 24, 24);
+  font-weight: 500;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.search-button-banner:hover {
+  background-color: #66666600;
+  border: 1px solid white;
+  color: #ffffff;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .search-input-banner,
+  .location-select-banner,
+  .search-button-banner {
+      flex: 1 1 100%;
+      max-width: 100%;
+  }
+}
+</style>
+<body>
+    <div class="preheader">
+        <div class="container">
+            <div class="preheader-content">
+                <div class="preheader-1">
+                    <h6>+1 647-578-9336</h6>
+                    <h6 class="preheader-1-center">contact@handshr.com</h6>
+                    <h6>Woodbridge, ON L4L 4Y4, Canada</h6>
+                </div>
+                <div class="preheader-2"><a href="https://www.linkedin.com/company/hands-hr/" target="_blank"><i class="fa-brands fa-linkedin-in" style="color: #ffffff;"></i></a></div>
+            </div>
+        </div>
+    </div>
+    <!-- header start -->
+    <header id="hide-header">
+        <nav class="custom_menu navbar navbar-expand-lg">
+            <div class="container">
+                <a class="navbar-brand navbar_logo" href="https://handshr.com/" target="_blank"><img src="./images/header_logo.png" alt=""></a>
+                <button class="navbar-toggler" id="mobile-menu-button" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false"
+                    aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link" href="https://handshr.com/" target="_blank">HOME</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="https://handshr.com/about-us/" target="_blank">ABOUT US</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="https://handshr.com/services/" target="_blank">SERVICES</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="https://handshr.com/contact-us/" target="_blank">CONTACT US</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="custom_login_button nav-link" href="https://handshr.com/job-openings/" target="_blank"><Span>APPLY</Span></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="mobile-menu">
+                <div class="logo"><a href="https://handshr.com/" target="_blank"><img src="./images/header_logo.png" alt=""></a><i class="fa-solid fa-circle-xmark" id="mobile_menu_close_button"></i></div>
+                <ul class="navbar-nav navlinks">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="https://handshr.com/" target="_blank">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://handshr.com/about-us/" target="_blank">About Us</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://handshr.com/services/" target="_blank">Services</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://handshr.com/apply/" target="_blank">Apply</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://handshr.com/contact-us/" target="_blank">Contact Us</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="custom_login_button nav-link" href="https://handshr.com/reports/" target="_blank">Employee Login</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="mobile_body_overlay"></div>
+        </nav>
+    </header>
+    <!-- header end -->
+    <!-- body -->
+    <!-- banner -->
+    <div class="banner">
+        <div class="container">
+            <div class="banner-content">
+                <h1>JOBS</h1>
+            </div>
+        </div>
+    </div>
+    <!-- Newfilters -->
+    <div class="container-banner">
+        <div class="search-banner">
+            <input type="text" class="search-input-banner" id="searchInput" placeholder="Search Jobs">
+            <select class="location-select-banner" id="locationFilter">
+                <option value="all">All Locations</option>
+                {% set unique_locations = [] %}
+                {% if alljobs %}
+                    {% for data in alljobs %}
+                        {% if data.location.title() not in unique_locations %}
+                            <option value="{{ data.location.title() }}">{{ data.location.title() }}</option>
+                            {% set _ = unique_locations.append(data.location.title()) %}
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            </select>
+            <button class="search-button-banner" onclick="filterJobPostings()">SEARCH</button>
+        </div>
+    </div>
+
+    <!-- Dynamic Job Posting -->
+    <div class="newbanner">
+        <div class="container">
+            <!-- <div class="jobcontainer"> -->
+                <ul class="jobcontainer">
+                    {% if alljobs %}
+                        {% for data in alljobs %}
+                            <li class="job-posting-content-post job-{{ data.title|lower()|replace(' ', '-') }}">
+                                <div class="job-field-new">
+                                    <div class="job-field-1-new">
+                                        <h2 id="job-name-new" onclick="window.location='{{ url_for('handshrjobdetail', id=data.id) }}'">
+                                            <a href="#">{{ data.title.title() }}</a>
+                                        </h2>
+                                    </div>
+                                    <div class="job-field-2-new">
+                                        <h3>{{ data.job_type}}</h3>
+                                        <h3>{{ data.location.title()}}</h3>
+                                        <h3 class="more-detail-new" onclick="window.location='{{ url_for('handshrjobdetail', id=data.id) }}'">
+                                            <a href="#">More Detail→ </a>
+                                        </h3>
+                                    </div>
+                                </div>
+                            </li>
+                        {% endfor %}
+                    {% else %}
+                        <h1 style="margin-top:10px; text-align:center; font-size:18px">No jobs found...</h1>
+                    {% endif %}
+                </ul>
+            <!-- </div> -->
+        </div>
+    </div>
+
+    <!-- footer start here -->
+    <footer class="footer-main">
+        <div class="container">
+            <hr class="ahadhr">
+            <div class="address-main row">
+                <div class="col-lg-4 col-sm-12 col-xs-12">
+                    <div class="address-box clearfix">
+                        <div class="add-icon"><a href="https://handshr.com/" target="_blank">
+                                <img src="https://www.click-hr.com/static/img/header_logo.png" alt=""></a>
+                        </div>
+                        <div class="add_content1 add-content">
+
+                            <p class="custom_branch_address"></i><span class="custom_icon_address_text">You will feel
+                                    great sending out your professional resume when applying for jobs knowing that not
+                                    only does it accurately represent your most noteworthy skills and
+                                    achievements</span></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-sm-12 col-xs-12">
+                    <div class="address-box2 address-box clearfix">
+                        <div class="add_content2 add-content">
+                            <h5>Useful Links</h5>
+                            <ul>
+                                <li><a class="nav-link" href="https://handshr.com/" target="_blank">Home</a></li>
+                                <li><a class="nav-link" href="https://handshr.com/applynow/" target="_blank">Apply</a>
+                                </li>
+                                <li><a class="nav-link" href="https://handshr.com/about-us/" target="_blank">About</a>
+                                </li>
+                                <li><a class="nav-link" href="https://handshr.com/services/"
+                                        target="_blank">Services</a></li>
+                                <li><a class="nav-link" href="https://handshr.com/contact-us/"
+                                        target="_blank">Contact</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-sm-12 col-xs-12">
+                    <div class="address-box3 address-box clearfix">
+                        <div class="add_content3 add-content">
+                            <h5>Contact</h5>
+                            <p><a href="mailto:info@hansdhr.com" target="_blank"><i
+                                        class="custom_envelope fas fa-envelope" style="padding-right: 5px;"></i><span
+                                        class="custom_icon_text">info@handshr.com</span></a></p>
+                            <p><a href="tel:+16475789336" target="_blank"><i aria-hidden="true"
+                                        class="custom_phone fas fa-phone" style="padding-right: 5px;"></i><span
+                                        class="custom_icon_text">+1
+                                        647-578-9336</span></a></p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+
+        <!-- Copyright Footer -->
+        <footer class="footer-second text-center text-white">
+            <!-- Copyright -->
+            <div class="text-center ">
+                <h6>© 2024 HansdHr. All Rights Reserved.</h6>
+
+            </div>
+            <!-- Copyright -->
+        </footer>
+    </footer>
+
+
+
+
+
+
+    <script src="script.js"></script>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+    crossorigin="anonymous"></script>
+<script>
+    // JavaScript function to filter job postings based on selected filters
+    function filterJobPostings() {
+        var selectedTitle = document.getElementById('jobTitleFilter').value.toLowerCase().replace(' ', '-');
+        var selectedType = document.getElementById('jobTypeFilter').value.toLowerCase().replace(' ', '-');
+        var selectedLocation = document.getElementById('jobLocationFilter').value.toLowerCase();
+
+        var jobPostings = document.querySelectorAll('.job-posting-content-post');
+
+        // Loop through all job postings and show/hide based on selected filters
+        jobPostings.forEach(function(posting) {
+            var jobTitleClass = posting.classList[1]; // Assuming job title class is second class in list
+            var jobType = posting.querySelector('.job-field-2 h3').textContent.toLowerCase().replace(' ', '-');
+            var jobLocation = posting.querySelector('.job-field-2 h3:nth-child(2)').textContent.toLowerCase();
+
+            var showPosting =
+                (selectedTitle === '' || jobTitleClass === 'job-' + selectedTitle) &&
+                (selectedType === '' || jobType === selectedType) &&
+                (selectedLocation === '' || jobLocation === selectedLocation);
+
+            posting.style.display = showPosting ? 'block' : 'none';
+        });
+    }
+
+    // Attach the filter function to onchange events of all select elements
+    document.getElementById('jobTitleFilter').addEventListener('change', filterJobPostings);
+    document.getElementById('jobTypeFilter').addEventListener('change', filterJobPostings);
+    document.getElementById('jobLocationFilter').addEventListener('change', filterJobPostings);
+
+    // Initial filter call to ensure correct display on page load
+    filterJobPostings();
+</script>
+
+<script>
+    document.getElementById('mobile-menu-button').onclick = function () {
+        document.body.classList.toggle("slide-right");
+        document.querySelector('.mobile_body_overlay').classList.toggle("mobile_body_overlay_on")
+    }
+
+    // Select the .mobile_body_overlay element
+    const mobileBodyOverlay = document.querySelector('.mobile_body_overlay');
+
+    // Add a click event listener to the .mobile_body_overlay element
+    mobileBodyOverlay.addEventListener('click', function () {
+        // Remove the "slide-right" class and "mobile_body_overlay_on" class
+        document.body.classList.remove("slide-right");
+        mobileBodyOverlay.classList.remove("mobile_body_overlay_on");
+    });
+
+    document.getElementById('mobile_menu_close_button').onclick = function () {
+        document.body.classList.remove("slide-right");
+        document.querySelector('.mobile_body_overlay').classList.remove("mobile_body_overlay_on")
+    }
+
+    var prevScrollpos = window.pageYOffset;
+    window.onscroll = function () {
+        var currentScrollPos = window.pageYOffset;
+        if (prevScrollpos > currentScrollPos) {
+            document.getElementById("hide-header").style.top = "0px";
+        } else {
+            document.getElementById("hide-header").style.top = "-85px"; /* adjust this value to the height of your header */
+        }
+        prevScrollpos = currentScrollPos;
+    }
+
+    function filterJobPostings() {
+            var searchInput = document.getElementById('searchInput').value.toLowerCase();
+            var selectedLocation = document.getElementById('locationFilter').value.toLowerCase();
+            var jobPostings = document.querySelectorAll('.job-posting-content-post');
+
+            jobPostings.forEach(function (posting) {
+                var jobTitle = posting.getAttribute('data-title').toLowerCase();
+                var jobLocation = posting.getAttribute('data-location').toLowerCase();
+
+                var showPosting =
+                    (searchInput === '' || jobTitle.includes(searchInput)) &&
+                    (selectedLocation === 'all' || jobLocation === selectedLocation);
+
+                posting.style.display = showPosting ? 'block' : 'none';
+            });
+        }
+
+        document.getElementById('searchInput').addEventListener('input', filterJobPostings);
+        document.getElementById('locationFilter').addEventListener('change', filterJobPostings);
+
+</script>
+
+</html>

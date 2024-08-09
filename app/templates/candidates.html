@@ -1,0 +1,343 @@
+{% extends "base.html" %}
+
+{% block title %} Tables {% endblock %}
+
+{% block content %}
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+<link href="https://www.click-hr.com/static/css/candidate.css" rel="stylesheet" />
+
+<style>
+</style>
+<div class="content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card ">
+                <div class="new">
+                    <div style="display: flex; justify-content: space-between;">
+                        <div style="display: flex;">
+                            <form action="{{ url_for('candidate') }}" method="">
+                                <div class="card-header" style="margin-top:10px;">
+                                    <button
+                                        class="card-title {% if active_url == 'candidate' %}active-button{% endif %}"
+                                        id="candidate-button">Applied Candidates</button>
+                                </div>
+                            </form>
+                            <form action="{{ url_for('selecteddata') }}" method="">
+                                <div class="card-header" style="margin-top:10px;">
+                                    <button
+                                        class="card-title {% if active_url == 'selecteddata' %}active-button{% endif %}"
+                                        id="selected-button">Selected Candidates</button>
+                                </div>
+                            </form>
+                            <form action="{{ url_for('placedcandidates') }}" method="">
+
+                                <div class="card-header" style="margin-top:10px;">
+                                    <button
+                                        class="card-title {% if active_url == 'placedcandidates' %}active-button{% endif %}"
+                                        id="placedcandidates">Placed Candidates</button>
+                                </div>
+                            </form>
+
+                            <form action="{{ url_for('rejectcandidates') }}" method="">
+
+                                <div class="card-header" style="margin-top:10px;">
+                                    <button
+                                        class="card-title {% if active_url == 'rejectcandidates' %}active-button{% endif %}"
+                                        id="rejectcandidates">Rejected Candidates</button>
+                                </div>
+                            </form>
+
+                        </div>
+                        <div class="card-header" style="margin-top: 20px;">
+                            <button class="card-tite" onclick="activity()"
+                                style="color:#19355f;font-weight:600">Activity</button>
+                        </div>
+                    </div>
+                    <div class="card-body foroverflow"  style="" id="activitydiv">
+                        <div>
+                            <ul>
+                                {% for job_history in candidatehistory %}
+                                <li style="color:black; font-size:12px">{{ job_history.notes }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+
+                    </div>
+
+                    <div class="nisadisplay" style="margin: 0px 20px;">
+                        <div style="display: flex;justify-content: flex-end;">
+                            <div class="search-div">
+                                <input id="searchKeyword" type="text" class="search">
+                                <i class="fa fa-search hicon sicon"></i>
+                            </div>
+                            <i onclick="exportMore()" style="margin-top: 24px; padding-right: 15px;"
+                                class="fas fa-ellipsis-v" data-toggle="tooltip" title="export data"></i>
+                            <div id="export" style="display:none">
+                                <ul class="export">
+                                    {% if url_for('candidate') == request.path %}
+                                    <li>
+                                        <form method="post" action="{{ url_for('export_csv') }}">
+                                            <input type="hidden" name="export_route" value="/candidate">
+                                            <button type="submit" class="btn btn-primary">Export CSV (Applied)</button>
+                                        </form>
+                                    </li>
+                                    {% elif url_for('selecteddata') == request.path %}
+                                    <li>
+                                        <form method="post" action="{{ url_for('export_csv') }}">
+                                            <input type="hidden" name="export_route" value="/selecteddata">
+                                            <button type="submit" class="btn btn-primary">Export CSV (Selected)</button>
+                                        </form>
+                                    </li>
+                                    {% elif url_for('rejectcandidates') == request.path %}
+                                    <li>
+                                        <form method="post" action="{{ url_for('export_csv') }}">
+                                            <input type="hidden" name="export_route" value="/rejectcandidates">
+                                            <button type="submit" class="btn btn-primary">Export CSV (Rejected)</button>
+                                        </form>
+                                    </li>
+                                    {% else %}
+                                    <li>
+                                        <form method="post" action="{{ url_for('export_csv') }}">
+                                            <input type="hidden" name="export_route" value="/placedcandidates">
+                                            <button type="submit" class="btn btn-primary">Export CSV (Placed)</button>
+                                        </form>
+                                    </li>
+                                    {% endif %}
+                                </ul>
+                            </div>
+                            <div id="loadingIndicator" style="display: none;">
+                                <div class="custom-spinner"></div>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+
+
+                        <div style="display: flex;">
+                            <div style="margin-top:15px">
+                                <form class="selectcountryfilterform">
+                                    <select class="selectcountryfilter" id="year_select" name="year_select">
+                                        <option value="">Year</option>
+                                        <option value="2024">2024</option>
+                                        <option value="2023">2023</option>
+                                        <!--                    <option value="2022">2022</option>-->
+                                        <!--                    <option value="2021">2021</option>-->
+                                    </select>
+                                </form>
+                            </div>
+                            <div style="margin-top:15px;margin-left:10px">
+                                <form class="selectcountryfilterform">
+                                    <select class="selectcountryfilter" id="country_select" name="country_select">
+                                        <option value="">Country</option>
+                                        {% for country in all_countries %}
+                                        {% set display_name = country.name %}
+                                        {% if country.name|length > 25 %}
+                                        {% set display_name = country.name[:15] ~ '...' %}
+                                        {% endif %}
+                                        <option value="{{ display_name }} ">{{ display_name }} ({{
+                                            phone_codes.get(country.alpha_2, '') }} )
+                                        </option>
+                                        {% endfor %}
+                                    </select>
+                                </form>
+                            </div>
+                            <div style="margin-top:15px;margin-left:10px">
+                                <form class="selectcountryfilterform">
+                                    <select class="selectcountryfilter" id="subj_select" name="subj_select">
+                                        <option value="">Job Title</option>
+                                        {% for line in unique_lines %}
+                                        <option value="{{ line }}">{{ line }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </form>
+                            </div>
+
+
+                        </div>
+
+                        <div style="display: flex;">
+                            <div style="margin-top:15px;margin-left:10px">
+                                <form class="selectcountryfilterform">
+                                    <select class="selectcountryfilter" id="prev_form" name="prev_form">
+                                        <option value="">Previous Form</option>
+                                        <option value="Interview Scheduled">Interview Scheduled</option>
+                                        <option value="Resume Sent">Resume Sent</option>
+                                        <option value="Help Another">Help Another</option>
+                                        <option value="Candidate Placement">Placement</option>
+                                    </select>
+                                </form>
+                            </div>
+                            <div style="margin-top:15px;margin-left:10px">
+                                <form class="selectcountryfilterform">
+                                    <select class="selectcountryfilter" id="source" name="source">
+                                        <option value="">Source Filter</option>
+                                        <option>HandsHR website</option>
+                                        <option>GeoxHR website</option>
+                                        <option>registered from Geox hr</option>
+                                    </select>
+                                </form>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="">
+                        <table style="overflow-x: auto;" id="dataTable">
+                            <thead>
+                                <tr>
+                                    <th scope="col" width="20%">Applicant Info</th>
+                                    <th scope="col" width="25%">Job Detail</th>
+                                    <th scope="col" width="8%">Date</th>
+                                    <th scope="col" width="6%">Resumes</th>
+                                    <th scope="col" width="15%">Status</th>
+                                    <th scope="col" width="15%">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="emailDataBody">
+                                {% if alldata|length > 0 %}
+                                {% for name in alldata %}
+                                <tr class="data-row{% if name.is_read %} read{% else %} unread{% endif %}"
+                                    data-email-id="{{ name.id }}">
+                                    <td data-label="Due Date">
+                                        <a href="/candidateprofile/{{name.id}}"><span
+                                                style="text-decoration:underline">{{ name.sender_name }}</span> <br>
+                                            {% if name.email == 'No Email!' %}
+                                            <span style="color: red;">{{ name.email }}</span> <br>
+                                            {% elif name.email is none %}
+                                            <span style="color: red;">'No Email!'</span> <br>
+                                            {% else %}
+                                            {{ name.email }} <br>
+                                            {% endif %}
+                                            {% if name.phone_number is not none %}
+                                            {% if name.phone_number|length == 11 or name.phone_number|length == 10 or
+                                            name.phone_number|length == 12 %}
+                                            <a href="tel:{{name.phone_number}}">{{ name.phone_number }}</a>
+                                            {% else %}
+                                            -
+                                            {% endif %}
+                                            {% else %}
+                                            {% endif %}
+
+                                        </a>
+                                    </td>
+                                    <td data-label="Amount">{{ name.subject_part2 }} <br>{{ name.subject_part1 }}</td>
+                                    <td data-label="Amount">{{ name.formatted_date }}</td>
+                                    <td data-label="Amount">
+                                        {% if name.file_content is none %}
+                                        No PDF
+                                        {% else %}
+                                        <p  style="cursor:pointer; padding-bottom:2px; color:#19355f; border-bottom: 1px solid #19355f;" {% if
+                                            name.file_content is none %} onclick="return false;" {% else %}
+                                            onclick="markEmailAsRead('{{ name.id }}'); showPdf('{{ name.id }}'); return false;"
+                                            {% endif %}>
+                                            View PDF
+                                        </p>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if name.action != 'Interested' and name.status != 'Candidate Placement' and
+                                        name.status != 'Reject' %}
+                                        {{ name.status }}
+                                        {% elif name.action == 'Interested' and name.status == 'Candidate Placement'%}
+                                        Candidate placed
+                                        {% elif name.action == 'Interested' and name.status == 'Reject'%}
+                                        Rejected
+                                        {% else %}
+                                        {{ name.status }}
+                                        <div class="cell-div"><input type="radio" id="resume_{{ name.status }}"
+                                                name="resume_{{ name.status }}" value="resume"
+                                                onclick="openUrl('/onereporting_form/{{ name.id }}/resume')" {% if
+                                                name.status=='Resume Sent' %} checked {% endif %}>
+                                            <label for="resume">Resume</label>
+                                        </div>
+                                        <div class="cell-div"><input type="radio" id="interview_{{ name.status }}"
+                                                name="interview_{{ name.status }}" value="interview"
+                                                onclick="openUrl('/onereporting_form/{{ name.id }}/interview')" {% if
+                                                name.status=='Interview Scheduled' %} checked {% endif %}>
+                                            <label for="interview">Interview</label><br>
+                                        </div>
+                                        <div class="cell-div"><input type="radio" id="placement_{{ name.status }}"
+                                                name="placement_{{ name.status }}" value="placement"
+                                                onclick="openUrl('/onereporting_form/{{ name.id }}/placement')" {% if
+                                                name.status=='Candidate Placement' %} checked {% endif %}>
+                                            <label for="placement">Placement</label>
+                                        </div>
+                                        <div class="cell-div"><input type="radio" id="help_{{ name.status }}"
+                                                name="help_{{ name.status }}" value="help"
+                                                onclick="openUrl('/onereporting_form/{{ name.id }}/help')" {% if
+                                                name.status=='Help Another' %} checked {% endif %}>
+                                            <label for="help">Help Another</label>
+                                        </div>
+                                        <div class="cell-div"><input type="radio" id="reject_{{ name.status }}"
+                                                name="reject_{{ name.status }}" value="reject"
+                                                onclick="openUrl('/onereporting_form/{{ name.id }}/reject')" {% if
+                                                name.status=='Help Another' %} checked {% endif %}>
+                                            <label for="help">=Reject</label>
+                                        </div>
+                                        {% endif %}
+                                    </td>
+
+
+
+                                    {% if name.action == 'Interested' %}
+                                    <td>
+
+                                        <a href="" data-toggle="tooltip" title="move back to applied candidates"
+                                            onclick="handleSelectionChange('{{ name.id }}', 'move to applied')"><span
+                                                class="select">Unselect</span></i></a>
+
+                                    </td>
+                                    {% else %}
+                                    <td>
+                                        <a href="" data-toggle="tooltip" title="Select candidate"
+                                            onclick="handleSelectionChange('{{ name.id }}', 'Interested')"><span
+                                                class="select">Select</span></a>
+                                        <!--                                  <a href="" onclick="handleSelectionChange('{{ name.id }}', 'Not Interested')"><i  style="color:red; font-size:20px;"    class="fas fa-times"></i></a>-->
+                                    </td>
+                                    {% endif %}
+                                </tr>
+                                {% endfor %}
+                                {% else %}
+                                <tr>
+                                    <td class="text-center" colspan="5">Empty</td>
+                                </tr>
+                                {% endif %}
+
+                            </tbody>
+                        </table>
+                        <div id="pdfViewer" style="display: none;">
+                            <object id="pdfObject" type="application/pdf" width="100%" height="800px"></object>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="pagination" id="pagination_nav">
+        <div class="pagination">
+            <ul class="pagination-list">
+                <li><a href="#" data-page="1" data-year="{{ selected_year }}" data-country="{{ selected_country }}"
+                        data-subject="{{ selected_subject }}">&laquo;</a></li>
+                {% for page_num in range(1, total_pages + 1) %}
+                <li><a href="#" data-page="{{ page_num }}" data-year="{{ selected_year }}"
+                        data-country="{{ selected_country }}" data-subject="{{ selected_subject }}">{{ page_num }}</a>
+                </li>
+                {% endfor %}
+                <li><a href="#" data-page="{{ total_pages }}" data-year="{{ selected_year }}"
+                        data-country="{{ selected_country }}" data-subject="{{ selected_subject }}">&raquo;</a></li>
+            </ul>
+        </div>
+        <input type="hidden" id="total_pages" value="{{ total_pages }}">
+
+    </div>
+</div>
+
+
+{% endblock content %}
+{% block javascripts %}
+<script src="https://www.click-hr.com/static/js/candidate.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+
+{% endblock javascripts %}

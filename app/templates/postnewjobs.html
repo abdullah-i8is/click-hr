@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<!---Coding By CodingLab | www.codinglabweb.com--->
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link rel="stylesheet" href="https://www.click-hr.com/static/css/forms.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="icon" href="https://www.click-hr.com/static/img/titleicon.png">
+
+</head>
+<style>
+  /* Import Google font - Poppins */
+  @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+  }
+
+  body {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: #19355f;
+  }
+
+  .container {
+    position: relative;
+    width: 100%;
+    background: #fff;
+    padding: 25px;
+    border-radius: 8px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+  }
+
+  .container header {
+    font-size: 1.5rem;
+    color: #333;
+    font-weight: 500;
+    text-align: center;
+    margin-bottom: 10px;
+
+  }
+
+  .container p {
+    font-size: 15px;
+    color: #333;
+    font-weight: 500;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  .container .logo {
+    width: 150px;
+
+  }
+
+  .container .form {
+    margin-top: 30px;
+    margin-bottom: 50px;
+    width: 65%;
+
+
+  }
+
+  .form .input-box {
+    width: 100%;
+    margin-top: 20px;
+  }
+
+  .input-box label {
+    color: #333;
+  }
+
+  .form :where(.input-box input, .select-box) {
+    position: relative;
+    height: 50px;
+    width: 100%;
+    outline: none;
+    font-size: 1rem;
+    color: #707070;
+    margin-top: 8px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 0 15px;
+  }
+
+  .form :where(.area-box) {
+    position: relative;
+    height: 113px;
+    width: 100%;
+    outline: none;
+    font-size: 1rem;
+    color: #707070;
+    margin-top: 8px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 0 15px;
+  }
+
+  .input-box input:focus {
+    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
+  }
+
+  .form .column {
+    display: flex;
+    column-gap: 15px;
+  }
+
+  .form .gender-box {
+    margin-top: 20px;
+  }
+
+  .gender-box h3 {
+    color: #333;
+    font-size: 1rem;
+    font-weight: 400;
+    margin-bottom: 8px;
+  }
+
+  .form :where(.gender-option, .gender) {
+    display: flex;
+    align-items: center;
+    column-gap: 50px;
+    flex-wrap: wrap;
+  }
+
+  .form .gender {
+    column-gap: 5px;
+  }
+
+  .gender input {
+    accent-color: #19355f;
+  }
+
+  .form :where(.gender input, .gender label) {
+    cursor: pointer;
+  }
+
+  .gender label {
+    color: #707070;
+  }
+
+  .address :where(input, .select-box) {
+    margin-top: 15px;
+  }
+
+  .select-box select {
+    height: 100%;
+    width: 100%;
+    outline: none;
+    border: none;
+    color: #707070;
+    font-size: 1rem;
+  }
+
+  .form button {
+    height: 55px;
+    width: 100%;
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 400;
+    margin-top: 30px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    background: #19355f;
+  }
+
+  .form button:hover {
+    background: #b3bbd1;
+    color: #19355f;
+  }
+
+  .forsubform {
+    padding-bottom: 20px;
+    border-bottom: 2px solid #8a8787;
+  }
+
+  /* .subform-content{
+  padding-bottom: 20px;
+  border-bottom: 2px solid #8a8787;
+} */
+  .subform-content-head h2 {
+    font-size: 1.5rem;
+    color: #2e2c2c;
+    font-weight: 600;
+    margin-bottom: 5px;
+  }
+
+  .subform-content-head p {
+    text-align: left;
+  }
+
+  .inputsfor {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .inputsfor .input-box {
+    width: 48%;
+  }
+
+  /*Responsive*/
+  @media screen and (max-width: 500px) {
+    .form .column {
+      flex-wrap: wrap;
+    }
+
+    .form :where(.gender-option, .gender) {
+      row-gap: 15px;
+    }
+  }
+
+  .span {
+    font-size: 12px;
+  }
+</style>
+
+<body>
+  <section class="container">
+    <div class="form-head">
+        <a href="/index"><img class="logo" src="https://www.click-hr.com/static/img/clickhr.png" alt=""></a>
+           <a class="backtodashboard" href="{{ url_for('jobs') }}">
+             <i class="fa fa-arrow-left"></i>
+             <p style="margin-bottom: 0px">back to jobs</p>
+           </a>
+    </div>
+    <div style="display: flex; justify-content: space-between;">
+      {% if job is not defined %}
+    <form action="/postjob" method="post" class="form" enctype="multipart/form-data">
+      <div class="input-box">
+        <label>Job Title <span>*</span>
+        </label>
+        <input type="text" name="title" placeholder="Enter Job Title" required />
+      </div>
+      <input type="text" placeholder="Enter Your name" name="user_id" hidden
+        value="{{session['user_id']}}" />
+      <input type="text" placeholder="Enter Your name" name="name" hidden
+        value="{{session['user']}}" />
+      <!-- <div class="input-box">
+        <label>Job Thumbnail <span>(optional)</span>
+        </label>
+      </div>
+       <input type="file" name="myFile" id="imageUpload" /> 
+      <input type="file" id="imageUpload" name="myFile" accept="image/*" />
+      <img id="previewImage" src="#" alt="Preview Image" style="display: none; width:100px; height: auto;" /> -->
+
+      <div class="gender-box">
+        <h3>Select Company<span>*</span><br>
+           <div class="gender-option">
+            <div class="gender">
+               <input type="checkbox" name="company_name" value="Geox hr" id="company_1" checked>
+                <label for="company_1">Geox Hr</label>
+            </div>
+            <div class="gender">
+              <input type="checkbox" id="company_2" name="company_name" value="Hands hr">
+              <label for="company_2">Hands Hr</label>
+            </div>
+             <div class="gender">
+              <input type="checkbox" id="company_3" name="company_name" value="i8is">
+              <label for="company_3">I8IS</label>
+            </div>
+          </div>
+      </div>
+
+
+      <div class="input-box">
+        <label>Location <span>*</span>
+        </label>
+        <input type="text" name="location" placeholder="Enter Location Job" required />
+      </div>
+
+      <div class="gender-box">
+        <h3>Job Type<span>*</span><br>
+          <div class="gender-option">
+            <div class="gender">
+               <input type="radio" name="Job-Type" value="Full Time" id="full-time" checked>
+                <label for="full-time">Full-time</label>
+            </div>
+            <div class="gender">
+              <input type="radio" id="part-time" name="Job-Type" value="Part Time">
+              <label for="part-time">Part-time</label>
+            </div>
+            <div class="gender">
+              <input type="radio" name="Job-Type" value="contract" id="contract" class="contract">
+              <label for="contract">Contract-based</label>
+            </div>
+
+            <div id="durationField" style="display: none; margin-top:5px" class="input-box">
+              <input type="text" id="duration" name="duration" placeholder="Duration">
+            </div>
+          </div>
+      </div>
+      <div class="gender-box">
+        <h3>Onsite/remote<span>*</span><br>
+          <div class="gender-option">
+            <div class="gender">
+              <input type="radio" id="Onsite" name="onsite" value="onsite" checked>
+              <label for="Onsite">Onsite</label>
+            </div>
+            <div class="gender" style="margin-left:26px">
+              <input type="radio" id="Remote" name="onsite" value="Remote">
+              <label for="Remote">Remote</label>
+            </div>
+            <div class="gender" style="margin-left:20px">
+              <input type="radio" id="Hybrid" name="onsite" value="hybrid ">
+              <label for="Hybrid">Hybird </label>
+            </div>
+
+          </div>
+      </div>
+
+      <div class="input-box">
+        <label>Salary<span>(optional)</span>
+        </label>
+        <br>
+        <select class="select-box" name="salarytypes" id="JobTypes">
+          <option>Select</option>
+          <option value="Annual">Annual</option>
+          <option value="Monthly">Monthly</option>
+          <option value="Hourly">Hourly</option>
+        </select>
+        <div id="SalaryField" style="display: none; margin-top:5px" class="input-box">
+          <input type="text" id="Salary" name="Salary" placeholder="Salary Amount">
+        </div>
+      </div>
+      <div class="input-box">
+          <label>Post Date <span>*</span></label>
+         <input type="date" name="date" required id="job-post-date">
+      </div>
+      <div class="gender-box">
+        <h3>Job Status<span>*</span><br>
+          <div class="gender-option">
+            <div class="gender">
+              <input type="radio" id="Active" value="active" id="check-male" name="active" checked />
+              <label for="Active">Active</label>
+            </div>
+            <div class="gender">
+              <input type="radio" id="In-Active" value="inactive" id="check-female" name="active" />
+              <label for="In-Active">In-Active</label>
+            </div>
+          </div>
+      </div>
+      <div class="input-box">
+        <label>Experience <span>*</span>
+        </label>
+        <input type="text" name="experience" placeholder="Enter Job experience" required />
+      </div>
+      <div class="input-box">
+        <label>Job Description<span>*</span>
+        </label>
+        <div class="bullet-div">
+          <span class="bullet-icon" onclick="insertBulletPoint('Job-Description')"><i class="fa fa-list-ul"></i></span>
+          <span class="bullet-icon" onclick="insertNumberedList('Job-Description')"><i class="fa fa-list-ol"></i></span>
+          <textarea id="Job-Description" class="area-box" name="description"
+            onkeydown="handleKeyDown(event, 'Job-Description')" required></textarea>
+        </div>
+        <!-- <textarea class="area-box" id="w3review" name="description" required></textarea> -->
+
+      </div>
+      <div class="input-box">
+        <label>Job Responsibilities<span>*</span>
+        </label>
+        <div class="bullet-div">
+          <span class="bullet-icon" onclick="insertBulletPoint('job-responsibilities')"><i
+              class="fa fa-list-ul"></i></span>
+          <span class="bullet-icon" onclick="insertNumberedList('job-responsibilities')"><i
+              class="fa fa-list-ol"></i></span>
+          <textarea id="job-responsibilities" class="area-box" name="responsibility"
+            onkeydown="handleKeyDown(event, 'job-responsibilities')" required></textarea>
+        </div>
+        <!-- <textarea class="area-box" id="w3review" name="responsibility" required></textarea> -->
+      </div>
+      <div class="input-box">
+        <label>Eligibility Criteria<span>*</span>
+        </label>
+        <div class="bullet-div">
+          <span class="bullet-icon" onclick="insertBulletPoint('eligibility-criteria')"><i
+              class="fa fa-list-ul"></i></span>
+          <span class="bullet-icon" onclick="insertNumberedList('eligibility-criteria')"><i
+              class="fa fa-list-ol"></i></span>
+          <textarea id="eligibility-criteria" class="area-box" name="eligibility"
+            onkeydown="handleKeyDown(event, 'eligibility-criteria')" required></textarea>
+        </div>
+        <!-- <textarea class="area-box" id="w3review" name="eligibility" required></textarea> -->
+
+      </div>
+      <div class="input-box">
+        <label>Additional Notes<span>(optional)</span>
+        </label>
+        <div class="bullet-div">
+          <span class="bullet-icon" onclick="insertBulletPoint('additional-notes')"><i class="fa fa-list-ul"></i></span>
+          <span class="bullet-icon" onclick="insertNumberedList('additional-notes')"><i
+              class="fa fa-list-ol"></i></span>
+          <textarea id="additional-notes" class="area-box" name="notes"
+            onkeydown="handleKeyDown(event, 'additional-notes')"></textarea>
+        </div>
+        <!-- <textarea class="area-box" id="w3review" name="notes"></textarea> -->
+      </div>
+
+      <button type="submit" name="submit">Submit</button>
+      <button type="button"><a style="color:white;" href="{{ url_for('jobs') }}">Cancel</a></button>
+    </form>
+    {% else %}
+    <form action="/postjob" method="post" class="form" enctype="multipart/form-data">
+      <div class="input-box">
+        <label>Job Title <span>*</span>
+        </label>
+        <input type="text" name="title" placeholder="Enter Job Title" value="{{job.title}}" />
+      </div>
+      <input type="text" placeholder="Enter Your name" name="user_id" hidden
+        value="{{session['user_id']}}" />
+      <input type="text" placeholder="Enter Your name" name="name" hidden
+        value="{{session['user']}}" />
+        <input type="text" placeholder="Enter Your name" name="id" hidden
+        value="{{job.id}}" />
+      <!-- <div class="input-box">
+        <label>Job Thumbnail <span>(optional)</span>
+        </label>
+      </div>
+      <input type="file" name="myFile" id="imageUpload" /> 
+      <input type="file" id="imageUpload" name="myFile" accept="image/*" value="{{job.image}}" />
+      <img id="previewImage" src="../{{job.image}}" alt="Preview Image" style=" width:100px; height: auto;" /> -->
+
+
+      <div class="gender-box">
+       <h3>Select Company<span>*</span><br>
+        <div class="gender-option">
+            <div class="gender">
+                <input type="checkbox" name="company_name" value="Geox hr" id="company_1" {% if job.company == '1' or job.company == '12' or job.company == '13' or job.company == '123' %} checked {% endif %}>
+                <label for="company_1">Geox Hr</label>
+            </div>
+            <div class="gender">
+                <input type="checkbox" id="company_2" name="company_name" value="Hands hr" {% if job.company == '2' or job.company == '12' or job.company == '23'or job.company == '123'%} checked {% endif %}>
+                <label for="company_2">Hands Hr</label>
+            </div>
+          <div class="gender">
+                <input type="checkbox" id="company_3" name="company_name" value="i8is" {% if job.company == '3' or job.company == '13' or job.company == '23'or job.company == '123'%} checked {% endif %}>
+                <label for="company_3">I8IS</label>
+            </div>
+        </div>
+      </div>
+
+
+      <div class="input-box">
+        <label>Location <span>*</span>
+        </label>
+        <input type="text" name="location" placeholder="Enter Location Job" value="{{job.location}}" />
+      </div>
+
+      <div class="gender-box">
+        <h3>Job Type<span>*</span><br>
+          <div class="gender-option">
+            <div class="gender">
+               <input type="radio" name="Job-Type" value="Full Time" id="full-time" {% if job.job_type == 'Full Time' %} checked {% endif %}>
+              <label for="full-time">Full-time</label>
+            </div>
+            <div class="gender">
+              <input type="radio" name="Job-Type" value="Part Time" {% if job.job_type == 'Part Time' %} checked {% endif %}>
+              <label for="part-time">Part-time</label>
+            </div>
+            <div class="gender">
+              <input type="radio" name="Job-Type" value="contract" id="contract" class="contract" {% if job.job_type == 'contract' %} checked {% endif %}>
+              <label for="contract">Contract-based</label>
+            </div>
+
+            <div id="durationField" style="display: none; margin-top:5px" class="input-box">
+              <input type="text" id="duration" name="duration" placeholder="Duration">
+            </div>
+          </div>
+      </div>
+      <div class="gender-box">
+        <h3>Onsite/remote<span>*</span><br>
+          <div class="gender-option">
+            <div class="gender">
+              <input type="radio" name="onsite" value="onsite" {% if job.onsite == 'onsite' %} checked {% endif %}>
+              <label for="check-male">Onsite</label>
+            </div>
+            <div class="gender" style="margin-left:26px">
+              <input type="radio" name="onsite" value="Remote" {% if job.onsite == 'Remote' %} checked {% endif %}>
+              <label for="check-female">Remote</label>
+            </div>
+            <div class="gender" style="margin-left:20px">
+              <input type="radio" name="onsite" value="hybrid " {% if job.onsite == 'hybrid ' %} checked {% endif %}>
+              <label for="check-female">Hybird </label>
+            </div>
+
+          </div>
+      </div>
+
+      <div class="input-box">
+        <label>Salary<span>(optional)</span>
+        </label>
+        <br>
+        <select class="select-box" name="salarytypes" id="JobTypes">
+          <option>Select</option>
+          <option value="Annual" {% if job.salary_type == 'Annual' %}selected{% endif %}>Annual</option>
+          <option value="Monthly" {% if job.salary_type == 'Monthly' %}selected{% endif %}>Monthly</option>
+          <option value="Hourly" {% if job.salary_type == 'Hourly' %}selected{% endif %}>Hourly</option>
+        </select>
+        <div id="SalaryField" style="display: none; margin-top:5px" class="input-box">
+          <input type="text" id="Salary" name="Salary" placeholder="Salary Amount" value="{{job.salary}}">
+        </div>
+      </div>
+      <div class="input-box">
+        <label>Job Post Date <span>*</span>
+        </label>
+<!--        <input type="date" name="date" required id="job-post-date" value="{{job.job_date}}">-->
+        <input type="date" name="date" id="job-post-date" value="{{job.job_date}}"  />
+      </div>
+      <div class="gender-box">
+        <h3>Job Status<span>*</span><br>
+          <div class="gender-option">
+            <div class="gender">
+              <input type="radio" value="active" id="check-male" name="active"  {% if job.job_status == 'active' %} checked {% endif %} />
+              <label for="Active">Active</label>
+            </div>
+            <div class="gender">
+              <input type="radio" value="inactive" id="check-female" name="active"  {% if job.job_status == 'inactive' %} checked {% endif %}/>
+              <label for="In-Active">In-Active</label>
+            </div>
+          </div>
+      </div>
+      <div class="input-box">
+        <label>Experience <span>*</span>
+        </label>
+        <input type="text" name="experience" placeholder="Enter Job Experience" value="{{job.experience}}" required />
+      </div>
+      <div class="input-box">
+        <label>Job Description<span>*</span>
+        </label>
+        <div class="bullet-div">
+          <span class="bullet-icon" onclick="insertBulletPoint('Job-Description')"><i class="fa fa-list-ul"></i></span>
+          <span class="bullet-icon" onclick="insertNumberedList('Job-Description')"><i class="fa fa-list-ol"></i></span>
+          <textarea id="Job-Description" class="area-box" name="description"
+            onkeydown="handleKeyDown(event, 'Job-Description')" required >{{job.description}}</textarea>
+        </div>
+        <!-- <textarea class="area-box" id="w3review" name="description" required></textarea> -->
+
+      </div>
+      <div class="input-box">
+        <label>Job Responsibilities<span>*</span>
+        </label>
+        <div class="bullet-div">
+          <span class="bullet-icon" onclick="insertBulletPoint('job-responsibilities')"><i
+              class="fa fa-list-ul"></i></span>
+          <span class="bullet-icon" onclick="insertNumberedList('job-responsibilities')"><i
+              class="fa fa-list-ol"></i></span>
+          <textarea id="job-responsibilities" class="area-box" name="responsibility"
+            onkeydown="handleKeyDown(event, 'job-responsibilities')" required>{{job.responsibility}}</textarea>
+        </div>
+        <!-- <textarea class="area-box" id="w3review" name="responsibility" required></textarea> -->
+      </div>
+      <div class="input-box">
+        <label>Eligibility Criteria<span>*</span>
+        </label>
+        <div class="bullet-div">
+          <span class="bullet-icon" onclick="insertBulletPoint('eligibility-criteria')"><i
+              class="fa fa-list-ul"></i></span>
+          <span class="bullet-icon" onclick="insertNumberedList('eligibility-criteria')"><i
+              class="fa fa-list-ol"></i></span>
+          <textarea id="eligibility-criteria" class="area-box" name="eligibility"
+            onkeydown="handleKeyDown(event, 'eligibility-criteria')" required>{{job.eligibility}}</textarea>
+        </div>
+        <!-- <textarea class="area-box" id="w3review" name="eligibility" required></textarea> -->
+
+      </div>
+      <div class="input-box">
+        <label>Additional Notes<span>(optional)</span>
+        </label>
+        <div class="bullet-div">
+          <span class="bullet-icon" onclick="insertBulletPoint('additional-notes')"><i class="fa fa-list-ul"></i></span>
+          <span class="bullet-icon" onclick="insertNumberedList('additional-notes')"><i
+              class="fa fa-list-ol"></i></span>
+          <textarea id="additional-notes" class="area-box" name="notes"
+            onkeydown="handleKeyDown(event, 'additional-notes')">{{job.notes}}</textarea>
+        </div>
+        <!-- <textarea class="area-box" id="w3review" name="notes"></textarea> -->
+      </div>
+      {% if job %}
+      <button type="submit" name="submit">Update</button>
+      <button type="button"><a style="color:white;" href="{{ url_for('jobs') }}">Cancel</a></button>
+      {% else %}
+      <button type="submit" name="submit">Submit</button>
+      {% endif %}
+    </form>
+    {% endif %}
+    {% if job  %}
+    <div style="width: 30%; padding: 10px; margin-top: 50px;border: 0.0625rem solid rgba(34, 42, 66, 0.05);box-shadow: 10px 10px 26px 10px #f7f1f1cc inset">
+      <div class="card-header">
+        <h4 class="title" style="color:#19355f;font-size: 25px;">Activity</h4>
+       </div>
+      <div class="card-body" style="overflow: auto; max-height: 60vh;">
+            <div id="activity">
+                <ul style="padding: 20px;">
+  
+                  {% for postjob_history in postjob_history %}
+                  <li style="color:black; font-size:12px">{{ postjob_history.notes }}</li>
+                  {% endfor %}
+                </ul>
+            </div>
+    
+          </div>
+    </div>
+
+    {% endif %}
+    </div>
+    </div>
+
+  </section>
+</body>
+<script>
+    // Get today's date
+    var today = new Date();
+    var dd = String(today.getDate()).padStart(2, '0');
+    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+    var yyyy = today.getFullYear();
+
+    today = yyyy + '-' + mm + '-' + dd;
+
+    // Set today's date as the value of the input field
+    document.getElementById("job-post-date").setAttribute("max", today);
+    document.getElementById("job-post-date").setAttribute("value", today);
+</script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.min.js"></script>
+<script>
+<!--date fix-->
+  var today = new Date().toISOString().split('T')[0];
+    document.getElementById("job-post-date").setAttribute("min", today);
+    var dateInput = document.getElementById("job-post-date");
+  dateInput.addEventListener("keydown", function(event) {
+    event.preventDefault(); // Prevent typing in the input field
+  });
+<!--date fix-->
+
+  document.getElementById('imageUpload').addEventListener('change', function (event) {
+      const input = event.target;
+      const oldimg = document.getElementById('oldimg');
+      const previewImage = document.getElementById('previewImage');
+
+      if (input.files && input.files[0]) {
+          const reader = new FileReader();
+
+          reader.onload = function (e) {
+              previewImage.src = e.target.result;
+              previewImage.style.display = 'block';
+              oldimg.style.display = 'none';
+          };
+
+          reader.readAsDataURL(input.files[0]);
+      }
+  });
+
+  document.addEventListener('DOMContentLoaded', function () {
+      var employmentTypeRadios = document.getElementsByName('Job-Type');
+      var durationField = document.getElementById('durationField');
+
+      for (var i = 0; i < employmentTypeRadios.length; i++) {
+          employmentTypeRadios[i].addEventListener('change', function () {
+              if (this.value === 'contract') {
+                  durationField.style.display = 'block';
+              } else {
+                  durationField.style.display = 'none';
+              }
+          });
+      }
+  });
+
+  var selectBox = document.getElementById('JobTypes');
+  var salaryField = document.getElementById('SalaryField');
+
+  selectBox.addEventListener('change', function () {
+      if (selectBox.value !== 'Select') {
+          salaryField.style.display = 'block';
+      } else {
+          salaryField.style.display = 'none';
+      }
+  });
+
+  function cancel1() {
+      window.location.href = "jobs.php";
+  }
+
+  var textarea = document.getElementById('bullet-textarea');
+
+  function insertBulletPoint(textareaId) {
+      var textarea = document.getElementById(textareaId);
+      var start = textarea.selectionStart;
+      var end = textarea.selectionEnd;
+      var lines = textarea.value.substring(0, start).split('\n');
+      var currentLine = lines[lines.length - 1];
+      if (!currentLine.trim().startsWith('•')) {
+          textarea.value = textarea.value.substring(0, start) + '• ' + textarea.value.substring(end);
+          textarea.selectionStart = textarea.selectionEnd = start + 2;
+      }
+      textarea.focus();
+  }
+
+
+  function insertNumberedList(textareaId) {
+      var textarea = document.getElementById(textareaId);
+      var start = textarea.selectionStart;
+      var end = textarea.selectionEnd;
+      var lines = textarea.value.substring(0, start).split('\n');
+      var currentLine = lines[lines.length - 1];
+      var match = currentLine.trim().match(/^\d+\./);
+      if (!match) {
+          var lineNumber = lines.length;
+          textarea.value = textarea.value.substring(0, start) + lineNumber + '. ' + textarea.value.substring(end);
+          textarea.selectionStart = start + (lineNumber.toString().length + 2);
+          textarea.selectionEnd = textarea.selectionStart;
+      }
+      textarea.focus();
+  }
+
+  function handleKeyDown(event, textareaId) {
+      var textarea = document.getElementById(textareaId);
+      if (event.keyCode === 13 && !event.shiftKey) {
+          event.preventDefault();
+          insertNewLine(textarea);
+      }
+  }
+  function insertNewLine(textarea) {
+  var start = textarea.selectionStart;
+  var end = textarea.selectionEnd;
+  var previousLine = textarea.value.substring(0, start).split('\n').pop();
+  var isBulletPoint = previousLine.trim().startsWith('•');
+  var isNumberedList = previousLine.trim().match(/^\d+\./);
+  var newLinePrefix = '';
+
+  if (isBulletPoint) {
+      newLinePrefix = '• ';
+  } else if (isNumberedList) {
+      var currentLineNumber = parseInt(isNumberedList[0]);
+      newLinePrefix = (currentLineNumber + 1) + '. ';
+  }
+
+  textarea.value = textarea.value.substring(0, start) + '\n' + newLinePrefix + textarea.value.substring(end);
+  textarea.selectionStart = textarea.selectionEnd = start + newLinePrefix.length + 1;
+  textarea.focus();
+}
+
+
+</script>
+<script>
+    <!--display sweetalert(popup)-->
+    document.querySelector('form').addEventListener('submit', function (event) {
+        event.preventDefault();
+
+        // Disable the submit button
+        document.querySelector('button[name="submit"]').disabled = true;
+
+        fetch('/postjob', {
+            method: 'POST',
+            body: new FormData(event.target)
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.message === 'success') {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success!',
+                    text: 'Form updated successfully!',
+                }).then(() => {
+                    window.location.href = '{{ url_for('jobs') }}';
+                });
+            } else {
+                alert(data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('An error occurred while updating the form.');
+        });
+    });
+</script>
+
+</html>

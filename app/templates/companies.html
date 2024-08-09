@@ -1,0 +1,353 @@
+{% extends "base.html" %}
+
+{% block title %} Dashboard {% endblock %} 
+
+{% block content %}
+<style>
+     .active-button {
+    background-color: green;
+  }
+   .btn-arc {
+    height: 30px;
+    margin-top: 7px;
+    margin-right: 7px;
+    background: none;
+    color: black;}
+
+.cd-btn {
+  background: linear-gradient(0deg, #19355f 10%, #4372b8 100%)!important;
+  border: none;
+  outline: none;
+  color: #ffff !important;
+  transition: background-color 1s;
+  border-bottom : 1ps solid #2d8c56;
+}
+
+.cd-btn:hover {
+  background: linear-gradient(-90deg, #19355f 10%, #4372b8 100%)!important;
+}
+   button{
+    border: none;
+    border-bottom: 1px solid black;
+    border-radius: 0px!important;
+    }
+
+    .cd-btn a{
+     color: #ffff !important;
+    }
+    p{
+    margin-left:10px;
+    color:black;
+    }
+    .order-scroll{
+    border-radius:10px;
+    list-style:none;
+    padding:0px 10px;
+    }
+
+
+ tr{
+   margin-top:20px;
+   border-bottom: 1px solid black;
+
+   }
+  th{
+  text-align:center;
+  color: #19355f;
+    padding:5px
+  }
+   td{
+  text-align:center;
+  color: #19355f;
+    padding:5px;
+    cursor: pointer;
+  }
+   .list-item:hover{
+       background-color: #7fba96;
+   }
+    .candidate-row:hover{
+       background-color: #7fba96;
+   }
+.selectedcandidate {
+    display: none;
+    position: absolute;
+    top: 40%;
+    left: 25%;
+    transform: translate(0%, -50%);
+    z-index: 9999;
+}
+
+.card .card-header{
+color:black;
+}
+.pagination{
+justify-content: flex-end;
+}
+
+</style>
+    <div class="content">
+        <div class="row">
+             <div class="col-lg-12">
+                <div class="card card-chart">
+                   <div class="card-header">
+     <div>
+         <div style="display:flex; justify-content:space-between; align-items:center;">
+           <div style="display:flex; justify-contnent:space-between">
+             <form action="{{ url_for('Companies') }}" method="">
+              <div class="card-header" style="margin-top:10px;">
+                <button class="card-title {% if active_url == 'Companies' %}active-button{% endif %}"
+                  id="candidate-button">Companies</button>
+              </div>
+            </form>
+           </div>
+
+             <div style="    display: flex;
+    justify-content: space-between;
+    align-items: baseline;">
+                 <button class="card-title cd-btn" id="candidate-button">
+                    <a href="/onereporting"><i class="fas fa-plus"></i> Add New Deal</a>
+                </button>
+                 <div class="card-header" style="margin-top: 20px;">
+              <button class="card-tite" onclick="activity()"
+                style="color:#19355f;font-weight:600">Activity</button>
+            </div>
+              <div class="card-body" style="overflow: auto; max-height: 60vh;overflow: auto;
+          max-height: 60vh;
+          width: 30%;
+          margin-left: auto;
+          margin-top: 60px;
+          background-color: #fff;  box-shadow: 7px 7px 5px -7px gray inset; display:none;position: absolute;
+    right: 0;
+    z-index: 1;" id="activitydiv">
+            <div >
+                <ul>
+                   {% for job_history in company_activity %}
+                   <li style="color:black; font-size:12px">{{ job_history.notes }}</li>
+                   {% endfor %}
+                </ul>
+            </div>
+
+             </div>
+        </div>
+
+
+
+    </div>
+
+ <form method="POST" action="{{ url_for('archive_companies') }}">
+    <div class="order-scroll">
+           <div style="display:flex;">
+                  <button id="carchive-btn" type="submit" style="
+    display:none;
+    background: red;
+    padding: 3px 24px;
+    color: white;
+    border-bottom: none;
+    margin-left: 5px;">Acitve</button>
+              <button id="cunarchive-btn" type="submit" style="
+    display:none;
+    background: red;
+    padding: 3px 14px;
+    color: white;
+    border-bottom: none;
+    margin-left: 5px;">Inactive</button>
+           </div>
+   <table style="margin:auto;">
+            <thead class=" text-primary">
+                <tr>
+                    <th scope="col" width="5%">Select</th>
+                    <th scope="col" width="18%"><span class="sort-icon" onclick="sortCompanies()" style="cursor: pointer">▼</span>Companies</th>
+                    <th scope="col" width="10%">Current Deal </th>
+                    <th scope="col" width="10%">Deal Sign on </th>
+                    <th scope="col" width="10%">Current Status</th>
+                    <th scope="col" width="10%">Deal signed by</th>
+
+
+
+                </tr>
+            </thead>
+            <tbody>
+    {% for job_order in companies %}
+        <tr data-company-id="{{ job_order.id }}"
+            data-toggle="tooltip"
+            class="list-item red-tooltip"
+            data-cid="{{ job_order.company_id }}"
+        >
+            <td>
+                <input type="checkbox" name="selected_company[]" value="{{ job_order.id }}">
+            </td>
+            <td data-toggle="tooltip">
+                <span style="font-weight: 600">{{ job_order.company }}</span><br>
+            </td>
+            <td data-toggle="tooltip">
+                <span style="font-weight: 600">{{ job_order.status }}</span><br>
+            </td>
+            <td data-toggle="tooltip">
+                <span style="font-weight: 600">{{ job_order.created_at }}</span><br>
+            </td>
+            <td data-toggle="tooltip">
+                <span style="font-weight: 600">{{ job_order.company_status }}</span><br>
+            </td>
+            <td data-toggle="tooltip">
+                <span style="font-weight: 600">{{ job_order.name }}</span><br>
+            </td>
+        </tr>
+    {% endfor %}
+</tbody>
+        </table>
+    </div>
+    </form>
+
+    </div>
+</div>
+
+                </div>
+            </div>
+        </div>
+<nav aria-label="Page navigation example">
+    <ul class="pagination">
+        <li class="page-item{% if page == 1 %} disabled{% endif %}">
+            <a class="page-link" href="{{ url_for('Companies', page=page-1) }}" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+            </a>
+        </li>
+        {% for p in range(start_page, end_page + 1) %}
+            <li class="page-item{% if p == page %} active{% endif %}">
+                <a class="page-link" href="{{ url_for('Companies', page=p) }}">{{ p }}</a>
+            </li>
+        {% endfor %}
+        <li class="page-item{% if page == total_pages %} disabled{% endif %}">
+            <a class="page-link" href="{{ url_for('Companies', page=page+1) }}" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+        </li>
+    </ul>
+</nav>
+    </div>
+{% endblock content %}
+{% block javascripts %}
+<script>
+    var ascending = true; // Variable to track the sorting order
+
+    // Function to sort companies alphabetically
+    function sortCompanies() {
+        var rows = document.querySelectorAll("tbody tr");
+        var sortedRows = Array.from(rows).sort((a, b) => {
+            var textA = a.querySelector("td:nth-child(2)").textContent.trim();
+            var textB = b.querySelector("td:nth-child(2)").textContent.trim();
+            return ascending ? textA.localeCompare(textB) : textB.localeCompare(textA);
+        });
+
+        // Reorder the rows in the table
+        var tbody = document.querySelector("tbody");
+        tbody.innerHTML = "";
+        sortedRows.forEach(row => tbody.appendChild(row));
+
+        // Toggle sorting order
+        ascending = !ascending;
+
+        // Change the sort icon based on the sorting order
+        var sortIcon = document.querySelector(".sort-icon");
+        sortIcon.textContent = ascending ? "▼" : "▲";
+    }
+
+    // Sort companies alphabetically when the page loads (default)
+    window.addEventListener('DOMContentLoaded', (event) => {
+        sortCompanies();
+    });
+</script>
+
+
+<script>
+      function activity() {
+    var activityDiv = document.getElementById("activitydiv");
+    console.log(activityDiv);
+    if (activityDiv.style.display === "block") {
+        activityDiv.style.display = "none";
+    } else {
+        activityDiv.style.display = "block";
+    }
+}
+
+    // Add click event listener to each row
+document.querySelectorAll('.list-item').forEach(function(row) {
+    row.addEventListener('click', function(event) {
+        // Check if the clicked element is the checkbox
+        if (!event.target.matches('input[type="checkbox"]')) {
+            // Extract company ID from data attribute
+            var companyId = row.getAttribute('data-company-id');
+            // Redirect to company detail page
+            window.location.href = "/company_detail/" + companyId;
+        }
+    });
+});
+
+</script>
+<script>
+    window.addEventListener('load', function () {
+      console.log("hello nisa")
+      var currentUrl = window.location.pathname;
+      var candidateButton = document.getElementById("candidate-button");
+      var selectedButton = document.getElementById("selected-button");
+      var registeredButton = document.getElementById("registered-button");
+
+      if (currentUrl === "{{ url_for('Companies') }}") {
+        candidateButton.style.backgroundColor = "#19355f";
+        candidateButton.style.color = "#ffffff";
+      }
+      if (currentUrl === "{{ url_for('jobOders') }}") {
+        selectedButton.style.backgroundColor = "#19355f";
+        selectedButton.style.color = "#ffffff";
+      }
+
+    });
+
+
+
+    document.addEventListener('DOMContentLoaded', function() {
+        var checkboxes = document.querySelectorAll('input[type="checkbox"][name="selected_jobs[]"]');
+        var archiveBtn = document.getElementById('archive-btn');
+        var unarchiveBtn = document.getElementById('unarchive-btn');
+
+        checkboxes.forEach(function(checkbox) {
+            checkbox.addEventListener('change', function() {
+                var atLeastOneChecked = Array.prototype.some.call(checkboxes, function(checkbox) {
+                    return checkbox.checked;
+                });
+                if (atLeastOneChecked) {
+                    if ("{{ request.args.get('show_archived') }}" === "1") {
+                        unarchiveBtn.style.display = 'block';
+                    } else {
+                        archiveBtn.style.display = 'block';
+                    }
+                } else {
+                    archiveBtn.style.display = 'none';
+                    unarchiveBtn.style.display = 'none';
+                }
+            });
+        });
+    });
+    document.addEventListener('DOMContentLoaded', function() {
+        var checkboxes = document.querySelectorAll('input[type="checkbox"][name="selected_company[]"]');
+        var archiveBtn = document.getElementById('carchive-btn');
+        var unarchiveBtn = document.getElementById('cunarchive-btn');
+
+        checkboxes.forEach(function(checkbox) {
+            checkbox.addEventListener('change', function() {
+                var atLeastOneChecked = Array.prototype.some.call(checkboxes, function(checkbox) {
+                    return checkbox.checked;
+                });
+                if (atLeastOneChecked) {
+                   archiveBtn.style.display = 'block';
+                    unarchiveBtn.style.display = 'block';
+                } else {
+                    archiveBtn.style.display = 'none';
+                    unarchiveBtn.style.display = 'none';
+                }
+            });
+        });
+    });
+</script>
+
+
+{% endblock javascripts %}

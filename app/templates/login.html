@@ -1,0 +1,59 @@
+
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://www.click-hr.com/static/css/loginstyle.css">
+        <link rel="icon" href="https://www.click-hr.com/static/img/titleicon.png">
+
+    </head>
+
+<body style="background-image: url(https://www.click-hr.com/static/img/Group65.png);">
+<div class="container" id="container">
+    <div class="logo-div">
+    <img src="https://www.click-hr.com/static/img/clickhr.png" alt=""></div>
+    <div class="ahad-dev">
+        <img src="https://www.click-hr.com/static/img/clickhrsignin.png" alt="">
+
+        <div class="wrapper">
+
+            <form role="form" method="post" action="/login">
+             <h2>Sign in to Account</h2>
+             <img src="https://www.click-hr.com/static/img/Group66.png"  alt="">
+             {% if msg %}
+             <div class="row">
+               <div class="col-md-6 pr-md-1">
+                 <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                   <p style="font-size: 17px;
+    font-weight: 800;
+    color: #e6b3b3;
+    border-bottom: 2px solid red;" class="mb-0">
+                     {{msg}}
+                   </p>
+                 </div>
+               </div>
+             </div>
+             {% endif %}
+
+             <div class="input-box">
+                 <input type="email" placeholder="Email" name="email" required>
+                 <i class='bx bxs-user'></i>
+             </div>
+             <dive class="input-box">
+                 <input type="password" name="password"  placeholder="Password" required>
+                 <i class='bx bxs-lock-alt'></i>
+             </dive>
+              <br>
+             <button type="submit" class="btn" name="login" >Login</button>
+
+                <br>
+                <p style="margin-top:10px">Not on Signin Yet? <a href="/signup" style="text-decoration:underline; color:#ffff">Register</a></p>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+</body>

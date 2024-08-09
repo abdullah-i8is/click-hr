@@ -1,0 +1,1093 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://www.click-hr.com/static/css/forms.css">
+    <link rel="icon" href="https://www.click-hr.com/static/img/titleicon.png">
+
+</head>
+<style>
+
+.days-div{
+ margin-top:10px;
+ display:flex;
+ justify-content:space-between;
+  align-items:center;
+ }
+
+ .days-div span{
+ margin-left:8px; color:black
+ }
+
+ .days-div input{
+ margin: 0px; padding: 0px; height: 20px;
+ }
+  .remove-job-button {
+    width: 25%!important;
+    display: block;
+    margin-left: auto;
+    margin-top: 10px;
+  }
+
+    /* Import Google font - Poppins */
+    @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Poppins", sans-serif;
+    }
+
+    body {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        background: #19355f;
+    }
+
+    .container {
+        position: relative;
+        max-width: 700px;
+        width: 100%;
+        background: #fff;
+        padding: 25px;
+        border-radius: 8px;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .container header {
+        font-size: 1.5rem;
+        color: #333;
+        font-weight: 500;
+        text-align: center;
+        margin-bottom: 10px;
+
+    }
+
+    .container p {
+        font-size: 15px;
+        color: #333;
+        font-weight: 500;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .container .logo {
+        width: 150px;
+
+    }
+
+    .container .form {
+        margin-top: 30px;
+        margin-bottom: 50px;
+        width: 100%;
+    }
+
+    .form .input-box {
+        width: 100%;
+        margin-top: 20px;
+    }
+
+    .input-box label {
+        color: #333;
+    }
+
+    .form :where(.input-box input, .select-box) {
+        position: relative;
+        height: 50px;
+        width: 100%;
+        outline: none;
+        font-size: 1rem;
+        color: #707070;
+        margin-top: 8px;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        padding: 0 15px;
+    }
+
+    .form :where(.area-box) {
+        position: relative;
+        height: 150px;
+        width: 100%;
+        outline: none;
+        font-size: 1rem;
+        color: #707070;
+        margin-top: 8px;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        padding: 0 15px;
+    }
+
+    .input-box input:focus {
+        box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
+    }
+
+    .form .column {
+        display: flex;
+        column-gap: 15px;
+    }
+
+    .form .gender-box {
+        margin-top: 20px;
+    }
+
+    .gender-box h3 {
+        color: #333;
+        font-size: 1rem;
+        font-weight: 400;
+        margin-bottom: 8px;
+    }
+
+    .form :where(.gender-option, .gender) {
+        display: flex;
+        align-items: center;
+        column-gap: 50px;
+        flex-wrap: wrap;
+    }
+
+    .form .gender {
+        column-gap: 5px;
+    }
+
+    .gender input {
+        accent-color: #19355f;
+    }
+
+    .form :where(.gender input, .gender label) {
+        cursor: pointer;
+    }
+
+    .gender label {
+        color: #707070;
+    }
+
+    .address :where(input, .select-box) {
+        margin-top: 15px;
+    }
+
+    .select-box select {
+        height: 100%;
+        width: 100%;
+        outline: none;
+        border: none;
+        color: #707070;
+        font-size: 1rem;
+    }
+
+    .form button {
+        height: 55px;
+        width: 100%;
+        color: #fff;
+        font-size: 1rem;
+        font-weight: 400;
+        margin-top: 30px;
+        border: none;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        background: #19355f;
+    }
+
+    .form button:hover {
+        background: #b3bbd1;
+        color: #19355f;
+    }
+
+    .forsubform {
+        padding-bottom: 20px;
+        border-bottom: 2px solid #8a8787;
+    }
+
+    /* .subform-content{
+  padding-bottom: 20px;
+  border-bottom: 2px solid #8a8787;
+} */
+    .subform-content-head h2 {
+        font-size: 1.5rem;
+        color: #2e2c2c;
+        font-weight: 600;
+        margin-bottom: 5px;
+    }
+
+    .subform-content-head p {
+        text-align: left;
+    }
+
+    .inputsfor {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .inputsfor .input-box {
+        width: 48%;
+    }
+
+    /*Responsive*/
+    @media screen and (max-width: 500px) {
+        .form .column {
+            flex-wrap: wrap;
+        }
+
+        .form :where(.gender-option, .gender) {
+            row-gap: 15px;
+        }
+    }
+
+    .span {
+        font-size: 12px;
+    }
+    span{
+     color: red;
+    }
+</style>
+
+<body>
+    <section class="container">
+       <div class="form-head">
+        <a href="/index"><img class="logo" src="https://www.click-hr.com/static/img/clickhr.png" alt=""></a>
+           <a class="backtodashboard" href="{{ url_for('index') }}">
+             <i class="fa fa-arrow-left"></i>
+             <p style="margin-bottom: 0px">Dashboard</p>
+           </a>
+       </div>
+        <header>One reporting form</header>
+        <p>Each incident would have one report per occurrence.</p>
+        <section class="form">
+            <div class="forsubform">
+                <div class="input-box">
+                    <label>Full Name <span>*</span></label>
+                    <input type="text" placeholder="Enter full name" required value="{{session['user']}}"/>
+                </div>
+                <div class="gender-box">
+                    <h3>Which form<span>*</span><br>
+                    </h3>
+                    <div class="gender-option">
+                        <div class="gender">
+                            <input type="radio" id="Marketing-radio" name="gender"
+                                onchange="showmaincontent('Marketing')" checked />
+                            <label for="Marketing-radio">Marketing</label>
+                        </div>
+                        <div class="hrgender">
+                            <input type="radio" id="HRforms-radio" name="gender"
+                                onchange="showmaincontent('HRForms')" />
+                            <label for="HRforms-radio">HR forms</label>
+                        </div>
+                        <div class="hrgender">
+                            <input type="radio" id="Other-radio" name="gender"
+                                onchange="showmaincontent('Otherreport')" />
+                            <label for="Other-radio">Other</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <div class="contentchanging">
+                <div class="recuriting" id="recuriting" style="display: none;">
+                    <form action="">
+                        <div class="recuriting-content">
+                            <div class="subform-content-head">
+                                <h2>Recruiting</h2>
+                                <p>Please select on of the following ( one report per candidates ).</p>
+                            </div>
+                            <div class="input-box">
+                                <label>Name of candidate <span>*</span></label>
+                                <input type="text" placeholder="Enter full name" required />
+                            </div>
+                            <div class="inputsfor">
+                                <div class="input-box">
+                                    <label>Phone number <span>*</span></label>
+                                    <input type="text" placeholder="Enter phone number"
+                                        oninput="this.value = this.value.replace(/[^0-9]/g, '')" required />
+                                </div>
+                                <div class="input-box">
+                                    <label>Postion <span>*</span></label>
+                                    <input type="text" placeholder="Enter Postion" required />
+                                </div>
+                            </div>
+
+                            <div class="input-box">
+                                <label>Company name ( Placement, resume sent, or helped another recruiter
+                                    for?)<span>*</span></label>
+                                <input type="text" placeholder="Enter Company name" required />
+                            </div>
+
+                            <div class="gender-box">
+                                <h3>Did you:<span>*</span><br>
+                                </h3>
+                                <div>
+                                    <div class="gender">
+                                        <input type="radio" id="CandidatePlacementRadio" name="Didyou" checked
+                                            onchange="showDiv('CandidatePlacement')">
+                                        <label for="CandidatePlacementRadio">Candidate Placement</label>
+                                    </div><br>
+                                    <div class="gender">
+                                        <input type="radio" id="ResumeSentRadio" name="Didyou"
+                                            onchange="showDiv('ResumeSent')">
+                                        <label for="ResumeSentRadio">Resume Sent OR Interview Scheduled</label>
+                                    </div><br>
+                                    <div class="gender">
+                                        <input type="radio" id="HelpAnotherRadio" name="Didyou"
+                                            onchange="showDiv('Helpanother')">
+                                        <label for="HelpAnotherRadio">Help Another Recruiter</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="recuriting-did">
+                            <div id="CandidatePlacement">
+                                <div class="subform-content-head">
+                                    <h2>Recruiting person placement</h2>
+                                    <p>Please fill this out once per candidate.</p>
+                                </div>
+                                <div class="input-box">
+                                    <label>Emergency Contact Name <span>*</span></label>
+                                    <input type="text" placeholder="Enter full name" required />
+                                </div>
+                                <div class="inputsfor">
+                                    <div class="input-box">
+                                        <label>Emergency contact number <span>*</span> <br>
+                                            <span class="span"> ( cannot be the same as their phone number)</span>
+                                        </label>
+                                        <input type="text" placeholder="Enter phone number"
+                                            oninput="this.value = this.value.replace(/[^0-9]/g, '')" required />
+                                    </div>
+                                    <div class="input-box">
+                                        <label>Location of candidate <span>*</span> <br>
+                                            <span class="span">(ie: north york , Scarborough , Vaughan , etc..)</span>
+                                        </label>
+                                        <input type="text" placeholder="Enter Location" required />
+                                    </div>
+                                </div>
+
+                                <div class="input-box">
+                                    <label>Location candidate is going to<span>*</span></label>
+                                    <input type="text" placeholder="Enter Location" required />
+                                </div>
+                                <div class="input-box">
+                                    <label>Start time and date<span>*</span></label>
+                                    <input type="text" placeholder="Enter Company name" required />
+                                </div>
+
+                                <div class="gender-box">
+                                    <h3>Do you need a team member to double confirm candidate - example morning before,
+                                        or
+                                        late
+                                        hours<span>*</span><br>
+                                    </h3>
+                                    <div class="gender-option">
+                                        <div class="gender">
+                                            <input type="radio" id="check-male" value="yes" name="needteam" checked />
+                                            <label for="check-male">Yes</label>
+                                        </div>
+                                        <div class="gender">
+                                            <input type="radio" id="check-female" value="no" name="needteam" />
+                                            <label for="check-female">No</label>
+                                        </div><br>
+                                    </div>
+                                </div>
+                                <div class="input-box">
+                                    <label>Photo ID ( govt Id) <span>*</span></label>
+                                </div>
+                                <input type="file" id="myFile" name="filename">
+
+                            </div>
+                            <div id="ResumeSent" style="display: none;">
+                                <div class="subform-content-head">
+                                    <h2>Resume Sent OR interview scheduled</h2>
+                                </div>
+                                <div class="gender-box">
+                                    <h3>Resume Or interview<span>*</span><br>
+                                    </h3>
+                                    <div class="gender-option">
+                                        <div class="gender">
+                                            <input type="radio" id="sent" name="sent" checked />
+                                            <label for="sent">Resume sent</label>
+                                        </div>
+                                        <div class="gender">
+                                            <input type="radio" id="Interview" name="sent" />
+                                            <label for="Interview">Interview</label>
+                                        </div><br>
+                                    </div>
+                                </div>
+                                <div class="input-box">
+                                    <label>when will the company get back to you date / when is the
+                                        interview?<span>*</span></label>
+<!--                                    <input type="date" placeholder="Enter Company name" required />-->
+                                     <input type="date"  required id="job-post-date">
+                                </div>
+
+
+                            </div>
+                            <div id="Helpanother" style="display: none;">
+                                <div class="subform-content-head">
+                                    <h2>Helping form</h2>
+                                    <p>This is to track who you are helping and for which candidate, and to track if the
+                                        candidate that you located has been placed</p>
+                                </div>
+                                <div class="input-box">
+                                    <label>Who did you help?<span>*</span></label>
+                                    <input type="text" placeholder="Your Answer" required />
+                                </div>
+                                <div class="gender-box">
+                                    <h3>iI person starting ( next 2 days) or is a resume being sent?<span>*</span><br>
+                                    </h3>
+                                    <div>
+                                        <div class="gender">
+                                            <input type="radio" id="Resumesent/interview" name="resume" checked />
+                                            <label for="Resumesent/interview">Resume sent / interview</label>
+                                        </div><br>
+                                        <div class="gender">
+                                            <input type="radio" id="Personstartingsoon" name="resume" />
+                                            <label for="Personstartingsoon">Person starting soon</label>
+                                        </div><br>
+                                        <div class="gender">
+                                            <input type="radio" id="NotSure" name="resume" />
+                                            <label for="NotSure">Not Sure</label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <br>
+                        <div class="final-content">
+                            <div class="subform-content-head">
+                                <h2>Final</h2>
+                            </div>
+                            <div class="input-box">
+                                <label>Note</label>
+                                <input type="text" placeholder="your report" />
+                            </div>
+
+<!--                            <div class="input-box">-->
+<!--                                <label>Notes</label>-->
+<!--                                <input type="text" placeholder="notes" />-->
+<!--                            </div>-->
+                        </div>
+
+                        <br>
+                        <button type="submit" name="submit">Submit</button>
+                    </form>
+                </div>
+                <div class="Marketing" id="Marketing">
+                    <form action="/marketing" method="post">
+                        <input type="text" placeholder="Enter full name" name="name" value="{{session['user']}}"
+                            hidden />
+                        <input type="text" placeholder="Enter Your name" name="user_id" hidden
+                            value="{{session['user_id']}}" />
+                        <div class="Marketing-content">
+                            <div class="subform-content-head">
+                                <h2>Marketing</h2>
+                            </div>
+                            <div class="gender-box">
+                                <h3>Status
+                                    <span>*</span><br>
+                                </h3>
+                                <div>
+                                   <div class="gender">
+                                        <input type="radio" id="Newdeal" name="Status" value="New deal opened and contract signed" onchange="toggleCompanyInput()">
+                                        <label for="Newdeal">New deal opened and contract signed</label>
+                                    </div><br>
+                                    <div class="gender">
+                                        <input type="radio" id="Newdealnot" name="Status" value="New deal and contract not signed" onchange="toggleCompanyInput()">
+                                        <label for="Newdealnot">New deal and contract not signed</label>
+                                    </div><br>
+                                    <div class="gender">
+                                        <input type="radio" id="Reopeneddeals" name="Status" value="Reopened deals" onchange="toggleCompanyInput()">
+                                        <label for="Reopeneddeals">Reopened deals</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="input-box" id="companyInput" >
+                                <label>Company name ( deal name)
+                                    <span>*</span></label>
+                                <input type="text" placeholder="Enter full name" name="company"  />
+                            </div>
+
+                                <div class="input-box" id="companyDropdown" style="display:none;">
+                                     <label>Company name<span>*</span></label>
+                                     <select class="select-box" name="selected_company"  class="form-control" id="companyDropdown2">
+                                         <option>select</option>
+                                         {% set unique_companies = [] %}
+                                         {% for d in companies|sort(attribute='company') %}
+                                             {% if d.company not in unique_companies %}
+                                                 <option value="{{ d.id }}|{{ d.company }}" name="company">{{ d.company }} ({{ d.substatus }})</option>
+                                                 {% set _ = unique_companies.append(d.company) %}
+                                             {% endif %}
+                                         {% endfor %}
+                                     </select>
+                                     <div style="display:flex; justify-content:flex-end;">
+                                       <div class="gender" style="display:flex; justify-content:space-between;">
+                                        <input style="width:10px;height:10px; margin-top:25px"type="radio" id="signed" name="substatus" value="Signed" checked>
+                                        <label style="width:fit-content;height:0px;" for="signed">Signed</label>
+                                       </div>
+                                       <div class="gender" style="display:flex; justify-content:space-between; margin-left:9px">
+                                        <input style="width:10px;height:10px; margin-top:25px" type="radio" id="notsigned" name="substatus" value="not Signed">
+                                        <label style="width:fit-content;height:0px;" for="notsigned">not Signed</label>
+                                       </div>
+                                   </div>
+                                </div>
+
+                            <div class="input-box">
+                                <label>Contact person (deal) <span>*</span></label>
+                                <input type="text" placeholder="Enter full name" name="cperson" id="cperson" required />
+                            </div>
+                            <div class="input-box">
+                                <label>Contact person phone <span>*</span></label>
+                                <input type="text" placeholder="Enter phone number"
+                                    oninput="this.value = this.value.replace(/[^0-9]/g, '')" name="phone" id="cphone" required />
+                            </div>
+
+                            <div id="jobs-container"  style="margin-top:20px;">
+
+                                <label>Job 1 <span>*</span></label>
+                                <div class="input-box">
+                                    <label>Title</label>
+                                    <input type="text" placeholder="Job Title" name="job_title" required />
+                                </div>
+                                <div class="inputsfor">
+                                <div class="input-box">
+                                    <label>Pay Rate</label>
+                                    <input oninput="this.value = this.value.replace(/[^1-9]/g, '')" placeholder="Pay Rate" name="pay_rate" required />
+                                </div>
+                                <div class="input-box">
+                                    <label>Pay Rate Type</label>
+                                    <select class="select-box" name="pay_rate_type" onchange="checkPayRate()">
+                                        <option value="monthly">Monthly</option>
+                                        <option value="yearly">Yearly</option>
+                                        <option value="hourly">Hourly</option>
+                                    </select>
+                                </div>
+                            </div>
+                                <div class="inputsfor">
+                                    <div class="input-box">
+                                        <label>select days</label>
+                                      <div class="days-div">
+        <label>
+            <span> M</span>
+            <input type="checkbox" id="mon-1" name="days-1[]" value="mon">
+        </label>
+        <label>
+            <span> T</span>
+            <input type="checkbox" id="tues-1" name="days-1[]" value="tues">
+        </label>
+        <label>
+            <span> W</span>
+            <input type="checkbox" id="wed-1" name="days-1[]" value="wed">
+        </label>
+        <label>
+            <span> T</span>
+            <input type="checkbox" id="thur-1" name="days-1[]" value="thur">
+        </label>
+        <label>
+            <span> F</span>
+            <input type="checkbox" id="fri-1" name="days-1[]" value="fri">
+        </label>
+        <label>
+            <span> S</span>
+            <input type="checkbox" id="sat-1" name="days-1[]" value="sat">
+        </label>
+        <label>
+            <span> S</span>
+            <input type="checkbox" id="sun-1" name="days-1[]" value="sun">
+        </label>
+    </div>
+
+                                    </div>
+                                </div>
+                                <div class="inputsfor">
+                                    <div class="input-box">
+                                        <label>Shifts</label>
+                                        <div class="inputsfor">
+                                            <input type="time" name="shift_start" class="shift_start" required />
+                                            <input type="time" required name="shift_end"  class="shift_end" />
+                                        </div>
+
+                                    </div>
+                                    <div class="input-box">
+                                        <label>Total Vacancies </label>
+                                        <input name="total_vacancies" oninput="this.value = this.value.replace(/[^0-9]/g, '')" placeholder="1" value="1" required />
+                                    </div>
+                                </div>
+
+                                       <input type="hidden" name="job_count" id="job_count" value="1">
+                            </div>
+                            <div>
+                                <button id="add-job-button"
+                                    style="width:25%; display: block; margin-left: auto; margin-top:10px">+ add more
+                                    jobs</button>
+                            </div>
+                            <div class="input-box">
+                                <label>Job Location<span>*</span></label>
+                                <input type="text" placeholder="Enter location" name="location" required />
+                            </div>
+                            <div class="input-box job-section">
+                                <label>Markup<span>*</span></label>
+                                <div style="position:relative;">
+                                 <input type="" placeholder="Enter Markup in numbers"
+                                      oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
+                                        required name="markup" />
+
+                                 <span style="position: absolute; right: 18px; top: 16px;color:#a7a2a2">%</span>
+                                </div>
+
+
+                            </div>
+                        </div>
+                        <br>
+                        <div class="final-content">
+<!--                            <div class="subform-content-head">-->
+<!--                                <h2>Final</h2>-->
+<!--                            </div>-->
+                            <div class="input-box">
+                                <label>Note</label>
+                                <textarea class="area-box" id="otherreport" name="otherreport"></textarea>
+                            </div>
+
+<!--                            <div class="input-box">-->
+<!--                                <label>Notes</label>-->
+<!--                                <textarea class="area-box" id="notes" name="notes"></textarea>-->
+<!--                            </div>-->
+                        </div>
+                        <button type="submit" name="submit">Submit</button>
+                    </form>
+                    <br>
+                </div>
+                <div class="HRForms" id="HRForms" style="display: none;">
+                    <form action="/hrforms" method="post">
+                        <input type="text" placeholder="Enter full name" name="name" value="{{session['user']}}"
+                            hidden />
+                        <input type="text" placeholder="Enter Your name" name="user_id" hidden
+                            value="{{session['user_id']}}" />
+                        <div class="HRForms-content">
+                            <div class="subform-content-head">
+                                <h2>HR Forms</h2>
+                            </div>
+                            <div class="input-box">
+                                <label>Candidate Name<span>*</span></label>
+                                <input type="text" placeholder="Enter full name" name="cname" required
+                                     />
+                            </div>
+                            <div class="gender-box">
+                                <h3>Late or absent
+                                    <span>*</span><br>
+                                </h3>
+                                <div>
+                                    <div class="gender">
+                                        <input type="radio" id="Late" name="Late/absent" value="late" checked
+                                            onchange="showDivform('Late')">
+                                        <label for="Late">Late</label>
+                                    </div><br>
+                                    <div class="gender">
+                                        <input type="radio" id="Absence" name="Late/absent" value="absence"
+                                            onchange="showDivform('Absence')">
+                                        <label for="Absence">Absence</label>
+                                    </div><br>
+                                    <div class="gender">
+                                        <input type="radio" id="Incident" name="Late/absent" value="incident"
+                                            onchange="showDivform('Incidentdiv')">
+                                        <label for="Incident">Incident</label>
+                                    </div><br>
+                                    <div class="gender">
+                                        <input type="radio" id="Request for leave" name="Late/absent"
+                                            value="request for leave" onchange="showDivform('Requestforleavediv')">
+                                        <label for="Request for leave">Request for leave</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="gender-box">
+                                <h3>Informed or uninformed
+                                    <span>*</span><br>
+                                </h3>
+                                <div>
+                                    <div class="gender">
+                                        <input type="radio" id="Informed" name="Informed/uninformed" value="informed">
+                                        <label for="Informed">Informed</label>
+                                    </div><br>
+                                    <div class="gender">
+                                        <input type="radio" id="Uniformed" name="Informed/uninformed"
+                                            value="uninformed">
+                                        <label for="Uniformed">Uniformed</label>
+                                    </div><br>
+                                </div>
+                            </div>
+                            <div class="input-box">
+                                <label>Notes</label>
+                                <textarea class="area-box" id="notes" name="notes" ></textarea>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="leave-content" id="Requestforleavediv" style="display: none;">
+                            <div class="subform-content-head">
+                                <h2>Request for leave</h2>
+                            </div>
+                            <div class="input-box">
+                                <label>Reason ( illness ,vacation, emergency) <span>*</span></label>
+                                <input type="text" placeholder="Your Answer" name="reasonvacation" />
+                            </div>
+                        </div>
+                        <br>
+                        <button type="submit" name="submit">Submit</button>
+                    </form>
+                </div>
+                <div class="Otherreport" id="Otherreport" style="display: none;">
+                    <form action="/otherfinal" method="post">
+                        <input type="text" placeholder="Enter full name" name="name" value="{{session['user']}}"
+                            hidden />
+                        <input type="text" placeholder="Enter Your name" name="user_id" hidden
+                            value="{{session['user_id']}}" />
+                        <div class="final-content">
+<!--                            <div class="subform-content-head">-->
+<!--                                <h2>Final</h2>-->
+<!--                            </div>-->
+                            <div class="input-box">
+                                <label>Note</label>
+                                <textarea class="area-box" id="otherreport" name="otherreport"></textarea>
+                            </div>
+
+<!--                            <div class="input-box">-->
+<!--                                <label>Notes</label>-->
+<!--                                <textarea class="area-box" id="notes" name="notes"></textarea>-->
+<!--                            </div>-->
+                        </div>
+                        <br>
+                        <button type="submit" name="submit">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+    </section>
+</body>
+
+<script>
+
+       // Get all elements with class "shift_start"
+    var startInputs = document.querySelectorAll('.shift_start');
+
+    // Loop through each start input
+    startInputs.forEach(function(startInput) {
+        startInput.addEventListener('change', function() {
+            // Get the value of start time input
+            var startTime = this.value;
+
+            // Get the corresponding end time input
+            var endInput = this.parentElement.querySelector('.shift_end');
+
+            // Split the start time into hours and minutes
+            var startHour = parseInt(startTime.split(':')[0]);
+            var startMinute = parseInt(startTime.split(':')[1]);
+
+            // Calculate end time by adding 8 hours to start time
+            var endHour = startHour + 8;
+            var endMinute = startMinute;
+
+            // Adjust end time if it exceeds 23 hours
+            if (endHour >= 24) {
+                endHour -= 24; // Subtract 24 hours to roll over to the next day
+            }
+
+            // Format end time to ensure leading zeros if needed
+            endHour = endHour < 10 ? '0' + endHour : endHour;
+            endMinute = endMinute < 10 ? '0' + endMinute : endMinute;
+
+            // Set the value of end time input
+            endInput.value = endHour + ':' + endMinute;
+        });
+    });
+    function toggleCompanyInput() {
+       debugger
+        var status = document.querySelector('input[name="Status"]:checked').value;
+        var companyDropdown = document.getElementById('companyDropdown');
+        var companyInput = document.getElementById('companyInput');
+
+        if (status === 'Reopened deals') {
+            companyDropdown.style.display = 'block';
+            companyInput.style.display = 'none';
+        } else {
+            companyDropdown.style.display = 'none';
+            companyInput.style.display = 'block';
+             document.getElementById("cperson").value = "";
+        document.getElementById("cphone").value = "";
+        }
+    }
+    function checkPayRate() {
+        var payRateInput = document.getElementsByName("pay_rate")[0];
+        var payRateType = document.getElementsByName("pay_rate_type")[0].value;
+
+        if (payRateType === "hourly" && parseInt(payRateInput.value) > 100) {
+            alert("Hourly pay rate should not exceed 100.");
+            payRateInput.value = "100"; // Set the value back to 100
+        }
+    }
+  var today = new Date().toISOString().split('T')[0];
+  document.getElementById("job-post-date").setAttribute("min", today);
+  var dateInput = document.getElementById("job-post-date");
+  dateInput.addEventListener("keydown", function (event) {
+    event.preventDefault(); // Prevent typing in the input field
+  });
+
+  const addJobButton = document.getElementById('add-job-button');
+  const jobsContainer = document.getElementById('jobs-container');
+
+  addJobButton.addEventListener('click', () => {
+    let jobCount = parseInt(document.getElementById('job_count').value);
+
+    jobCount++;
+    document.getElementById('job_count').value = jobCount;
+    const newJobSection = document.createElement('div');
+    newJobSection.classList.add('job-section');
+    newJobSection.innerHTML = `
+      <div>
+        <label>Job ${jobCount}<span>*</span></label>
+        <div class="input-box">
+          <label>Title</label>
+          <input type="text" placeholder="Job Title" name="job_title" required />
+        </div>
+        <div class="inputsfor">
+          <div class="input-box">
+            <label>Pay Rate</label>
+            <input oninput="this.value = this.value.replace(/[^1-9]/g, '')" placeholder="Pay Rate" name="pay_rate" required />
+          </div>
+          <div class="input-box">
+            <label>Pay Rate</label>
+            <select class="select-box" name="pay_rate_type">
+              <option>Monthly</option>
+              <option>Yearly</option>
+              <option>Hourly</option>
+            </select>
+          </div>
+        </div>
+        <div class="inputsfor">
+                                    <div class="input-box">
+                                        <label>select days</label>
+                                      <div class="days-div">
+                                          <label>
+                                                 <span> M</span>
+                                              <input type="checkbox" id="mon-${jobCount}" name="days-${jobCount}[]" value="mon">
+
+                                          </label>
+                                          <label>
+                                              <span> T</span>
+                                              <input type="checkbox" id="tues-${jobCount}" name="days-${jobCount}[]"  value="tues">
+
+                                          </label>
+                                          <label>
+                                              <span> W</span>
+                                              <input  type="checkbox" id="wed-${jobCount}" name="days-${jobCount}[]"  value="wed">
+
+                                          </label>
+                                          <label>
+                                              <span> T</span>
+                                              <input type="checkbox" id="thur-${jobCount}" name="days-${jobCount}[]"  value="thur">
+
+                                          </label>
+                                          <label>
+                                              <span> F</span>
+                                              <input type="checkbox" id="fri-${jobCount}" name="days-${jobCount}[]"  value="fri">
+
+                                          </label>
+                                          <label>
+                                              <span> S</span>
+                                              <input  type="checkbox" id="sat-${jobCount}" name="days-${jobCount}[]"  value="sat">
+
+                                          </label>
+                                         <label>
+                                             <span> S</span>
+                                              <input  type="checkbox" id="sun-${jobCount}" name="days-${jobCount}[]"  value="sun">
+
+                                          </label>
+                                      </div>
+
+                                    </div>
+                                </div>
+        <div class="inputsfor">
+          <div class="input-box">
+            <label>Shifts</label>
+            <div class="inputsfor">
+              <input type="time" name="shift_start"  class="shift_start" required />
+              <input type="time" required name="shift_end" class="shift_end" />
+            </div>
+          </div>
+          <div class="input-box">
+            <label>Total Vacancies</label>
+            <input type="number" oninput="this.value = this.value.replace(/[^1-9]/g, '')" placeholder="0" name="total_vacancies" required />
+          </div>
+        </div>
+             <button class="remove-job-button">Remove</button>
+
+      </div>
+    `;
+    const removeJobButton = newJobSection.querySelector('.remove-job-button');
+    removeJobButton.addEventListener('click', () => {
+    jobCount--; // Decrease the job count when removing a job
+    document.getElementById('job_count').value = jobCount;
+    jobsContainer.removeChild(newJobSection);
+  });
+   // Add event listener for calculating end time
+    const startInput = newJobSection.querySelector('.shift_start');
+    startInput.addEventListener('change', function() {
+        var startTime = this.value;
+        var endInput = this.parentElement.querySelector('.shift_end');
+        var startHour = parseInt(startTime.split(':')[0]);
+        var startMinute = parseInt(startTime.split(':')[1]);
+        var endHour = startHour + 8;
+        var endMinute = startMinute;
+        if (endHour >= 24) {
+            endHour -= 24;
+        }
+        endHour = endHour < 10 ? '0' + endHour : endHour;
+        endMinute = endMinute < 10 ? '0' + endMinute : endMinute;
+        endInput.value = endHour + ':' + endMinute;
+    });
+    jobsContainer.appendChild(newJobSection);
+  });
+</script>
+
+<script src="https://www.click-hr.com/static/js/onereport.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.min.js"></script>
+<!-- Include this script block in your onereporting-form.html file -->
+<script>
+    console.log("Company Dataj9:");
+    var companyData = {{ company|tojson}};
+    console.log(companyData);
+    function handleCompanySelection() {
+       debugger
+        var companyId = document.getElementById("companyDropdown2").value;
+        var companyIdParts = companyId.split('|');
+        var companyId = companyIdParts[0];
+
+        var selectedCompany = companyData.find(function(company) {
+          console.log("company.id:", company.id == companyId);
+            return company.id == companyId;
+        });
+
+        document.getElementById("cperson").value = selectedCompany.contact_person;
+        document.getElementById("cphone").value = selectedCompany.contact_person_name;
+    }
+
+    // Add event listener to the company selection dropdown
+    document.getElementById("companyDropdown").addEventListener("change", handleCompanySelection);
+</script>
+
+<script>
+  // Get the current URL
+    const currentUrl = window.location.href;
+
+    // Check if the URL includes "/onereporting?order"
+    if (currentUrl.includes("/onereporting?order")) {
+        // Hide the radio buttons and labels
+        const genderDivs = document.querySelectorAll(".hrgender");
+        genderDivs.forEach(div => {
+            div.style.display = "none";
+        });
+    }
+    function showDiv(divId) {
+        var div = document.getElementById(divId);
+        var allDivs = document.getElementsByClassName('recuriting-did')[0].children;
+
+        for (var i = 0; i < allDivs.length; i++) {
+            if (allDivs[i].id === divId) {
+                allDivs[i].style.display = 'block';
+            } else {
+                allDivs[i].style.display = 'none';
+            }
+        }
+    }
+    function showDivform(divId) {
+        var div1 = document.getElementById(divId);
+        var div2 = document.getElementById('Incidentdiv');
+        var div3 = document.getElementById('Requestforleavediv');
+
+
+        if (div1 === div2) {
+            div2.style.display = 'block';
+            div.style.display = 'none';
+        } else if (div1 === div3) {
+            div3.style.display = 'block';
+            div2.style.display = 'none';
+        } else {
+            div2.style.display = 'none';
+        }
+    }
+
+    function showmaincontent(divId) {
+        var div = document.getElementById(divId);
+        var allDivs = document.getElementsByClassName('contentchanging')[0].children;
+
+        for (var i = 0; i < allDivs.length; i++) {
+            if (allDivs[i].id === divId) {
+                allDivs[i].style.display = 'block';
+            } else {
+                allDivs[i].style.display = 'none';
+            }
+        }
+    }
+</script>
+<!--display sweetalert(popup)-->
+<script>
+let formSubmitted = false; // Flag to track form submission
+
+    function submitFormAndRedirect(endpoint) {
+        event.preventDefault();
+
+  if (formSubmitted) {
+            return; // If the form has already been submitted, do nothing
+        }
+
+        // Set the flag to true to prevent further submissions
+        formSubmitted = true;
+        fetch(endpoint, {
+            method: 'POST',
+            body: new FormData(event.target)
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.message === 'success') {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success!',
+                    text: 'Form updated successfully!',
+                }).then(() => {
+                    window.location.href = '{{('forms')}}';
+                });
+            } else {
+                alert(data.message);
+                window.location.reload();
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('An error occurred while updating the form.');
+        });
+    }
+    document.querySelector('#Marketing form').addEventListener('submit', function (event) {
+    const form = event.target;
+        submitFormAndRedirect('/marketing', form);
+    });
+
+    document.querySelector('#HRForms form').addEventListener('submit', function (event) {
+    const form = event.target;
+        submitFormAndRedirect('/hrforms', form);
+    });
+
+    document.querySelector('#recuriting form').addEventListener('submit', function (event) {
+const form = event.target;
+        submitFormAndRedirect('/resumesent', form);
+    });
+
+    document.querySelector('#Otherreport form').addEventListener('submit', function (event) {
+    const form = event.target;
+        submitFormAndRedirect('/otherfinal', form);
+    });
+</script>
+
+</html>

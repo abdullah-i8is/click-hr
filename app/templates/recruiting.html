@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link rel="stylesheet" href="https://www.click-hr.com/static/css/forms.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="icon" href="https://www.click-hr.com/static/img/titleicon.png">
+
+
+</head>
+<style>
+    span{
+     color:red;
+    }
+    .container .form {
+    width:100%
+    }
+    .container{
+    width:45%}
+</style>
+<body>
+    {% if type=='view'%}
+    <script>
+        // Function to disable all form elements within the "Marketing" form
+        function disableFormElements() {
+            // Get the form elements container with the ID "Marketing"
+            var marketingForm = document.getElementById('recuriting');
+
+            // Get all form elements inside the "Marketing" form
+            var formElements = marketingForm.querySelectorAll('input, textarea, select');
+
+            // Loop through each form element and disable them
+            for (var i = 0; i < formElements.length; i++) {
+                formElements[i].disabled = true;
+            }
+        }
+
+        // Call the function to disable form elements when the page loads
+        window.onload = disableFormElements;
+    </script>
+    {% endif %}
+    {% if session['role'] and type not in ['view', 'edit'] %}
+    {% if data.status=='applied' %}
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            showDiv('ResumeSent');
+            document.getElementById('sent').checked = true;
+            document.getElementById('ResumeSentRadio').checked = true;
+            // document.getElementById('selectedDidyou').value = "ResumeSent"; // Set the value based on the selected radio
+            document.getElementById('selectedresume').
+                value = "Resume Sent"
+        });
+    </script>
+    {% elif data.status=='Resume Sent' %}
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            showDiv('ResumeSent');
+            document.getElementById('Interview').checked = true;
+            document.getElementById('ResumeSentRadio').checked = true;
+            // document.getElementById('selectedDidyou').value = "ResumeSent"; // Set the value based on the selected radio
+            document.getElementById('selectedresume').value = "Interview Scheduled"
+        });
+    </script>
+    {% elif data.status =='Interview Scheduled' %}
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            showDiv('CandidatePlacement');
+            document.getElementById('CandidatePlacementRadio').checked = true;
+            // document.getElementById('selectedDidyou').value = "CandidatePlacement"; // Set the value based on the selected radio
+        });
+    </script>
+    {% endif %}
+    <section class="container">
+        <div class="form-head">
+           <a href="/index"><img class="logo" src="https://www.click-hr.com/static/img/clickhr.png" alt=""></a>
+             <a class="backtodashboard" href="{{ url_for('selecteddata') }}">
+             <i class="fa fa-arrow-left"></i>
+             <p style="margin-bottom: 0px">Candidates</p>
+           </a>
+        </div>
+        <header><h2>Recruiting</h2></header>
+        <p>Please select on of the following ( one report per candidates ).</p>
+        <section class="form">
+
+            <div class="recuriting" id="recuriting">
+                <form action="/resumesent" method="post" class="form" enctype="multipart/form-data">
+                    <div class="forsubform">
+                        <div class="input-box">
+                            <label>Form Filled By<span>*</span></label>
+                            <input type="text" placeholder="Enter full name" name="name" value="{{session['user']}}"
+                                readonly />
+                            <input type="text" placeholder="Enter Your name" name="user_id" hidden
+                                value="{{session['user_id']}}" />
+                            <input type="text" placeholder="Enter Your name" name="id" hidden value="{{data.id}}" />
+                        </div>
+                    </div>
+                    <div class="recuriting-content">
+                        <div class="input-box">
+                            <label>Name of candidate <span>*</span></label>
+                            <input type="text" placeholder="Enter full name" name="cname" value="{{data.sender_name}}" />
+                        </div>
+                        <div class="inputsfor">
+                            <div class="input-box">
+                                <label>Phone number <span>*</span></label>
+                                <input type="text" placeholder="Enter phone number" name="cphone" value="{{data.phone_number}}"
+                                    oninput="this.value = this.value.replace(/[^0-9]/g, '')" required />
+                            </div>
+
+                            {% if company != None %}
+                                <div class="input-box">
+                                <label>Company name (Placement, resume sent, or helped another recruiter
+                                    for?)<span>*</span></label>
+                                <select class="select-box" name="selected_company" onchange="handleSelectionChange(this)"
+                                    class="form-control" id="">
+                                    <option>select</option>
+                                    {% set unique_companies = [] %}
+                                    {% for d in company|sort(attribute='company_name')  %}
+                                    {% if  d.company_name not in unique_companies %}
+                                    <option value=" {{  d.company_id }}|{{  d.company_name }} ">{{
+                                         d.company_name }}</option>
+                                    {% set _ = unique_companies.append( d.company_name) %}
+                                    {% endif %}
+                                    {% endfor %}
+                                </select>
+                            </div>
+                                <div class="input-box">
+                                <label>Position <span>*</span></label>
+                                <select class="select-box" name="selected_position" id="positionDropdown" class="form-control" id="">
+                                    <option>select</option>
+                                    {% for position in positions %}
+                                    {{position.Positions}}
+                                    <option>select</option>
+                                    <option
+                                        value="{{ position.Positions }}">{{
+                                        position.Positions }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            {% endif %}
+
+
+                        <div class="gender-box">
+                            <h3>Did you:<span>*</span><br>
+                            </h3>
+                            <div>
+                                <div class="gender">
+                                    <input type="radio" id="CandidatePlacementRadio" name="Didyou"
+                                        onchange="showDiv('CandidatePlacement')" value="Candidate Placement">
+                                    <label for="CandidatePlacementRadio">Candidate Placement</label>
+                                </div><br>
+                                <div class="gender">
+                                    <input type="radio" id="ResumeSentRadio" name="Didyou"
+                                        onchange="showDiv('ResumeSent')" value="Resume Sent" checked>
+                                    <label for="ResumeSentRadio">Resume Sent
+                                    </label>
+                                </div><br>
+                                <div class="gender">
+                                    <input type="radio" id="InterviewRadio" name="Didyou"
+                                        onchange="showDiv('Interviewschedule')" value="Interview Scheduled">
+                                    <label for="InterviewRadio">Interview Scheduled</label>
+                                </div><br>
+                                <div class="gender">
+                                    <input type="radio" id="HelpAnotherRadio" name="Didyou"
+                                        onchange="showDiv('Helpanother')" value="Help Another">
+                                    <label for="HelpAnotherRadio">Help Another Recruiter</label>
+                                </div>
+                                <br>
+                                <div class="gender">
+                                    <input type="radio" id="RejectRadio" name="Didyou"
+                                        onchange="showDiv('Reject')" value="Reject">
+                                    <label for="RejectRadio">Help Another Recruiter</label>
+                                </div>
+                                <!-- Hidden input to store the selected value -->
+                                <input type="hidden" id="selectedDidyou" name="Didyou" value="">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="recuriting-did">
+                        </br>
+                        <div id="CandidatePlacement">
+                            <div class="subform-content-head">
+                                <h2>Recruiting person placement</h2>
+                                <p>Please fill this out once per candidate.</p>
+                            </div>
+                            <div class="input-box">
+                                <label>Emergency Contact Name</label>
+                                <input type="text" placeholder="Enter full name" name="ecname" />
+                            </div>
+                            <div class="inputsfor">
+                                <div class="input-box">
+                                    <label>Emergency contact number <br>
+                                        <span class="span"> ( cannot be the same as their phone number)</span>
+                                    </label>
+                                    <input type="text" placeholder="Enter phone number" name="ecnumber"
+                                        oninput="this.value = this.value.replace(/[^0-9]/g, '')" />
+                                </div>
+                                <div class="input-box">
+                                    <label>Location of candidate <br>
+                                        <span class="span">(ie: north york , Scarborough , Vaughan , etc..)</span>
+                                    </label>
+                                    <input type="text" placeholder="Enter Location" name="Location" />
+                                </div>
+                            </div>
+
+                            <div class="input-box">
+                                <label>Location candidate is going to</label>
+                                {% if jobdata %}
+                                <input type="text" placeholder="Enter Location" name="clocation" value="{{jobdata.location}}"/>
+                                {% else %}
+                                <input type="text" placeholder="Enter Location" name="clocation" />
+                                {% endif %}
+                            </div>
+                            <div class="input-box">
+                                <label>Start time and date</label>
+                                {% if jobdata %}
+                                <input type="text" placeholder="Enter Company name" name="starttime" value="{{jobdata.job_date}}"/>
+                                {% else %}
+                                <input type="datetime-local" placeholder="Enter Company name" name="starttime" />
+                                {% endif %}
+                            </div>
+
+                            <div class="gender-box">
+                                <h3>Do you need a team member to double confirm candidate - example morning before, or
+                                    late
+                                    hours<br>
+                                </h3>
+                                <div class="gender-option">
+                                    <div class="gender">
+                                        <input type="radio" id="check-male" name="needteam" value="yes" checked />
+                                        <label for="check-male">Yes</label>
+                                    </div>
+                                    <div class="gender">
+                                        <input type="radio" id="check-female" name="needteam" value="no" />
+                                        <label for="check-female">No</label>
+                                    </div><br>
+                                </div>
+                            </div>
+                            <div class="input-box">
+                                <label>Photo ID ( govt Id)</label>
+                            </div>
+                            <input type="file" id="" name="myFile">
+
+
+                        </div>
+                        <div id="ResumeSent" style="display:none">
+                            <!-- Content inside the div -->
+                            <div class="input-box">
+                                <label>when will the company get back to you date<span>*</span></label>
+                                <input type="date" placeholder="Select Date" name="companydate" />
+                            </div>
+                        </div>
+                        <div id="Interviewschedule" style="display:none">
+                            <!-- Content inside the div -->
+                            <div class="input-box">
+                                <label>When is the
+                                    interview?<span>*</span></label>
+                                <input type="date" placeholder="Select Date" name="interviewdate" />
+                            </div>
+                        </div>
+                        </br>
+                        <div id="Helpanother" style="display: none;">
+                            <div class="subform-content-head">
+                                <h2>Helping form</h2>
+                                <p>This is to track who you are helping and for which candidate, and to track if the
+                                    candidate that you located has been placed</p>
+                            </div>
+                            <div class="input-box">
+                                <label>Who did you help?<span>*</span></label>
+<!--                                <input type="text" placeholder="Your Answer" name="help" />-->
+                                <select class="select-box form-control" name="help" id="help">
+                                    <option>select</option>
+                                    {% for users in members %}
+                                    {{users.fname}}{{users.lname}}
+                                    <option
+                                        value="{{users.fname}}{{users.lname}}">{{users.fname}}{{users.lname}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="gender-box">
+                                <h3>iI person starting ( next 2 days) or is a resume being sent?<span>*</span><br>
+                                </h3>
+                                <div>
+                                    <div class="gender">
+                                        <input type="radio" id="Yes" name="person_starting" value="Yes"/>
+                                        <label for="Yes">Yes </label>
+                                    </div><br>
+                                    <div class="gender">
+                                        <input type="radio" id="No" name="person_starting"/>
+                                        <label for="No">No</label>
+                                    </div><br>
+                                </div>
+
+                            </div>
+
+                        </div>
+                        <div id="Reject" style="display: none;">
+                            <div class="subform-content-head">
+                                <h2>Rejection </h2>
+<!--                                <p>This is to track who you are helping and for which candidate, and to track if the-->
+<!--                                    candidate that you located has been placed</p>-->
+                            </div>
+                            <div class="input-box">
+                                <label>Reason<span>*</span></label>
+                            <textarea class="area-box" id="rnotes" type="text" placeholder="notes" name="rnotes"
+                                ></textarea>
+                            </div>
+
+
+                        </div>
+                    </div>
+                    </br>
+                    <div class="final-content">
+                        <div class="subform-content-head">
+                            <h2>Final</h2>
+                        </div>
+                        <div class="input-box">
+                            <label>Other report </label>
+                            <input type="text" placeholder="your report" name="Otherreport" />
+                        </div>
+
+                        <div class="input-box">
+                            <label>Notes</label>
+                            <textarea class="area-box" id="notes" type="text" placeholder="notes" name="notes"
+                                ></textarea>
+                        </div>
+                    </div>
+
+                    <br>
+                    <button type="submit">Submit</button>
+                </form>
+            </div>
+
+        </section>
+    </section>
+    {% endif %}
+
+    {% if session['role'] and type in ['view', 'edit'] %}
+    <section class="container">
+        <div class="form-head">
+           <a href="/index"><img class="logo" src="https://www.click-hr.com/static/img/clickhr.png" alt=""></a>
+             <a class="backtodashboard" href="{{ url_for('selecteddata') }}">
+             <i class="fa fa-arrow-left"></i>
+             <p style="margin-bottom: 0px">Candidates</p>
+           </a>
+        </div>
+        <header><h2>Recruiting</h2></header>
+        <p>Please select on of the following ( one report per candidates ).</p>
+        <section class="form">
+
+            <div class="recuriting" id="recuriting">
+                <form action="/resumesent" method="post" class="form" enctype="multipart/form-data">
+                    <div class="forsubform">
+                        <div class="input-box">
+                            <label>Form Filled By<span>*</span></label>
+                            <input type="text" placeholder="Enter full name" name="name" value="{{formdata.name}}"
+                                readonly />
+                            <input type="text" placeholder="Enter Your name" name="user_id" hidden
+                                value="{{formdata.user_id}}" />
+                            <input type="text" placeholder="Enter Your name" name="formid" value="{{formdata.id}}" hidden />
+                        </div>
+                    </div>
+                    <div class="recuriting-content">
+                        <div class="input-box">
+                            <label>Name of candidate <span>*</span></label>
+                            <input type="text" placeholder="Enter full name" name="cname"
+                                value="{{formdata.candidate}}" />
+                        </div>
+                        <div class="inputsfor">
+                            <div class="input-box">
+                                <label>Phone number <span>*</span></label>
+                                <input type="text" placeholder="Enter phone number" name="cphone"
+                                    oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+                                    value="{{formdata.phone}}" />
+                            </div>
+                            <div class="input-box">
+                                <label>Company name (Placement, resume sent, or helped another recruiter
+                                    for?)<span>*</span></label>
+                                <input type="text"
+                                    value="{{formdata.company}}" />
+                        </div>
+                            <div class="input-box">
+                                <label>Position <span>*</span></label>
+                                 <input type="text"
+                                    value="{{formdata.position}}" />
+                            </div>
+                        </div>
+
+                        <div class="gender-box">
+                            <h3>Did you:<span>*</span><br>
+                            </h3>
+                            <div>
+                                <div class="gender">
+                                    <input type="radio" id="CandidatePlacementRadio" name="Didyou"
+                                        value="Candidate Placement" onchange="showDiv('CandidatePlacement')" {% if
+                                        formdata.did_you=='Candidate Placement' %} checked {% endif %}>
+                                    <label for="CandidatePlacementRadio">Candidate Placement</label>
+                                </div><br>
+                                <div class="gender">
+                                    <input type="radio" id="ResumeSentRadio" name="Didyou" value="Resume Sent"
+                                        onchange="showDiv('ResumeSent')" {% if formdata.did_you=='Resume Sent' %}
+                                        checked {% endif %}>
+                                    <label for="ResumeSentRadio">Resume Sent</label>
+                                </div><br>
+                                <div class="gender">
+                                    <input type="radio" id="InterviewRadio" name="Didyou"
+                                        onchange="showDiv('Interviewschedule')" value="Interview Scheduled" {% if
+                                        formdata.did_you=='Interview Scheduled' %} checked {% endif %}>
+                                    <label for="InterviewRadio">Interview Scheduled</label>
+                                </div><br>
+                                <div class="gender">
+                                    <input type="radio" id="HelpAnotherRadio" name="Didyou"
+                                        value="Help Another Recruiter" onchange="showDiv('Helpanother')" {% if
+                                        formdata.did_you=='Help Another' %} checked {% endif %}>
+                                    <label for="HelpAnotherRadio">Help Another Recruiter</label>
+                                </div>
+                                <br>
+                                <div class="gender">
+                                    <input type="radio" id="RejectRadio" name="Didyou"
+                                        value="Reject" onchange="showDiv('Reject')" {% if
+                                        formdata.did_you=='Reject' %} checked {% endif %}>
+                                    <label for="RejectRadio">Reject</label>
+                                </div>
+                                <!-- Hidden input to store the selected value -->
+                                <input type="hidden" id="selectedDidyou" name="Didyou" value="{{ formdata.did_you }}">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="recuriting-did">
+                        <div id="CandidatePlacement" {% if formdata.did_you=='Candidate Placement' %}
+                            style="display:block" {% else %}style="display:none" {% endif %}>
+                            <div class="subform-content-head">
+                                <h2>Recruiting person placement</h2>
+                                <p>Please fill this out once per candidate.</p>
+                            </div>
+                            <div class="input-box">
+                                <label>Emergency Contact Name <span>*</span></label>
+                                <input type="text" placeholder="Enter full name" value="{{formdata.ecname}}"
+                                    name="ecname" />
+                            </div>
+                            <div class="inputsfor">
+                                <div class="input-box">
+                                    <label>Emergency contact number <span>*</span> <br>
+                                        <span class="span"> ( cannot be the same as their phone number)</span>
+                                    </label>
+                                    <input type="text" placeholder="Enter phone number" name="ecnumber"
+                                        oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+                                        value="{{formdata.ecname}}" />
+                                </div>
+                                <div class="input-box">
+                                    <label>Location of candidate <span>*</span> <br>
+                                        <span class="span">(ie: north york , Scarborough , Vaughan , etc..)</span>
+                                    </label>
+                                    <input type="text" placeholder="Enter Location" value="{{formdata.location}}"
+                                        name="Location" />
+                                </div>
+                            </div>
+
+                            <div class="input-box">
+                                <label>Location candidate is going to<span>*</span></label>
+                                <input type="text" placeholder="Enter Location" value="{{formdata.locationcgoing}}"
+                                    name="clocation" />
+                            </div>
+                            <div class="input-box">
+                                <label>Start time and date<span>*</span></label>
+                                <input type="datetime-local" placeholder="Enter Company name"
+                                    value="{{formdata.starttime}}" name="starttime" />
+                            </div>
+
+                            <div class="gender-box">
+                                <h3>Do you need a team member to double confirm candidate - example morning before, or
+                                    late
+                                    hours<span>*</span><br>
+                                </h3>
+                                <div class="gender-option">
+                                    <div class="gender">
+                                        <input type="radio" id="check-male" name="needteam" value="yes" {% if
+                                            formdata.needmember=='yes' %} checked {% endif %} />
+                                        <label for="check-male">Yes</label>
+                                    </div>
+                                    <div class="gender">
+                                        <input type="radio" id="check-female" name="needteam" value="no" {% if
+                                            formdata.needmember=='no' %} checked {% endif %} />
+                                        <label for="check-female">No</label>
+                                    </div><br>
+                                </div>
+                            </div>
+                            <div class="input-box">
+                                <label>Photo ID ( govt Id)</label>
+                            </div>
+                            {% if formdata.content is none %}
+                                        No file...
+                                        {% else %}
+                                        <a href="#" {% if
+                                            formdata.content is none %} onclick="return false;" {% else %}
+                                            onclick="showPdf('{{ formdata.id }}'); return false;"
+                                            {% endif %}>
+                                            View File
+                                        </a>
+                                        {% endif %}
+
+<!--                            <input type="file" id="" name="myFile">-->
+
+
+                        </div>
+                        <div id="ResumeSent" {% if formdata.did_you=='Resume Sent' %} style="display:block" {% else
+                            %}style="display:none" {% endif %}>
+                            <!-- Content inside the div -->
+                            <div class="input-box">
+                                <label>when will the company get back to you date<span>*</span></label>
+                                <input type="date" placeholder="Select Date" value="{{formdata.companydate}}" name="companydate" />
+                            </div>
+                        </div>
+                        <div id="Interviewschedule" {% if formdata.did_you=='Interview Scheduled' %} style="display:block" {% else
+                            %}style="display:none" {% endif %}>
+                            <!-- Content inside the div -->
+                            <div class="input-box">
+                                <label>When is the interview?<span>*</span></label>
+                                <input type="date" placeholder="Select Date" value="{{formdata.interviewdate}}" name="interviewdate" />
+                            </div>
+                        </div>
+                        <div id="Helpanother" {% if formdata.did_you=='Help Another' %} style="display:block" {% else
+                            %}style="display:none" {% endif %}>
+                            <div class="subform-content-head">
+                                <h2>Helping form</h2>
+                                <p>This is to track who you are helping and for which candidate, and to track if the
+                                    candidate that you located has been placed</p>
+                            </div>
+                            <div class="input-box">
+                                <label>Who did you help?<span>*</span></label>
+                                <input type="text" placeholder="Your Answer" name="help" value="{{formdata.help}}" />
+                            </div>
+                            <div class="gender-box">
+                                <h3>iI person starting ( next 2 days) or is a resume being sent?<span>*</span><br>
+                                </h3>
+                                <div>
+                                    <div class="gender">
+                                        <input type="radio" id="Yes" name="person_starting" value="Yes"
+                                            {% if formdata.person_starting=='Yes' %} checked {% endif %} />
+                                        <label for="Resumesent">Yes </label>
+                                    </div><br>
+                                    <div class="gender">
+                                        <input type="radio" id="No" name="person_starting"
+                                            value="No" {% if
+                                            formdata.person_starting=='No' %} checked {% endif %} />
+                                        <label for="interview">No</label>
+                                    </div><br>
+                                </div>
+                            </div>
+
+                        </div>
+                    <div id="Reject" {% if formdata.did_you=='Reject' %} style="display:block" {% else
+                            %}style="display:none" {% endif %}>
+                            <div class="subform-content-head">
+                                <h2>Rejection </h2>
+<!--                                <p>This is to track who you are helping and for which candidate, and to track if the-->
+<!--                                    candidate that you located has been placed</p>-->
+                            </div>
+                            <div class="input-box">
+                                <label>Reason<span>*</span></label>
+                            <textarea class="area-box" id="rnotes" type="text" placeholder="{{formdata.rnotes}}" name="rnotes" value="{{formdata.rnotes}}"
+                                ></textarea>
+                            </div>
+
+
+                        </div>
+                    </div>
+                    <br>
+                    <div class="final-content">
+                        <div class="subform-content-head">
+                            <h2>Final</h2>
+                        </div>
+                        <div class="input-box">
+                            <label>Note</label>
+                            <textarea class="area-box" id="notes" type="text" placeholder="note" name="notes"
+                                >{{formdata.notes}}</textarea>
+                        </div>
+                    </div>
+
+                    <br>
+                    {% if type=='edit' %}
+                    <button type="submit">Update</button>
+                    {% endif %}
+                </form>
+            </div>
+
+        </section>
+    </section>
+    {% endif %}
+</body>
+<script src="https://www.click-hr.com/static/js/onereport.js"> </script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.min.js"></script>
+<script>
+    function showPdf(emailId) {
+        pdfWindow = window.open(`/placecontent/${emailId}`);
+    }
+   function handleSelectionChange(selectElement) {
+        debugger
+        var positionDropdown = document.getElementById('positionDropdown'); // Correctly select the <select> element
+            const selectedOption = selectElement.options[selectElement.selectedIndex];
+            const optionValue = selectedOption.value;
+
+            const [companyId, companyName] = optionValue.split('|');
+        console.log(companyId, companyName);
+
+        if (selectedOption != 'select') {
+            fetch('/position', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ companyId: companyId, companyName: companyName }), // Include the 'id' parameter here
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    const positionCounts = {}; // Object to store position counts
+
+                    data.positions.forEach(position => {
+                        if (position.position_name in positionCounts) {
+                            positionCounts[position.position_name]++;
+                        } else {
+                            positionCounts[position.position_name] = 1;
+                        }
+                    });
+
+                    positionDropdown.innerHTML = '<option value="">Select</option>';
+                    for (const [positionName, count] of Object.entries(positionCounts)) {
+                        var option = document.createElement('option');
+                        option.value = positionName;
+                        option.text = count > 1 ? `${positionName} (${count})` : positionName;
+                        positionDropdown.appendChild(option);
+                    }
+                });
+
+        }
+    }
+
+
+</script>
+<script>
+    let formSubmitted = false; // Flag to track form submission
+
+    document.querySelector('form').addEventListener('submit', function (event) {
+        event.preventDefault();
+
+        if (formSubmitted) {
+            return; // If the form has already been submitted, do nothing
+        }
+
+        // Set the flag to true to prevent further submissions
+        formSubmitted = true;
+
+        fetch('/resumesent', {
+            method: 'POST',
+            body: new FormData(event.target)
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.message === 'success') {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success!',
+                    text: 'Form updated successfully!',
+                }).then(() => {
+                    window.location.href = '{{ url_for('forms') }}';
+                });
+            }else if (data.error === 'Please fill in all required fields marked with an asterisk (*)') {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'error!',
+                    text: 'Please fill in all required fields marked with an asterisk (*)',
+                }).then(() => {
+                    window.location.reload();
+                });
+            } else {
+                alert(data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('An error occurred while updating the form.');
+        });
+    });
+</script>
+
+
+</html>

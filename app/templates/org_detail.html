@@ -1,0 +1,433 @@
+{% extends "base.html" %}
+
+{% block title %} Members {% endblock %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block content %}
+{% if session['role']!='user' %}
+<style>
+    tr {
+        margin-top: 20px;
+        border-bottom: 1px solid black;
+        width: 100%;
+    }
+
+    th {
+        text-align: center;
+        color: #19355f;
+    }
+
+    td {
+        text-align: center;
+        color: #19355f;
+    }
+
+    .active-button {
+        background-color: green;
+    }
+</style>
+<div class="content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card ">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <div class="card-header">
+                        <h4 class="card-title">Organization Details</h4>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <form class="form" role="form" method="post" action="/apporg">
+                        <div class="row">
+                            <div class="col-md-6 pl-md-1">
+                                <div class="form-group">
+                                    <label for="name" class="form-label">Company Name:</label>
+                                    <input type="hidden" class="form-control" id="name" name="id"
+                                        value="{{org_data.id}}">
+                                    <input type="hidden" class="form-control" id="status" name="id"
+                                        value="{{org_data.status}}">
+                                    <input type="text" class="form-control" id="name" name="company"
+                                        value="{{org_data.company}}" readonly>
+                                    <section class="display-error-message">
+                                    </section>
+                                </div>
+                            </div>
+                            <div class="col-md-6 pl-md-1">
+                                <div class="form-group">
+                                    <label for="email" class="form-label"> Company Number:</label>
+                                    <input type="text" class="form-control" id="email" name="com_number"
+                                        value="{{org_data.com_number}}">
+                                    <section class="display-error-message">
+                                    </section>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 pl-md-1">
+                                <div class="form-group">
+                                    <label for="email" class="form-label"> Company Email:</label>
+                                    <input type="text" class="form-control" id="email" name="com_email"
+                                        value="{{org_data.com_email}}">
+                                    <section class="display-error-message">
+                                    </section>
+                                </div>
+                            </div>
+                            <div class="col-md-6 pl-md-1">
+                                <div class="form-group">
+                                    <label for="name" class="form-label">Company URL:</label>
+                                    <input type="text" class="form-control" id="name" name="com_web"
+                                        value="{{org_data.com_web}}">
+                                    <section class="display-error-message">
+                                    </section>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 pl-md-1">
+                                <div class="form-group">
+                                    <label for="email" class="form-label">Number of Employee:</label>
+                                    <select class="form-control" name="num_employee" id="nempSelect">
+                                        <option value="" class="hidden" selected disabled>Select number of employees
+                                        </option>
+                                        <option {% if org_data.num_employee=="5to10" %} selected {% endif %}
+                                            value="5to10">5 to 10</option>
+                                        <option {% if org_data.num_employee=="10to20" %} selected {% endif %}
+                                            value="10to20">10 to 20</option>
+                                        <option {% if org_data.num_employee=="20to50" %} selected {% endif %}
+                                            value="20to50">20 to 50</option>
+                                    </select>
+                                    <section class="display-error-message">
+                                    </section>
+                                </div>
+                            </div>
+                            <div class="col-md-6 pl-md-1">
+                                <div class="form-group">
+                                    <label for="message" class="form-label">Company Address:</label>
+                                    <input class="form-control" id="message" name="com_address" rows="3"
+                                        placeholder="{{org_data.com_address}}" value="{{org_data.com_address}}">
+                                    <section class="display-error-message">
+                                    </section>
+                                </div>
+                            </div>
+                            <div class="col-md-6" style="margin-top:20px">
+                                <p style="color:black;">Candidate data will be fetched for your company</p>
+                                <input type="checkbox" id="linkedinCheckbox" name="lkd" value="1" {% if
+                                    org_data.linkedin==1 %} checked {% endif %} />
+                                <label for="linkedinCheckbox" style="margin-left:10px">LinkedIn Attached Email</label>
+                                <input type="checkbox" id="ziprecruiterCheckbox" name="zpr" value="2" {% if
+                                    org_data.ziprecuiter==1 %} checked {% endif %} style="margin-left:20px" />
+                                <label for="ziprecruiterCheckbox" style="margin-left:10px">ZipRecruiter Attached
+                                    Email</label>
+                            </div>
+                            <div class="col-md-6">
+                                <p style="color: aliceblue;">d</p>
+                            </div>
+                        </div>
+                        <br>
+                        <h4 style="color:black;">Contact Person Details</h4>
+                        <div class="row">
+                            <div class="col-md-6 pl-md-1">
+                                <div class="form-group">
+                                    <label for="name" class="form-label">First Name:</label>
+                                    <input type="text" class="form-control" id="name" name="fname"
+                                        value="{{org_data.fname}}">
+                                    <section class="display-error-message">
+                                    </section>
+                                </div>
+                            </div>
+                            <div class="col-md-6 pl-md-1">
+                                <div class="form-group">
+                                    <label for="email" class="form-label"> Last Name:</label>
+                                    <input type="text" class="form-control" id="email" name="lname"
+                                        value="{{org_data.lname}}">
+                                    <section class="display-error-message">
+                                    </section>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 pl-md-1">
+                                <div class="form-group">
+                                    <label for="name" class="form-label">Email:</label>
+                                    <input type="text" class="form-control" id="name" name="email"
+                                        value="{{org_data.email}}">
+                                    <section class="display-error-message">
+                                    </section>
+                                </div>
+                            </div>
+                            <div class="col-md-6 pl-md-1">
+                                <div class="form-group">
+                                    <label for="email" class="form-label">Phone Number:</label>
+                                    <input type="text" class="form-control" id="email" name="phone_number"
+                                        value="{{org_data.phone_number}}">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="credential" id="credentialDiv" style="display:none;">
+                            <div class="row" id="indeedCredentials" style="display:none;">
+
+                                <div class="col-md-6 pl-md-1">
+                                    <h6 style="color:black;">Indeed Credential:</h6>
+                                    <div class="form-group">
+                                        <label for="name" class="form-label">Email:</label>
+                                        <input type="text" value="{{org_datcre.iemail}}" class="form-control"
+                                            id="iemail" name="iemail">
+                                    </div>
+                                </div>
+                                <div class="col-md-6 pl-md-1">
+                                   <h6 style="color:black; opacity:0;">Indeed Credential:</h6>
+                                    <div class="form-group">
+                                        <label for="email" class="form-label"> Password:</label>
+                                        <input type="text" value="{{org_datcre.ipassword}}" class="form-control"
+                                            id="ipassword" name="ipassword">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row" id="ziprecruiterCredentials" style="display:none;">
+
+                                <div class="col-md-6 pl-md-1">
+                                    <h6 style="color:black;">ZipRecuiter Credential:</h6>
+                                    <div class="form-group">
+                                        <label for="name" class="form-label">Email:</label>
+                                        <input type="text" value="{{ org_datcre.zemail }}" class="form-control"
+                                            id="zpassword" name="zemail">
+                                        <input type="hidden" value="{{org_datcre.id}}" class="form-control"
+                                            id="zpassword" name="cred_id">
+                                    </div>
+                                </div>
+                                <div class="col-md-6 pl-md-1">
+                                    <h6 style="color:black; opacity:0;">ZipRecuiter Credential:</h6>
+                                    <div class="form-group">
+                                        <label for="email" class="form-label"> Password:</label>
+                                        <input type="text" value="{{org_datcre.zpassword}}" class="form-control"
+                                            id="zpassword" name="zpassword">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+
+                                <div class="col-md-6 pl-md-1">
+                                    <div class="form-group">
+                                        <label for="message" class="form-label">Email Notification:
+                                        </label>
+                                        {% if org_datcre.noti_email %}
+                                        <input type="text" class="form-control" id="notiemail" name="notiemail"
+                                            value="{{org_datcre.noti_email}}" placeholder="{{org_datcre.noti_email}}">
+                                        {% else %}
+                                        <input type="text" class="form-control" id="notiemail" name="notiemail"
+                                            value="{{org_data.com_email}}" placeholder="{{org_data.com_email}}">
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="col-md-6 pl-md-1">
+                                    <div class="form-group">
+                                        <label for="message" class="form-label">Note:</label>
+                                        <textarea style="border:1px solid black;" value="{{org_datcre.note}}"
+                                            class="form-control" id="message" name="message" rows="3"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" style="justify-content:flex-end">
+
+
+
+                            <div class="card-footer" style="display:flex;">
+                                <button type="button" class="btn btn-fill btn-primary btn-approve" id="approve"
+                                    style="background:green;" onclick="showCredentials()">Approve</button>
+                                <button type="Save" class="btn btn-fill btn-primary btn-approve" id="save"
+                                    style="display:none;">Save</button>
+                                <button type="button" class="btn btn-fill btn-success" id="pending"
+                                    style="background:#19355f;" onclick="pendingre()">Pending</button>
+                                <button type="button" class="btn btn-fill btn-danger" id="deny" style="background:red;"
+                                    onclick="denyre()">Deny</button>
+                                <button type="button" class="btn btn-default" style="display:none; background:gray;"
+                                    id="cancel" onclick="hideCredentials()">Cancel</button>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.min.js"></script>
+<script>
+    function showCredentials() {
+        var credentialDiv = document.getElementById('credentialDiv');
+        credentialDiv.style.display = 'block';
+        var save = document.getElementById('save');
+        save.style.display = 'block';
+        var approve = document.getElementById('approve');
+        approve.style.display = 'none';
+        var pending = document.getElementById('pending');
+        pending.style.display = 'none';
+        var deny = document.getElementById('deny');
+        deny.style.display = 'none';
+        var cancel = document.getElementById('cancel');
+        cancel.style.display = 'block';
+    }
+
+    // Optional: You might want to hide it again based on some conditions or other buttons
+    function hideCredentials() {
+        window.location.href = "{{ url_for('organizations') }}";
+    }
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var linkedinCheckbox = document.getElementById('linkedinCheckbox');
+        var ziprecruiterCheckbox = document.getElementById('ziprecruiterCheckbox');
+
+        linkedinCheckbox.addEventListener('change', function () {
+            document.getElementById('indeedCredentials').style.display = this.checked ? 'flex' : 'none';
+        });
+
+        ziprecruiterCheckbox.addEventListener('change', function () {
+            document.getElementById('ziprecruiterCredentials').style.display = this.checked ? 'flex' : 'none';
+        });
+
+        // Check the organization status and adjust UI accordingly
+        if ("{{ org_data.status }}" === "Approved") {
+            document.getElementById('credentialDiv').style.display = 'block';
+            document.getElementById('save').style.display = 'block';
+            document.getElementById('deny').style.display = 'block';
+            document.getElementById('approve').style.display = 'none';
+            document.getElementById('pending').style.display = 'none';
+            document.getElementById('cancel').style.display = 'block';
+        }
+
+        // Call the change event at document load to set the initial state
+        linkedinCheckbox.dispatchEvent(new Event('change'));
+        ziprecruiterCheckbox.dispatchEvent(new Event('change'));
+    });
+</script>
+
+<script>
+    function denyre() {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Delete',
+            text: 'Are you sure you want to Delete ?',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: 'grey',
+            confirmButtonText: 'Delete'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                fetch('/delorg/{{ org_data.id }}', {
+                    method: 'GET'  // Assuming your endpoint uses GET
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.message) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Deleted!',
+                                text: data.message,
+                            }).then(() => {
+                                window.location.href = "{{ url_for('organizations') }}";  // Redirect after the action
+                            });
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: data.message,
+                            });
+                        }
+
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error!',
+                            text: 'An error occurred while deleting.',
+                        });
+                    });
+            }
+        });
+
+
+
+
+    }
+    function pendingre() {
+        fetch('/pendingorg/{{ org_data.id }}', {
+            method: 'GET'
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.message) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Updated!',
+                        text: data.message,
+                    }).then(() => {
+                        window.location.href = "{{ url_for('organizations') }}";  // Redirect after the action
+                    });
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error!',
+                    text: 'An error occurred while updating.',
+                });
+            });
+    }
+
+    document.querySelector('form').addEventListener('submit', function(event) {
+    event.preventDefault();
+
+    const linkedinChecked = document.getElementById('linkedinCheckbox').checked;
+    const ziprecruiterChecked = document.getElementById('ziprecruiterCheckbox').checked;
+
+    if (linkedinChecked && !document.getElementById('iemail').value.trim() && !document.getElementById('ipassword').value.trim()) {
+        alert("Please fill in Indeed credentials");
+        return;
+    }
+
+    if (ziprecruiterChecked && !document.getElementById('zemail').value.trim() && !document.getElementById('zpassword').value.trim()) {
+        alert("Please fill in ZipRecruiter credentials");
+        return;
+    }
+
+    fetch('/apporg', {
+            method: 'POST',
+            body: new FormData(event.target)
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.message) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success!',
+                    text: data.message,
+                }).then(() => {
+                    window.location.href = "{{ url_for('organizations') }}";
+                });
+            } else if (data.error) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error!',
+                    text: data.error,
+                }).then(() => {
+                    window.location.reload();
+                });
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('An error occurred while signup.');
+        });
+});
+
+</script>
+{% endif %}
+{% endblock content %}
+{% block javascripts %}{% endblock javascripts %}
