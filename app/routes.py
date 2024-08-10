@@ -58,8 +58,15 @@ from sqlalchemy import or_, not_
 import logging
 
 from collections import defaultdict
+from flask_cors import CORS
 
+CORS(app, supports_credentials=True, origins="http://localhost:3000")
+# Define global variables
+global_user_id = None
+global_role = None
+global_org_id = None
 
+    
 def role_required(allowed_roles):
     def decorator(f):
         @wraps(f)
@@ -497,11 +504,9 @@ def signup():
 
 @app.route("/directlogin", methods=["GET", "POST"])
 def directlogin():
-    data = request.get_json()
-    print(data)
-    email = data["email"]
-    password = data["password"]
-    print(email, password)
+    email = request.args.get('email')
+    password = request.args.get('password')
+    # print(email, password)
 
     if email and password:
         user = Users.query.filter_by(email=email).first()
@@ -509,13 +514,19 @@ def directlogin():
         if user:
             if user.status == "Active" and sha256_crypt.verify(password, user.password):
                 # Successful login
+                 # Set global variables
+                global global_user_id, global_role, global_org_id
+                global_user_id = user.id
+                global_role = user.role
+                global_org_id = user.org_id
+                
                 session["user_id"] = user.id
                 session["role"] = user.role
                 session["org_id"] = user.org_id
                 session["email"] = user.email
                 session["org_name"] = user.org_name
                 session["user"] = f"{user.fname} {user.lname}"
-                return jsonify({"message": "login successfully"}), 200
+                return redirect(url_for("index"))
             else:
                 return jsonify({"message": "wrong credentials"}), 200
         else:
@@ -785,11 +796,15 @@ class DotDict(dict):
 
 
 @app.route("/index")
-@role_required(allowed_roles=["user", "admin", "owner", "CEO"])
+# @role_required(allowed_roles=["user", "admin", "owner", "CEO"])
 def index():
-    user_id = session["user_id"]
-    role = session["role"]
-    org_id = session["org_id"]
+    # user_id = session["user_id"]
+    # role = session["role"]
+    # org_id = session["org_id"]
+    # Access global variables instead of session variables
+    user_id = global_user_id
+    role = global_role
+    org_id = global_org_id
     # print("org_id", org_id)
     allusers = Users.query.filter(Users.org_id == org_id).all()
     allusers_data = [
@@ -1022,9 +1037,12 @@ def index():
             }
         }
     )
-    user_id = session["user_id"]
-    role = session["role"]
-
+    # user_id = session["user_id"]
+    # role = session["role"]
+# Access global variables instead of session variables
+    user_id = global_user_id
+    role = global_role
+    
     if role == "user":
         members_data = (
             Targets.query.filter(

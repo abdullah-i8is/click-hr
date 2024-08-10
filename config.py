@@ -32,6 +32,8 @@ class ProductionConfig(Config):
     SESSION_COOKIE_HTTPONLY = True
     REMEMBER_COOKIE_HTTPONLY = True
     REMEMBER_COOKIE_DURATION = 3600
+    SESSION_COOKIE_SAMESITE = None
+
 
 
 
