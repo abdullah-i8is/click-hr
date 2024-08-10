@@ -58,9 +58,7 @@ from sqlalchemy import or_, not_
 import logging
 
 from collections import defaultdict
-from flask_cors import CORS
 
-CORS(app, supports_credentials=True, origins="http://localhost:3000")
 # Define global variables
 global_user_id = None
 global_role = None
