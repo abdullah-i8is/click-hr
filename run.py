@@ -28,8 +28,11 @@ import time
 import pytesseract
 from io import BytesIO
 from PyPDF2 import PdfReader
+from flask_cors import CORS
 
 app = Flask(__name__)
+# Initialize CORS
+
 
 IMAP_SERVER = 'imap.gmail.com'
 EMAIL_CREDENTIALS = []
@@ -80,9 +83,9 @@ class OrgCred(Base):
     created_at = Column(DateTime, default=datetime.utcnow)
 
 
-engine = create_engine(
-     'mysql+pymysql://hayat:Hayat_admin123@35.183.134.169/geoxhrdb')
-#engine = create_engine('mysql+pymysql://root:@localhost/nisa')
+# engine = create_engine(
+#      'mysql+pymysql://hayat:Hayat_admin123@35.183.134.169/geoxhrdb')
+engine = create_engine('mysql+pymysql://hayat:Hayat_admin123@35.183.134.169/Clickhrin')
 Session = sessionmaker(bind=engine)
 session = Session()
 Base.metadata.create_all(engine)
@@ -107,6 +110,7 @@ if DEBUG:
     app.logger.info('DBMS        = ' + app_config.SQLALCHEMY_DATABASE_URI)
     app.logger.info('ASSETS_ROOT = ' + app_config.ASSETS_ROOT)
 
+CORS(app)
 
 last_email_sent = {}
 

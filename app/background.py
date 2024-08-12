@@ -75,7 +75,7 @@ class Emails_data(Base):
 
 
 # Create the database engine and session
-# engine = create_engine('mysql+pymysql://root:@localhost/clickhr')
+# engine = create_engine('mysql+pymysql://hayat:Hayat_admin123@35.183.134.169/clickhr')
 engine = create_engine(
     'mysql+pymysql://hayat:Hayat_admin123@35.183.134.169/geoxhrdb')
 

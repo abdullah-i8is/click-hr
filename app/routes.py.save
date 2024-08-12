@@ -643,7 +643,7 @@ def logoutforcandidate():
 
 # engine = create_engine('mysql+pymysql://hayat:Hayat_admin123@3.99.155.18/clickhrdemo')
 engine = create_engine('mysql+pymysql://hayat:Hayat_admin123@3.99.155.18/geoxhrdb')
-# engine = create_engine('mysql+pymysql://root:@localhost/clickhr1')
+# engine = create_engine('mysql+pymysql://hayat:Hayat_admin123@35.183.134.169/clickhr1')
 
 # Create a session factory
 Session = sessionmaker(bind=engine)

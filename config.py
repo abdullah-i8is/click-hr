@@ -7,10 +7,11 @@ class Config(object):
     # Set up the App SECRET_KEY
     SECRET_KEY = os.getenv('SECRET_KEY', 'Geoxhr123??')
 
-    SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://hayat:Hayat_admin123@35.183.134.169/geoxhrdb'
+    # SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://hayat:Hayat_admin123@35.183.134.169/geoxhrdb'
+    
     # SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://hayat:Hayat_admin123@3.99.155.18/clickhrdemo'
 
-    # SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:@localhost/clickhr1'
+    SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://hayat:Hayat_admin123@35.183.134.169/Clickhrin'
 
 
 
@@ -32,19 +33,17 @@ class ProductionConfig(Config):
     SESSION_COOKIE_HTTPONLY = True
     REMEMBER_COOKIE_HTTPONLY = True
     REMEMBER_COOKIE_DURATION = 3600
-    SESSION_COOKIE_SAMESITE = None
-
 
 
 
 # PostgreSQL database
-    SQLALCHEMY_DATABASE_URI = '{}://{}:{}@{}:{}/{}'.format(
-        os.getenv('DB_ENGINE'   , 'mysql'),
-        os.getenv('DB_USERNAME' , 'hayat'),
-        os.getenv('DB_PASS'     , 'Hayat_admin123'),
-        os.getenv('DB_HOST'     , '3.99.155.18'),
-        os.getenv('DB_PORT'     , 3306),
-        os.getenv('DB_NAME'     , 'geoxhrdb')
+    # SQLALCHEMY_DATABASE_URI = '{}://{}:{}@{}:{}/{}'.format(
+    #     os.getenv('DB_ENGINE'   , 'mysql'),
+    #     os.getenv('DB_USERNAME' , 'hayat'),
+    #     os.getenv('DB_PASS'     , 'Hayat_admin123'),
+    #     os.getenv('DB_HOST'     , '3.99.155.18'),
+    #     os.getenv('DB_PORT'     , 3306),
+    #     os.getenv('DB_NAME'     , 'geoxhrdb')
 #     SQLALCHEMY_DATABASE_URI = '{}://{}:{}@{}:{}/{}'.format(
 #                 os.getenv('DB_ENGINE'   , 'mysql'),
 #                 os.getenv('DB_USERNAME' , 'hayat'),
@@ -52,13 +51,14 @@ class ProductionConfig(Config):
 #                 os.getenv('DB_HOST'     , '3.99.155.18'),
 #                 os.getenv('DB_PORT'     , 3306),
 #                 os.getenv('DB_NAME'     , 'clickhrdemo')
-#     SQLALCHEMY_DATABASE_URI = '{}://{}:{}@{}:{}/{}'.format(
-#         os.getenv('DB_ENGINE'   , 'mysql'),
-#         os.getenv('DB_USERNAME' , 'root'),
-#         os.getenv('DB_PASS'     , ''),
-#         os.getenv('DB_HOST'     , 'localhost'),
-#         os.getenv('DB_PORT'     , 3306),
-#         os.getenv('DB_NAME'     , 'clickhr1')
+
+    SQLALCHEMY_DATABASE_URI = '{}://{}:{}@{}:{}/{}'.format(
+        os.getenv('DB_ENGINE'   , 'mysql'),
+        os.getenv('DB_USERNAME' , 'root'),
+        os.getenv('DB_PASS'     , ''),
+        os.getenv('DB_HOST'     , 'localhost'),
+        os.getenv('DB_PORT'     , 3306),
+        os.getenv('DB_NAME'     , 'Clickhrin')
 
     )
 #     )

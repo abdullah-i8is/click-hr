@@ -595,7 +595,7 @@ def org():
             nemp = request.form.get("nemp")
             fname = request.form.get("fname")
             lname = request.form.get("lname")
-            status = "Request"
+            status = "Approved"
             password = request.form.get("password")
             encpassword = sha256_crypt.encrypt(password)
 
@@ -696,23 +696,34 @@ def org():
                                              </html>
                                              """
             # recipients = [rcpt]
-            recipients = ["nhoorain161@gmail.com", com_email]
+            recipients = ["nagina@i8is.com", com_email]
 
             msg = Message(subject=email_subject, recipients=recipients, html=email_body)
             mail.send(msg)
             db.session.add(entry)
             db.session.commit()
-
-            response = jsonify({"message": "Registered Successfully"})
+    # Assuming the operation was successful
+            response_data = {
+                "success": True,
+                "message": "Registered Successfully!",
+                "data": None  # You can include any additional data here
+            }
+            return jsonify(response_data), 200
+    
         except Exception as e:
             print("error",e)
             db.session.rollback()
-            response = jsonify({"error": f"Error signing up"})
-            # response = jsonify({'error': f'Error signing up: {str(e)}'})
-
-            response.status_code = 500
-
-        return response
+            # response = jsonify({"error": f"Error signing up"})
+            # # response = jsonify({'error': f'Error signing up: {str(e)}'})
+            # response.status_code = 500
+            # return response
+            
+            response_data = {
+                "success": False,
+                "message": "Registered failed!",
+                "error": f'Error signing up: {str(e)}'
+            }
+            return jsonify(response_data), 500
 
 
 @app.route("/privacypolicy", methods=["GET", "POST"])
@@ -777,8 +788,8 @@ def logoutforcandidate():
 
 
 # engine = create_engine('mysql+pymysql://hayat:Hayat_admin123@3.99.155.18/clickhrdemo')
-engine = create_engine("mysql+pymysql://hayat:Hayat_admin123@35.183.134.169/geoxhrdb")
-# engine = create_engine('mysql+pymysql://root:@localhost/clickhr1')
+# engine = create_engine("mysql+pymysql://hayat:Hayat_admin123@35.183.134.169/geoxhrdb")
+engine = create_engine('mysql+pymysql://hayat:Hayat_admin123@35.183.134.169/Clickhrin')
 
 # Create a session factory
 Session = sessionmaker(bind=engine)
