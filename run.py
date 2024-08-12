@@ -89,7 +89,7 @@ engine = create_engine('mysql+pymysql://hayat:Hayat_admin123@35.183.134.169/Clic
 Session = sessionmaker(bind=engine)
 session = Session()
 Base.metadata.create_all(engine)
-
+# hello
 DEBUG = (os.getenv('DEBUG', 'False') == 'True')
 get_config_mode = 'Debug' if DEBUG else 'Production'
 
