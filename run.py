@@ -37,12 +37,12 @@ app = Flask(__name__)
 IMAP_SERVER = 'imap.gmail.com'
 EMAIL_CREDENTIALS = []
 
-app.config['MAIL_SERVER'] = 'smtp.mail.us-east-1.awsapps.com'
-app.config['MAIL_PORT'] = 465
-app.config['MAIL_USE_SSL'] = True
-app.config['MAIL_USERNAME'] = 'clickhr@click-hr.com'
-app.config['MAIL_PASSWORD'] = 'I8is123??'
-app.config['MAIL_DEFAULT_SENDER'] = 'clickhr@click-hr.com'
+# app.config['MAIL_SERVER'] = 'smtp.mail.us-east-1.awsapps.com'
+# app.config['MAIL_PORT'] = 465
+# app.config['MAIL_USE_SSL'] = True
+# app.config['MAIL_USERNAME'] = 'clickhr@click-hr.com'
+# app.config['MAIL_PASSWORD'] = 'I8is123??'
+# app.config['MAIL_DEFAULT_SENDER'] = 'clickhr@click-hr.com'
 
 mail = Mail(app)
 Base = declarative_base()

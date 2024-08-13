@@ -54,9 +54,9 @@ class ProductionConfig(Config):
 
     SQLALCHEMY_DATABASE_URI = '{}://{}:{}@{}:{}/{}'.format(
         os.getenv('DB_ENGINE'   , 'mysql'),
-        os.getenv('DB_USERNAME' , 'root'),
-        os.getenv('DB_PASS'     , ''),
-        os.getenv('DB_HOST'     , 'localhost'),
+        os.getenv('DB_USERNAME' , 'hayat'),
+        os.getenv('DB_PASS'     , 'Hayat_admin123'),
+        os.getenv('DB_HOST'     , '35.183.134.169'),
         os.getenv('DB_PORT'     , 3306),
         os.getenv('DB_NAME'     , 'Clickhrin')
 

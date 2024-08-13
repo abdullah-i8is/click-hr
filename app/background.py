@@ -35,10 +35,10 @@ app = Flask(__name__)
 # client = Client(account_sid, auth_token)
 #
 
-DB_HOST = '3.99.155.18'
+DB_HOST = '35.183.134.169'
 DB_USER = 'hayat'
 DB_PASSWORD = 'Hayat_admin123'
-DB_DATABASE = 'geoxhrdb'
+DB_DATABASE = 'Clickhrin'
 #
 # DB_HOST = 'localhost'
 # DB_USER = 'root'
@@ -77,7 +77,7 @@ class Emails_data(Base):
 # Create the database engine and session
 # engine = create_engine('mysql+pymysql://hayat:Hayat_admin123@35.183.134.169/clickhr')
 engine = create_engine(
-    'mysql+pymysql://hayat:Hayat_admin123@35.183.134.169/geoxhrdb')
+    'mysql+pymysql://hayat:Hayat_admin123@35.183.134.169/Clickhrin')
 
 Session = sessionmaker(bind=engine)
 session = Session()
