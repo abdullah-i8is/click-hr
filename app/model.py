@@ -78,7 +78,6 @@ class org_cred(db.Model, UserMixin):
     ipassword      = db.Column(db.String(250))
     zemail         = db.Column(db.String(250), unique=True)
     zpassword      = db.Column(db.String(250))
-    last_processed_email_id = db.Column(db.String(250), unique=True)
     status = db.Column(db.String(250), unique=True)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 

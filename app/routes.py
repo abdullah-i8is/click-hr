@@ -615,7 +615,23 @@ def org():
                 password=encpassword,
                 status=status,
             )
+            # Commit the organization entry to the database
+            db.session.add(entry)
+            db.session.commit()
 
+            usrentry = Users(
+                    role="owner",
+                    fname=fname,
+                    lname=lname,
+                    email=com_email,
+                    password=encpassword,
+                    designation="owner",
+                    status="Active",
+                    org_name=company,
+                    org_id=entry.id,
+                )
+            db.session.add(usrentry)
+                
             email_subject = f"""Registration Successfull"""
             print(email_subject)
             email_body = f"""
@@ -698,9 +714,9 @@ def org():
             # recipients = [rcpt]
             recipients = ["nagina@i8is.com", com_email]
 
-            msg = Message(subject=email_subject, recipients=recipients, html=email_body)
-            mail.send(msg)
-            db.session.add(entry)
+            # msg = Message(subject=email_subject, recipients=recipients, html=email_body)
+            # mail.send(msg)
+            # db.session.add(entry)
             db.session.commit()
     # Assuming the operation was successful
             response_data = {
@@ -787,9 +803,9 @@ def logoutforcandidate():
     return redirect(url_for("logincandidate"))
 
 
-# engine = create_engine('mysql+pymysql://hayat:Hayat_admin123@3.99.155.18/clickhrdemo')
-# engine = create_engine("mysql+pymysql://hayat:Hayat_admin123@35.183.134.169/geoxhrdb")
 engine = create_engine('mysql+pymysql://hayat:Hayat_admin123@35.183.134.169/Clickhrin')
+# engine = create_engine("mysql+pymysql://hayat:Hayat_admin123@35.183.134.169/geoxhrdb")
+# engine = create_engine('mysql+pymysql://root:@localhost/clickhrinfiniti')
 
 # Create a session factory
 Session = sessionmaker(bind=engine)
@@ -2813,7 +2829,7 @@ def organizations():
 
 
 @app.route("/apporg", methods=["POST"])
-@role_required(allowed_roles=["CEO"])
+# @role_required(allowed_roles=["CEO"])
 def apporg():
     if request.method == "POST":
         id = request.form.get("id")
@@ -2899,14 +2915,14 @@ def apporg():
                 db.session.add(credentry)
                 usrentry = Users(
                     role="owner",
-                    fname=organizations_data.fname,
-                    lname=organizations_data.lname,
-                    email=organizations_data.com_email,
-                    password=organizations_data.password,
+                    fname=fname,
+                    lname=lname,
+                    email=com_email,
+                    password=existing_entry.password,
                     designation="owner",
                     status="Active",
-                    org_name=organizations_data.company,
-                    org_id=organizations_data.id,
+                    org_name=company,
+                    org_id=id,
                 )
                 db.session.add(usrentry)
                 email_subject = f"""Registration Approved"""

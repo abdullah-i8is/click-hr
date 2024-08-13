@@ -13,6 +13,8 @@ class Config(object):
 
     SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://hayat:Hayat_admin123@35.183.134.169/Clickhrin'
 
+    # SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:@localhost/clickhrinfiniti'
+
 
 
     SQLALCHEMY_TRACK_MODIFICATIONS = False
