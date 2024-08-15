@@ -63,6 +63,8 @@ from collections import defaultdict
 global_user_id = None
 global_role = None
 global_org_id = None
+global_user_name = None
+global_user_email = None
 
     
 def role_required(allowed_roles):
@@ -513,10 +515,12 @@ def directlogin():
             if user.status == "Active" and sha256_crypt.verify(password, user.password):
                 # Successful login
                  # Set global variables
-                global global_user_id, global_role, global_org_id
+                global global_user_id, global_role, global_org_id, global_user_name, global_user_email
                 global_user_id = user.id
                 global_role = user.role
                 global_org_id = user.org_id
+                global_user_name = f"{user.fname} {user.lname}"
+                global_user_email = user.email
                 
                 session["user_id"] = user.id
                 session["role"] = user.role
@@ -823,10 +827,17 @@ class DotDict(dict):
 @app.route("/index")
 # @role_required(allowed_roles=["user", "admin", "owner", "CEO"])
 def index():
+    session = {}
+
     # user_id = session["user_id"]
     # role = session["role"]
     # org_id = session["org_id"]
     # Access global variables instead of session variables
+    session["user_id"] = global_user_id
+    session["role"] = global_role
+    session["org_id"] = global_org_id
+    session["email"] = global_user_email
+    session["user"] = global_user_name
     user_id = global_user_id
     role = global_role
     org_id = global_org_id
@@ -1106,6 +1117,7 @@ def index():
         weekend=weekend,
         msg=task,
         members_data=members_data,
+        session= session
     )
 
 
