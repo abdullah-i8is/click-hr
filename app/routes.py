@@ -567,30 +567,30 @@ def orgold():
             .filter(or_(Users.email == company, Users.email == email))
             .first()
         )
-        if existing_entry:
-            if existing_entry.company == company:
-                return jsonify({"error": "Company already exists"}), 400
-            elif existing_entry.com_email == com_email:
-                return jsonify({"error": "Company email already exists"}), 400
-            elif existing_entry.email == email:
-                return jsonify(
-                    {"error": "Contact person email already exists, choose another"}
-                ), 400
-            elif existing_entry.com_number == com_number:
-                return jsonify({"error": "Company phone number already exists"}), 400
-            elif existing_entry.phone_number == num:
-                return jsonify(
-                    {
-                        "error": "Contact person phone number already exists, choose another"
-                    }
-                ), 400
-        if existing_email:
-            if existing_email.email == com_email:
-                return jsonify({"error": "Company email already exists"}), 400
-            elif existing_email.email == email:
-                return jsonify(
-                    {"error": "Contact person email already exists, choose another"}
-                ), 400
+        # if existing_entry:
+        #     if existing_entry.company == company:
+        #         return jsonify({"error": "Company already exists"}), 400
+        #     elif existing_entry.com_email == com_email:
+        #         return jsonify({"error": "Company email already exists"}), 400
+        #     elif existing_entry.email == email:
+        #         return jsonify(
+        #             {"error": "Contact person email already exists, choose another"}
+        #         ), 400
+        #     elif existing_entry.com_number == com_number:
+        #         return jsonify({"error": "Company phone number already exists"}), 400
+        #     elif existing_entry.phone_number == num:
+        #         return jsonify(
+        #             {
+        #                 "error": "Contact person phone number already exists, choose another"
+        #             }
+        #         ), 400
+        # if existing_email:
+        #     if existing_email.email == com_email:
+        #         return jsonify({"error": "Company email already exists"}), 400
+        #     elif existing_email.email == email:
+        #         return jsonify(
+        #             {"error": "Contact person email already exists, choose another"}
+        #         ), 400
         try:
             # No existing record found, proceed with creating a new entry
             lkd = True if request.form.get("lkd") == "1" else False
