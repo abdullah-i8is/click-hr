@@ -513,7 +513,7 @@ def directlogin():
         user = Users.query.filter_by(email=email).first()
         print(user)
         if user:
-            if user.status == "Active" and bcrypt.checkpw(password.encode('utf-8'), user.password):
+            if user.status == "Active" and bcrypt.checkpw(password.encode('utf-8'), user.password.encode('utf-8')):
 
                 # Successful login
                  # Set global variables
@@ -568,7 +568,17 @@ def orgold():
             .filter(or_(Users.email == company, Users.email == email))
             .first()
         )
-        # if existing_entry:
+        if existing_entry:
+            if existing_entry.company == company:
+                return jsonify({"error": "Company already exists"}), 400
+            elif existing_entry.com_email == com_email:
+                return jsonify({"error": "Company email already exists"}), 400
+            elif existing_entry.email == email:
+                return jsonify(
+                    {"error": "Contact person email already exists, choose another"}
+                ), 400
+            elif existing_entry.com_number == com_number:
+                return jsonify({"error        # if existing_entry:
         #     if existing_entry.company == company:
         #         return jsonify({"error": "Company already exists"}), 400
         #     elif existing_entry.com_email == com_email:
@@ -592,18 +602,7 @@ def orgold():
         #         return jsonify(
         #             {"error": "Contact person email already exists, choose another"}
         #         ), 400
-        try:
-            # No existing record found, proceed with creating a new entry
-            lkd = True if request.form.get("lkd") == "1" else False
-            zpr = True if request.form.get("zpr") == "2" else False
-            com_web = request.form.get("com_web")
-            com_address = request.form.get("com_address")
-            nemp = request.form.get("nemp")
-            fname = request.form.get("fname")
-            lname = request.form.get("lname")
-            status = "Approved"
-            password = request.form.get("password")
-            encpassword = sha256_crypt.encrypt(password)
+rypt(password)
 
             entry = organization(
                 company=company,
@@ -906,8 +905,9 @@ def login():
         user = Users.query.filter_by(email=email).first()
         if user:
             if user.status == "Active":
-                if user and bcrypt.checkpw(password.encode('utf-8'), user.password):
-                    # Successful login
+                if user
+                if user and bcrypt.checkpw(password, user.password.encode('utf-8')):
+cessful login
                     login_user(user)
                     session["user_id"] = user.id
                     session["role"] = user.role
@@ -3545,9 +3545,9 @@ def chnagepassword():
         newpassword = request.form.get("newps")
         confirmpassword = request.form.get("confirmpswrd")
         check = db.session.query(Users).filter_by(id=user_id).first()
-
-        varify = bcrypt.checkpw(oldpassword, check.password.encode('utf-8'))
-        # print(varify)
+        varify = bcrypt
+.checkpw(oldpassword, check.password)
+        # print(varify.encode('utf-8'))
         if varify:
             # print("varify")
             if newpassword == confirmpassword:
