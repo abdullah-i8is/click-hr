@@ -513,7 +513,7 @@ def directlogin():
         user = Users.query.filter_by(email=email).first()
         print(user)
         if user:
-            if user.status == "Active" and bcrypt.checkpw(password, user.password.encode('utf-8')):
+            if user.status == "Active" and bcrypt.checkpw(password.encode('utf-8'), user.password):
 
                 # Successful login
                  # Set global variables
@@ -906,7 +906,7 @@ def login():
         user = Users.query.filter_by(email=email).first()
         if user:
             if user.status == "Active":
-                if user and bcrypt.checkpw(password, user.password.encode('utf-8')):
+                if user and bcrypt.checkpw(password.encode('utf-8'), user.password):
                     # Successful login
                     login_user(user)
                     session["user_id"] = user.id
