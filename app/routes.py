@@ -513,7 +513,8 @@ def directlogin():
         user = Users.query.filter_by(email=email).first()
         print(user)
         if user:
-            if user.status == "Active" and bcrypt.checkpw(password, user.password):
+            if user.status == "Active" and bcrypt.checkpw(password, user.password.encode('utf-8')):
+
                 # Successful login
                  # Set global variables
                 global global_user_id, global_role, global_org_id, global_user_name, global_user_email
@@ -905,7 +906,7 @@ def login():
         user = Users.query.filter_by(email=email).first()
         if user:
             if user.status == "Active":
-                if user and bcrypt.checkpw(password, user.password):
+                if user and bcrypt.checkpw(password, user.password.encode('utf-8')):
                     # Successful login
                     login_user(user)
                     session["user_id"] = user.id
@@ -3544,7 +3545,8 @@ def chnagepassword():
         newpassword = request.form.get("newps")
         confirmpassword = request.form.get("confirmpswrd")
         check = db.session.query(Users).filter_by(id=user_id).first()
-        varify = bcrypt.checkpw(oldpassword, check.password)
+
+        varify = bcrypt.checkpw(oldpassword, check.password.encode('utf-8'))
         # print(varify)
         if varify:
             # print("varify")
