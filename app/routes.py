@@ -20,6 +20,7 @@ from flask import (
     send_file,
     Response,
 )
+import bcrypt  # Import the bcrypt library
 from passlib.hash import sha256_crypt
 from flask_login import login_user
 from sqlalchemy import desc, exists, func, case, or_, extract, and_, distinct
@@ -512,7 +513,7 @@ def directlogin():
         user = Users.query.filter_by(email=email).first()
         print(user)
         if user:
-            if user.status == "Active" and sha256_crypt.verify(password, user.password):
+            if user.status == "Active" and bcrypt.checkpw(password, user.password):
                 # Successful login
                  # Set global variables
                 global global_user_id, global_role, global_org_id, global_user_name, global_user_email
@@ -537,8 +538,8 @@ def directlogin():
         return jsonify({"message": "User not found"}), 200
 
 
-@app.route("/addorg", methods=["POST"])
-def org():
+@app.route("/addorgold", methods=["POST"])
+def orgold():
     if request.method == "POST":
         company = request.form.get("company")
         com_email = request.form.get("com_email")
@@ -746,6 +747,135 @@ def org():
             return jsonify(response_data), 500
 
 
+
+@app.route("/addorg", methods=["POST"])
+def org():
+    if request.method == "POST":
+        company = request.form.get("company")
+        com_email = request.form.get("com_email")
+        email = request.form.get("email")
+        com_number = request.form.get("com_number")
+        num = request.form.get("num")  # Assuming this is phone_number
+
+        # Check if any of the given fields already exist in the database
+        existing_entry = (
+            db.session.query(organization)
+            .filter(
+                or_(
+                    organization.company == company,
+                    organization.com_email == com_email,
+                    organization.email == email,
+                    organization.com_number == com_number,
+                    organization.phone_number == num,
+                )
+            )
+            .first()
+        )
+        # Check if any of the given fields already exist in the database
+        # existing_email = (
+        #     db.session.query(Users)
+        #     .filter(or_(Users.email == company, Users.email == email))
+        #     .first()
+        # )
+        # if existing_entry:
+        #     if existing_entry.company == company:
+        #         return jsonify({"error": "Company already exists"}), 400
+        #     elif existing_entry.com_email == com_email:
+        #         return jsonify({"error": "Company email already exists"}), 400
+        #     elif existing_entry.email == email:
+        #         return jsonify(
+        #             {"error": "Contact person email already exists, choose another"}
+        #         ), 400
+        #     elif existing_entry.com_number == com_number:
+        #         return jsonify({"error": "Company phone number already exists"}), 400
+        #     elif existing_entry.phone_number == num:
+        #         return jsonify(
+        #             {
+        #                 "error": "Contact person phone number already exists, choose another"
+        #             }
+        #         ), 400
+        # if existing_email:
+        #     if existing_email.email == com_email:
+        #         return jsonify({"error": "Company email already exists"}), 400
+        #     elif existing_email.email == email:
+        #         return jsonify(
+        #             {"error": "Contact person email already exists, choose another"}
+        #         ), 400
+        try:
+            # No existing record found, proceed with creating a new entry
+            lkd = True if request.form.get("lkd") == "1" else False
+            zpr = True if request.form.get("zpr") == "2" else False
+            com_web = request.form.get("com_web")
+            com_address = request.form.get("com_address")
+            nemp = request.form.get("nemp")
+            fname = request.form.get("fname")
+            lname = request.form.get("lname")
+            status = "Approved"
+            password = request.form.get("password")
+            encpassword = sha256_crypt.encrypt(password)
+
+            entry = organization(
+                company=company,
+                com_email=com_email,
+                com_web=com_web,
+                com_address=com_address,
+                com_number=com_number,
+                linkedin=lkd,
+                ziprecuiter=zpr,
+                num_employee=nemp,
+                fname=fname,
+                lname=lname,
+                phone_number=num,
+                email=email,
+                password=encpassword,
+                status=status,
+            )
+            # Commit the organization entry to the database
+            db.session.add(entry)
+            db.session.commit()
+
+            usrentry = Users(
+                    role="owner",
+                    fname=fname,
+                    lname=lname,
+                    email=com_email,
+                    password=encpassword,
+                    designation="owner",
+                    status="Active",
+                    org_name=company,
+                    org_id=entry.id,
+                )
+            db.session.add(usrentry)
+                
+            email_subject = f"""Registration Successfull"""
+            print(email_subject)
+            recipients = ["nagina@i8is.com", com_email]
+
+            # msg = Message(subject=email_subject, recipients=recipients, html=email_body)
+            # mail.send(msg)
+            # db.session.add(entry)
+            db.session.commit()
+    # Assuming the operation was successful
+            response_data = {
+                "success": True,
+                "message": "Registered Successfully!",
+                "data": None  # You can include any additional data here
+            }
+            return jsonify(response_data), 200
+    
+        except Exception as e:
+            print("error",e)
+            db.session.rollback()
+            
+            response_data = {
+                "success": False,
+                "message": "Registered failed!",
+                "error": f'Error signing up: {str(e)}'
+            }
+            return jsonify(response_data), 500
+
+
+
 @app.route("/privacypolicy", methods=["GET", "POST"])
 def privacypolicy():
     return render_template("privacy.html")
@@ -775,7 +905,7 @@ def login():
         user = Users.query.filter_by(email=email).first()
         if user:
             if user.status == "Active":
-                if user and sha256_crypt.verify(password, user.password):
+                if user and bcrypt.checkpw(password, user.password):
                     # Successful login
                     login_user(user)
                     session["user_id"] = user.id
@@ -3414,13 +3544,13 @@ def chnagepassword():
         newpassword = request.form.get("newps")
         confirmpassword = request.form.get("confirmpswrd")
         check = db.session.query(Users).filter_by(id=user_id).first()
-        varify = sha256_crypt.verify(oldpassword, check.password)
+        varify = bcrypt.checkpw(oldpassword, check.password)
         # print(varify)
         if varify:
             # print("varify")
             if newpassword == confirmpassword:
                 # print("password confirm")
-                password = sha256_crypt.encrypt(confirmpassword)
+                password = bcrypt.hashpw(confirmpassword)
                 check.password = password
                 db.session.add(check)
                 db.session.commit()
