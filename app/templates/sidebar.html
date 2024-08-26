@@ -21,14 +21,12 @@
                 </a>
             </li>
         {% endif %}
-        {% comment %} {% if session['role']!='user' %} {% endcomment %}
             <li class="{% if request.path == '/members' %}active{% endif %}">
                 <a href="/members">
                  <i class="fas fa-address-book	"></i>
                     <p>Members</p>
                 </a>
             </li>
-        {% comment %} {% endif %} {% endcomment %}
                 <li class="{% if request.path == '/candidate' or request.path == '/selecteddata' or request.path == '/placedcandidates' %}active{% endif %}">
                     <a href="/candidate">
                         <i class="fas fa-retweet"></i>
