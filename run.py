@@ -110,7 +110,7 @@ if DEBUG:
     app.logger.info('DBMS        = ' + app_config.SQLALCHEMY_DATABASE_URI)
     app.logger.info('ASSETS_ROOT = ' + app_config.ASSETS_ROOT)
 
-CORS(app)
+CORS(app, supports_credentials=True, origins=['http://localhost:3000'])  # Allow requests from localhost:3000
 
 last_email_sent = {}
 
