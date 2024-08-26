@@ -2834,8 +2834,10 @@ def deletemail():
 
 
 @app.route("/members")
-@role_required(allowed_roles=["user", "admin", "owner", "CEO"])
+# @role_required(allowed_roles=["user", "admin", "owner", "CEO"])
 def members():
+    user_idd = request.cookies.get('user_id')
+    print("useris found in cookies", user_idd)
     org_id = session["org_id"]
     org_name = session["org_name"]
     print("org_idorg_name", org_name)
