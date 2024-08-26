@@ -62,9 +62,6 @@ import logging
 
 from collections import defaultdict
 
-from flask import Flask, session, redirect, url_for
-from flask_session import Session
-import redis
 
 # ... (other imports and database setup)
 
