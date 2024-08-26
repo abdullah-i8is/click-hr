@@ -68,11 +68,11 @@ import redis
 
 # ... (other imports and database setup)
 
-# Configure Flask-Session to use Redis
-app.config['SESSION_TYPE'] = 'redis'
-app.config['SESSION_REDIS'] = redis.from_url('redis://localhost:6379')
-app.config['SESSION_COOKIE_SAMESITE'] = 'None'  # Allow cross-site cookie access (important for iframes)
-app.config['SESSION_COOKIE_SECURE'] = False  # Only send cookies over HTTPS (recommended for production)
+# # Configure Flask-Session to use Redis
+# app.config['SESSION_TYPE'] = 'redis'
+# app.config['SESSION_REDIS'] = redis.from_url('redis://localhost:6379')
+# app.config['SESSION_COOKIE_SAMESITE'] = 'None'  # Allow cross-site cookie access (important for iframes)
+# app.config['SESSION_COOKIE_SECURE'] = False  # Only send cookies over HTTPS (recommended for production)
 # fs.init_app(app)
 
 # # Initialize storage
