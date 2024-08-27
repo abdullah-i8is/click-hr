@@ -155,6 +155,12 @@ def format_posted_time(created_at):
 
 @app.route("/websitejobs")
 def websitejobs():
+    session = {}
+    session["user_id"] = request.cookies.get('user_id')
+    session["role"] = request.cookies.get('role')
+    session["org_id"] = request.cookies.get('org_id')
+    session["email"] = request.cookies.get('email')
+    session["user"] = request.cookies.get('user')
     alljobs = (
         Jobs.query.filter(
             Jobs.job_status == "active", Jobs.company.in_(["1", "12", "13", "123"])
@@ -165,11 +171,17 @@ def websitejobs():
     formatted_times = [format_posted_time(job.created_at) for job in alljobs]
     for job, formatted_time in zip(alljobs, formatted_times):
         job.formatted_time = formatted_time
-    return render_template("websitejobs.html", alljobs=alljobs)
+    return render_template("websitejobs.html", alljobs=alljobs, session=session)
 
 
 @app.route("/handshrjobs")
 def handshrjobs():
+    session = {}
+    session["user_id"] = request.cookies.get('user_id')
+    session["role"] = request.cookies.get('role')
+    session["org_id"] = request.cookies.get('org_id')
+    session["email"] = request.cookies.get('email')
+    session["user"] = request.cookies.get('user')
     alljobs = (
         Jobs.query.filter(
             Jobs.job_status == "active", Jobs.company.in_(["2", "12", "23", "123"])
@@ -180,11 +192,17 @@ def handshrjobs():
     formatted_times = [format_posted_time(job.created_at) for job in alljobs]
     for job, formatted_time in zip(alljobs, formatted_times):
         job.formatted_time = formatted_time
-    return render_template("handshrjobs.html", alljobs=alljobs)
+    return render_template("handshrjobs.html", alljobs=alljobs, session=session)
 
 
 @app.route("/i8isjobs")
 def i8isjobs():
+    session = {}
+    session["user_id"] = request.cookies.get('user_id')
+    session["role"] = request.cookies.get('role')
+    session["org_id"] = request.cookies.get('org_id')
+    session["email"] = request.cookies.get('email')
+    session["user"] = request.cookies.get('user')
     alljobs = (
         Jobs.query.filter(
             Jobs.job_status == "active", Jobs.company.in_(["3", "13", "23", "123"])
@@ -195,11 +213,17 @@ def i8isjobs():
     formatted_times = [format_posted_time(job.created_at) for job in alljobs]
     for job, formatted_time in zip(alljobs, formatted_times):
         job.formatted_time = formatted_time
-    return render_template("i8isjobs.html", alljobs=alljobs)
+    return render_template("i8isjobs.html", alljobs=alljobs, session=session)
 
 
 @app.route("/i8isjobdetails/<int:id>")
 def i8isjobdetails(id):
+    session = {}
+    session["user_id"] = request.cookies.get('user_id')
+    session["role"] = request.cookies.get('role')
+    session["org_id"] = request.cookies.get('org_id')
+    session["email"] = request.cookies.get('email')
+    session["user"] = request.cookies.get('user')
     jobdetail = Jobs.query.filter(Jobs.id == id).first()
     formatted_time = format_posted_time(jobdetail.created_at)
     jobdetail.formatted_time = formatted_time  # Attach formatted time to the job detail
@@ -220,12 +244,18 @@ def i8isjobdetails(id):
     for job, format_time in zip(latest_jobs, format_time):
         job.format_time = format_time
     return render_template(
-        "i8isjobdetails.html", jobdetail=jobdetail, latest_jobs=latest_jobs
+        "i8isjobdetails.html", jobdetail=jobdetail, latest_jobs=latest_jobs, session=session
     )
 
 
 @app.route("/handshrjobdetail/<int:id>")
 def handshrjobdetail(id):
+    session = {}
+    session["user_id"] = request.cookies.get('user_id')
+    session["role"] = request.cookies.get('role')
+    session["org_id"] = request.cookies.get('org_id')
+    session["email"] = request.cookies.get('email')
+    session["user"] = request.cookies.get('user')
     jobdetail = Jobs.query.filter(Jobs.id == id).first()
     formatted_time = format_posted_time(jobdetail.created_at)
     jobdetail.formatted_time = formatted_time  # Attach formatted time to the job detail
@@ -246,12 +276,18 @@ def handshrjobdetail(id):
     for job, format_time in zip(latest_jobs, format_time):
         job.format_time = format_time
     return render_template(
-        "handshrjobdetail.html", jobdetail=jobdetail, latest_jobs=latest_jobs
+        "handshrjobdetail.html", jobdetail=jobdetail, latest_jobs=latest_jobs, session=session
     )
 
 
 @app.route("/jobdetail/<int:id>")
 def jobdetail(id):
+    session = {}
+    session["user_id"] = request.cookies.get('user_id')
+    session["role"] = request.cookies.get('role')
+    session["org_id"] = request.cookies.get('org_id')
+    session["email"] = request.cookies.get('email')
+    session["user"] = request.cookies.get('user')
     jobdetail = Jobs.query.filter(Jobs.id == id).first()
     formatted_time = format_posted_time(jobdetail.created_at)
     jobdetail.formatted_time = formatted_time  # Attach formatted time to the job detail
@@ -272,7 +308,7 @@ def jobdetail(id):
     for job, format_time in zip(latest_jobs, format_time):
         job.format_time = format_time
     return render_template(
-        "postjobdetail.html", jobdetail=jobdetail, latest_jobs=latest_jobs
+        "postjobdetail.html", jobdetail=jobdetail, latest_jobs=latest_jobs, session=session
     )
 
 
@@ -492,7 +528,7 @@ def i8isapply():
 
 @app.route("/signin")
 def route_default():
-    if "user_id" in session:
+    if "user_id" in request.cookies.get('user_id'):
         user_id = request.cookies.get('user_id')
         role = request.cookies.get("role")
         email = session["email"]
@@ -782,7 +818,7 @@ def privacypolicy():
 @app.route("/login", methods=["GET", "POST"])
 def login():
     # Check if the user is already logged in
-    if "user_id" in session:
+    if "user_id" in request.cookies.get('user_id'):
         return redirect(url_for("index"))
 
     email = None
@@ -1486,7 +1522,12 @@ def candidate():
     status = "Candidate Placement"
     status1 = "applied"
     current_year = datetime.now().year
-
+    session = {}
+    session["user_id"] = request.cookies.get('user_id')
+    session["role"] = request.cookies.get('role')
+    session["org_id"] = request.cookies.get('org_id')
+    session["email"] = request.cookies.get('email')
+    session["user"] = request.cookies.get('user')
     with db.session() as db_session:
         query = db_session.query(Emails_data).filter(Emails_data.org_id == org_id)
 
@@ -1637,6 +1678,7 @@ def candidate():
             selected_subject=selected_subject,
             total_pages=total_pages,
             candidatehistory=candidatehistory,
+            session=session,
         )
         return jsonify(
             {
@@ -1655,6 +1697,7 @@ def candidate():
             unique_lines=unique_lines,
             total_pages=total_pages,
             candidatehistory=candidatehistory,
+            session=session,
         )  # Pass total_pages to the template
 
 
@@ -1677,7 +1720,12 @@ def selecteddata():
     status = "Candidate Placement"
     status1 = "Reject"
     current_year = datetime.now().year  # Get the current year
-
+    session = {}
+    session["user_id"] = request.cookies.get('user_id')
+    session["role"] = request.cookies.get('role')
+    session["org_id"] = request.cookies.get('org_id')
+    session["email"] = request.cookies.get('email')
+    session["user"] = request.cookies.get('user')
     with db.session() as db_session:
         query = db_session.query(Emails_data).filter(Emails_data.org_id == org_id)
         if action:
@@ -1846,6 +1894,7 @@ def selecteddata():
             selected_subject=selected_subject,
             total_pages=total_pages,
             candidatehistory=candidatehistory,
+            session=session
         )  # Pass total_pages to the template
         return jsonify(
             {
@@ -1864,6 +1913,7 @@ def selecteddata():
             unique_lines=unique_lines,
             total_pages=total_pages,
             candidatehistory=candidatehistory,
+            session=session
         )  # Pass total_pages to the template
 
 
@@ -1885,7 +1935,12 @@ def placedcandidates():
     status = "Candidate Placement"
     action = ""
     current_year = datetime.now().year  # Get the current year
-
+    session = {}
+    session["user_id"] = request.cookies.get('user_id')
+    session["role"] = request.cookies.get('role')
+    session["org_id"] = request.cookies.get('org_id')
+    session["email"] = request.cookies.get('email')
+    session["user"] = request.cookies.get('user')
     with db.session() as db_session:
         query = db_session.query(Emails_data).filter(Emails_data.org_id == org_id)
 
@@ -2051,6 +2106,7 @@ def placedcandidates():
             selected_subject=selected_subject,
             total_pages=total_pages,
             candidatehistory=candidatehistory,
+            session=session
         )  # Pass total_pages to the template
         return jsonify(
             {
@@ -2069,6 +2125,7 @@ def placedcandidates():
             unique_lines=unique_lines,
             total_pages=total_pages,
             candidatehistory=candidatehistory,
+            session=session,
         )  # Pass total_pages to the template
 
 
@@ -2090,7 +2147,12 @@ def rejectcandidates():
     status = "Reject"
     action = ""
     current_year = datetime.now().year  # Get the current year
-
+    session = {}
+    session["user_id"] = request.cookies.get('user_id')
+    session["role"] = request.cookies.get('role')
+    session["org_id"] = request.cookies.get('org_id')
+    session["email"] = request.cookies.get('email')
+    session["user"] = request.cookies.get('user')
     with db.session() as db_session:
         query = db_session.query(Emails_data).filter(Emails_data.org_id == org_id)
 
@@ -2255,6 +2317,7 @@ def rejectcandidates():
             selected_subject=selected_subject,
             total_pages=total_pages,
             candidatehistory=candidatehistory,
+            session=session
         )  # Pass total_pages to the template
         return jsonify(
             {
@@ -2273,6 +2336,7 @@ def rejectcandidates():
             unique_lines=unique_lines,
             total_pages=total_pages,
             candidatehistory=candidatehistory,
+            session=session
         )  # Pass total_pages to the template
 
 
@@ -2281,6 +2345,12 @@ def rejectcandidates():
 def candidateprofile(id):
     org_id = request.cookies.get('org_id')
     print("org_id", org_id)
+    session = {}
+    session["user_id"] = request.cookies.get('user_id')
+    session["role"] = request.cookies.get('role')
+    session["org_id"] = request.cookies.get('org_id')
+    session["email"] = request.cookies.get('email')
+    session["user"] = request.cookies.get('user')
     with db.session() as db_session:
         # Query candidate data from the Emails_data table
         candidate_data = (
@@ -2356,11 +2426,18 @@ def candidateprofile(id):
         recruiting=recruiting,
         document_data=document_data,
         notes_data=notes_data,
+        session=session
     )
 
 
 @app.route("/upload_docs/<int:id>", methods=["GET", "POST"])
 def upload_file(id):
+    session = {}
+    session["user_id"] = request.cookies.get('user_id')
+    session["role"] = request.cookies.get('role')
+    session["org_id"] = request.cookies.get('org_id')
+    session["email"] = request.cookies.get('email')
+    session["user"] = request.cookies.get('user')
     if request.method == "POST":
         org_id = request.cookies.get('org_id')
         uploaded_files = request.files.getlist("myFile")
@@ -2380,11 +2457,17 @@ def upload_file(id):
         response.status_code = 200
         return response
 
-    return render_template("profile.html")
+    return render_template("profile.html", session=session)
 
 
 @app.route("/fillnotes/<int:id>", methods=["GET", "POST"])
 def fillnotes(id):
+    session = {}
+    session["user_id"] = request.cookies.get('user_id')
+    session["role"] = request.cookies.get('role')
+    session["org_id"] = request.cookies.get('org_id')
+    session["email"] = request.cookies.get('email')
+    session["user"] = request.cookies.get('user')
     if request.method == "POST":
         org_id = request.cookies.get('org_id')
         notes = request.form.get("notes")
@@ -2417,7 +2500,7 @@ def fillnotes(id):
         response.status_code = 200
         return response
 
-    return render_template("profile.html")
+    return render_template("profile.html", session=session)
 
 
 @app.route("/view_document/<int:email_id>")
@@ -3160,12 +3243,18 @@ def addmembers():
 @app.route("/updatemembers/<int:id>")
 @role_required(allowed_roles=["user", "admin", "owner", "CEO"])
 def updatemembers(id):
+    session = {}
+    session["user_id"] = request.cookies.get('user_id')
+    session["role"] = request.cookies.get('role')
+    session["org_id"] = request.cookies.get('org_id')
+    session["email"] = request.cookies.get('email')
+    session["user"] = request.cookies.get('user')
     if id is not None:
         designation = userdesignation_data.query.all()
         role = Role.query.all()
         user = db.session.query(Users).filter_by(id=id).first()
         return render_template(
-            "addmember.html", data=user, designations=designation, roles=role
+            "addmember.html", data=user, designations=designation, roles=role, session=session
         )
 
 
@@ -4996,7 +5085,14 @@ def activity_log():
 
     all_notes = [note[0] for note in filtered_notes]
 
-    return render_template("activity.html", all_notes=all_notes)
+    session = {}
+    session["user_id"] = request.cookies.get('user_id')
+    session["role"] = request.cookies.get('role')
+    session["org_id"] = request.cookies.get('org_id')
+    session["email"] = request.cookies.get('email')
+    session["user"] = request.cookies.get('user')
+    
+    return render_template("activity.html", all_notes=all_notes, session=session)
 
 
 def format_date(date):
