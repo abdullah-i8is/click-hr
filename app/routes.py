@@ -2451,6 +2451,9 @@ def editdeal(id):
     session = {}
     session["user_id"] = request.cookies.get('user_id')
     session["role"] = request.cookies.get('role')
+    session["org_id"] = request.cookies.get('org_id')
+    session["email"] = request.cookies.get('email')
+    session["user"] = request.cookies.get('user')
     formdata = Marketing.query.filter(Marketing.id == id).first()
     jobsdata = Joborder.query.filter(Joborder.company_id == id).all()
     return render_template(
@@ -2855,6 +2858,9 @@ def members():
     session = {}
     session["user_id"] = request.cookies.get('user_id')
     session["role"] = request.cookies.get('role')
+    session["org_id"] = request.cookies.get('org_id')
+    session["email"] = request.cookies.get('email')
+    session["user"] = request.cookies.get('user')
     members_data = (
         Users.query.filter(Users.org_id == org_id).order_by(desc(Users.id)).all()
     )
@@ -2880,6 +2886,9 @@ def organizations():
     session = {}
     session["user_id"] = request.cookies.get('user_id')
     session["role"] = request.cookies.get('role')
+    session["org_id"] = request.cookies.get('org_id')
+    session["email"] = request.cookies.get('email')
+    session["user"] = request.cookies.get('user')
     organization_data = organization.query.order_by(desc(organization.id)).all()
     print("organization_data", organization_data)
     return render_template("organization.html", organizations=organization_data, session=session)
@@ -3121,6 +3130,9 @@ def moredetails(id):
     session = {}
     session["user_id"] = request.cookies.get('user_id')
     session["role"] = request.cookies.get('role')
+    session["org_id"] = request.cookies.get('org_id')
+    session["email"] = request.cookies.get('email')
+    session["user"] = request.cookies.get('user')
     org_data = organization.query.filter(organization.id == id).first()
     org_datcre = org_cred.query.filter(org_cred.org_id == id).first()
     print("org_datcre", org_datcre)
@@ -3132,7 +3144,11 @@ def moredetails(id):
 def addmembers():
     org_name = request.cookies.get('org_name')
     session = {}
+    session["user_id"] = request.cookies.get('user_id')
     session["role"] = request.cookies.get('role')
+    session["org_id"] = request.cookies.get('org_id')
+    session["email"] = request.cookies.get('email')
+    session["user"] = request.cookies.get('user')
     print("org_idorg_name", org_name)
     designation = userdesignation_data.query.all()
     role = Role.query.all()
@@ -3455,7 +3471,9 @@ def user():
     session = {}
     session["user_id"] = request.cookies.get('user_id')
     session["role"] = request.cookies.get('role')
+    session["org_id"] = request.cookies.get('org_id')
     session["email"] = request.cookies.get('email')
+    session["user"] = request.cookies.get('user')
     return render_template("/user.html", session=session)
 
 
@@ -3523,6 +3541,8 @@ def onereporting_form(id=None, status=None):
     session = {}
     session["user_id"] = request.cookies.get('user_id')
     session["role"] = request.cookies.get('role')
+    session["org_id"] = request.cookies.get('org_id')
+    session["email"] = request.cookies.get('email')
     session["user"] = request.cookies.get('user')
     if id is not None:
         print(status)
@@ -4779,6 +4799,9 @@ def jobs():
     session = {}
     session["user_id"] = request.cookies.get('user_id')
     session["role"] = request.cookies.get('role')
+    session["org_id"] = request.cookies.get('org_id')
+    session["email"] = request.cookies.get('email')
+    session["user"] = request.cookies.get('user')
     
     alljobs = Jobs.query.filter(Jobs.org_id == org_id).order_by(desc(Jobs.id)).all()
     return render_template("jobs.html", alljobs=alljobs, session=session)
@@ -4810,6 +4833,9 @@ def convert_unix_to_local(timestamp):
 def postnewjobs():
     session = {}
     session["user_id"] = request.cookies.get('user_id')
+    session["role"] = request.cookies.get('role')
+    session["org_id"] = request.cookies.get('org_id')
+    session["email"] = request.cookies.get('email')
     session["user"] = request.cookies.get('user')
     return render_template("/postnewjobs.html", session=session)
 
@@ -4820,6 +4846,8 @@ def selectjob(id):
     session = {}
     session["user_id"] = request.cookies.get('user_id')
     session["role"] = request.cookies.get('role')
+    session["org_id"] = request.cookies.get('org_id')
+    session["email"] = request.cookies.get('email')
     session["user"] = request.cookies.get('user')
     if request.method == "POST":
         jobid = request.form.get("jobid")
@@ -4846,6 +4874,9 @@ def editjob(id):
     
     session = {}
     session["user_id"] = request.cookies.get('user_id')
+    session["role"] = request.cookies.get('role')
+    session["org_id"] = request.cookies.get('org_id')
+    session["email"] = request.cookies.get('email')
     session["user"] = request.cookies.get('user')
     return render_template(
         "postnewjobs.html", job=job, postjob_history=post_job_history, session=session
@@ -5419,7 +5450,11 @@ def editjoborder(id, str):
     org_id = request.cookies.get('org_id')
     print("org_id", id, "id", org_id)
     session = {}
+    session["user_id"] = request.cookies.get('user_id')
     session["role"] = request.cookies.get('role')
+    session["org_id"] = request.cookies.get('org_id')
+    session["email"] = request.cookies.get('email')
+    session["user"] = request.cookies.get('user')
     job_data = Joborder.query.filter(
         Joborder.id == id, Joborder.org_id == org_id
     ).first()
@@ -5791,7 +5826,11 @@ def forms():
     org_id = request.cookies.get('org_id')
 
     session = {}
+    session["user_id"] = request.cookies.get('user_id')
     session["role"] = request.cookies.get('role')
+    session["org_id"] = request.cookies.get('org_id')
+    session["email"] = request.cookies.get('email')
+    session["user"] = request.cookies.get('user')
     
     query = allforms_data.query.filter(allforms_data.org_id == org_id)
 
@@ -5879,6 +5918,8 @@ def OneReportingForm():
     session = {}
     session["user_id"] = request.cookies.get('user_id')
     session["role"] = request.cookies.get('role')
+    session["org_id"] = request.cookies.get('org_id')
+    session["email"] = request.cookies.get('email')
     session["user"] = request.cookies.get('user')
 
     print("org_id", org_id)
@@ -6055,6 +6096,8 @@ def view(form_id, form_type):
     session = {}
     session["user_id"] = request.cookies.get('user_id')
     session["role"] = request.cookies.get('role')
+    session["org_id"] = request.cookies.get('org_id')
+    session["email"] = request.cookies.get('email')
     session["user"] = request.cookies.get('user')
 
     print("org_id", org_id)
@@ -6132,6 +6175,8 @@ def editforms(form_id, form_type):
     session = {}
     session["user_id"] = request.cookies.get('user_id')
     session["role"] = request.cookies.get('role')
+    session["org_id"] = request.cookies.get('org_id')
+    session["email"] = request.cookies.get('email')
     session["user"] = request.cookies.get('user')
     if form_type == "New Deals Contract Signed":
         formdata = Marketing.query.filter(Marketing.id == form_id).first()
@@ -6316,6 +6361,8 @@ def target():
     session = {}
     session["user_id"] = user_id
     session["role"] = role
+    session["org_id"] = request.cookies.get('org_id')
+    session["email"] = request.cookies.get('email')
     session["user"] = request.cookies.get('user')
     print("org_id", org_id)
     if role == "user":
