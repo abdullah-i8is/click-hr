@@ -59,24 +59,22 @@ import mimetypes
 from itertools import chain
 from sqlalchemy import or_, not_
 import logging
-import redis
+
 from collections import defaultdict
-from flask_session import Session
 
 
 # ... (other imports and database setup)
 
-# Configure Flask-Session to use Redis
-app.config['SESSION_TYPE'] = 'redis'
-app.config['SESSION_REDIS'] = redis.from_url(os.environ.get('REDIS_URL'))  # Get Redis URL from environment variable
+# # Configure Flask-Session to use Redis
+# app.config['SESSION_TYPE'] = 'redis'
 # app.config['SESSION_REDIS'] = redis.from_url('redis://localhost:6379')
-app.config['SESSION_COOKIE_SAMESITE'] = 'None'  # Allow cross-site cookie access (important for iframes)
-app.config['SESSION_COOKIE_SECURE'] = True  # Only send cookies over HTTPS (recommended for production)
+# app.config['SESSION_COOKIE_SAMESITE'] = 'None'  # Allow cross-site cookie access (important for iframes)
+# app.config['SESSION_COOKIE_SECURE'] = False  # Only send cookies over HTTPS (recommended for production)
 # fs.init_app(app)
 
 # # Initialize storage
 # storage = fs.Storage('files')
-Session(app)
+# Session(app)
 
 # Define global variables
 global_user_id = None
@@ -93,7 +91,7 @@ def role_required(allowed_roles):
             if "user_id" not in session or "role" not in session:
                 return redirect(url_for("login"))
 
-            user_role = session["role"]
+            user_role = request.cookies.get("role")
             if user_role not in allowed_roles:
                 return redirect(url_for("login"))
             return f(*args, **kwargs)
@@ -495,11 +493,11 @@ def i8isapply():
 @app.route("/signin")
 def route_default():
     if "user_id" in session:
-        user_id = session["user_id"]
-        role = session["role"]
+        user_id = request.cookies.get('user_id')
+        role = request.cookies.get("role")
         email = session["email"]
         user = session["user"]
-        org_id = session["org_id"]
+        org_id = request.cookies.get('org_id')
 
         return redirect(url_for("index"))
     return redirect(url_for("landing"))
@@ -541,23 +539,24 @@ def directlogin():
                 # global_user_name = f"{user.fname} {user.lname}"
                 # global_user_email = user.email
                 
-                session["user_id"] = user.id
-                session["role"] = user.role
+                # session["user_id"] = user.id
+                # session["role"] = user.role
                 # session["org_id"] = user.org_id
                 # session["email"] = user.email
                 # session["org_name"] = user.org_name
                 # session["user"] = f"{user.fname} {user.lname}"
                  # Set cookies
-                # resp = make_response(redirect(url_for("index")))
-                # resp.set_cookie('user_id', str(user.id), samesite='None', secure=True)  # Set secure=True if using HTTPS
-                # resp.set_cookie('role', user.role, samesite='None', secure=True)  # Set secure=True if using HTTPS
-                # resp.set_cookie('org_id', str(user.org_id), samesite='None', secure=True)  # Set secure=True if using HTTPS
-                # resp.set_cookie('email', str(user.email), samesite='None', secure=True)  # Set secure=True if using HTTPS
-                # resp.set_cookie('org_name', str(user.org_name), samesite='None', secure=True)  # Set secure=True if using HTTPS
-                # resp.set_cookie('user', str(f"{user.fname} {user.lname}"), samesite='None', secure=True)  # Set secure=True if using HTTPS
-                return redirect(url_for("index"))
+                 # Successful login
+                login_user(user)
+                resp = make_response(redirect(url_for("index")))
+                resp.set_cookie('user_id', str(user.id), samesite='None', secure=True)  # Set secure=True if using HTTPS
+                resp.set_cookie('role', user.role, samesite='None', secure=True)  # Set secure=True if using HTTPS
+                resp.set_cookie('org_id', str(user.org_id), samesite='None', secure=True)  # Set secure=True if using HTTPS
+                resp.set_cookie('email', str(user.email), samesite='None', secure=True)  # Set secure=True if using HTTPS
+                resp.set_cookie('org_name', str(user.org_name), samesite='None', secure=True)  # Set secure=True if using HTTPS
+                resp.set_cookie('user', str(f"{user.fname} {user.lname}"), samesite='None', secure=True)  # Set secure=True if using HTTPS
 
-                # return resp
+                return resp
             else:
                 return jsonify({"message": "wrong credentials"}), 200
         else:
@@ -809,13 +808,15 @@ def login():
 
                     # Successful login
                     login_user(user)
-                    session["user_id"] = user.id
-                    session["role"] = user.role
-                    session["org_id"] = user.org_id
-                    session["email"] = user.email
-                    session["org_name"] = user.org_name
-                    session["user"] = f"{user.fname} {user.lname}"
-                    return redirect(url_for("index"))
+                    resp = make_response(redirect(url_for("index")))
+                    resp.set_cookie('user_id', str(user.id), samesite='None', secure=True)  # Set secure=True if using HTTPS
+                    resp.set_cookie('role', user.role, samesite='None', secure=True)  # Set secure=True if using HTTPS
+                    resp.set_cookie('org_id', str(user.org_id), samesite='None', secure=True)  # Set secure=True if using HTTPS
+                    resp.set_cookie('email', str(user.email), samesite='None', secure=True)  # Set secure=True if using HTTPS
+                    resp.set_cookie('org_name', str(user.org_name), samesite='None', secure=True)  # Set secure=True if using HTTPS
+                    resp.set_cookie('user', str(f"{user.fname} {user.lname}"), samesite='None', secure=True)  # Set secure=True if using HTTPS
+
+                    return resp
                 else:
                     return render_template("login.html", msg="Wrong email or password")
             else:
@@ -859,21 +860,21 @@ class DotDict(dict):
 # @role_required(allowed_roles=["user", "admin", "owner", "CEO"])
 def index():
     
-    user_idd = session["user_id"]
-    # user_idd = request.cookies.get('user_id')
-    print("useris found in session", user_idd)
-    # role = session["role"]
-    # org_id = session["org_id"]
+    user_idd = request.cookies.get('user_id')
+    print("useris found in cookies", user_idd)
+    # role = request.cookies.get("role")
+    # org_id = request.cookies.get('org_id')
     # Access global variables instead of session variables
+    user_id = request.cookies.get('user_id')
+    role = request.cookies.get('role')
+    org_id = request.cookies.get('org_id')
     session = {}
-    session["user_id"] = global_user_id
-    session["role"] = global_role
-    session["org_id"] = global_org_id
-    session["email"] = global_user_email
-    session["user"] = global_user_name
-    user_id = global_user_id
-    role = global_role
-    org_id = global_org_id
+    session["user_id"] = user_id
+    session["role"] = role
+    session["org_id"] = org_id
+    session["email"] = request.cookies.get('email')
+    session["user"] = request.cookies.get('user')
+  
     # print("org_id", org_id)
     allusers = Users.query.filter(Users.org_id == org_id).all()
     allusers_data = [
@@ -1106,8 +1107,8 @@ def index():
             }
         }
     )
-    # user_id = session["user_id"]
-    # role = session["role"]
+    # user_id = request.cookies.get('user_id')
+    # role = request.cookies.get("role")
 # Access global variables instead of session variables
     user_id = global_user_id
     role = global_role
@@ -1462,7 +1463,7 @@ for country in all_countries:
 @app.route("/candidate")
 @role_required(allowed_roles=["user", "admin", "owner", "CEO"])
 def candidate():
-    org_id = session["org_id"]
+    org_id = request.cookies.get('org_id')
     print("canorg_id", org_id)
     selected_year = request.args.get("year_select")
     selected_country = request.args.get("country_select")
@@ -1660,7 +1661,7 @@ def candidate():
 @app.route("/selecteddata")
 @role_required(allowed_roles=["user", "admin", "owner", "CEO"])
 def selecteddata():
-    org_id = session["org_id"]
+    org_id = request.cookies.get('org_id')
     print("org_id", org_id)
     selected_year = request.args.get("year_select")
     selected_country = request.args.get("country_select")
@@ -1869,7 +1870,7 @@ def selecteddata():
 @app.route("/placedcandidates")
 @role_required(allowed_roles=["user", "admin", "owner", "CEO"])
 def placedcandidates():
-    org_id = session["org_id"]
+    org_id = request.cookies.get('org_id')
     print("org_id", org_id)
     selected_year = request.args.get("year_select")
     selected_country = request.args.get("country_select")
@@ -2074,7 +2075,7 @@ def placedcandidates():
 @app.route("/rejectcandidates")
 @role_required(allowed_roles=["user", "admin", "owner", "CEO"])
 def rejectcandidates():
-    org_id = session["org_id"]
+    org_id = request.cookies.get('org_id')
     print("org_id", org_id)
     selected_year = request.args.get("year_select")
     selected_country = request.args.get("country_select")
@@ -2278,7 +2279,7 @@ def rejectcandidates():
 @app.route("/candidateprofile/<int:id>")
 @role_required(allowed_roles=["user", "admin", "owner", "CEO"])
 def candidateprofile(id):
-    org_id = session["org_id"]
+    org_id = request.cookies.get('org_id')
     print("org_id", org_id)
     with db.session() as db_session:
         # Query candidate data from the Emails_data table
@@ -2361,7 +2362,7 @@ def candidateprofile(id):
 @app.route("/upload_docs/<int:id>", methods=["GET", "POST"])
 def upload_file(id):
     if request.method == "POST":
-        org_id = session["org_id"]
+        org_id = request.cookies.get('org_id')
         uploaded_files = request.files.getlist("myFile")
         print(uploaded_files, "uploaded_files")
         for file in uploaded_files:
@@ -2385,11 +2386,11 @@ def upload_file(id):
 @app.route("/fillnotes/<int:id>", methods=["GET", "POST"])
 def fillnotes(id):
     if request.method == "POST":
-        org_id = session["org_id"]
+        org_id = request.cookies.get('org_id')
         notes = request.form.get("notes")
         print(notes, "notes")
         if "user_id" in session:
-            user_id = session["user_id"]
+            user_id = request.cookies.get('user_id')
             user_name = db.session.query(Users).filter_by(id=user_id).first()
             name = f"{user_name.fname} {user_name.lname}"
         new_document = Can_notes(
@@ -2447,16 +2448,19 @@ def view_document(email_id):
 @role_required(allowed_roles=["user", "admin", "owner", "CEO"])
 def editdeal(id):
     type = "edit"
+    session = {}
+    session["user_id"] = request.cookies.get('user_id')
+    session["role"] = request.cookies.get('role')
     formdata = Marketing.query.filter(Marketing.id == id).first()
     jobsdata = Joborder.query.filter(Joborder.company_id == id).all()
     return render_template(
-        "marketing.html", type=type, formdata=formdata, jobsdata=jobsdata
+        "marketing.html", type=type, formdata=formdata, jobsdata=jobsdata, session=session
     )
 
 
 @app.route("/export_csv", methods=["POST"])
 def export_csv():
-    org_id = session["org_id"]
+    org_id = request.cookies.get('org_id')
     print("org_id", org_id)
     export_route = request.form["export_route"]
 
@@ -2592,7 +2596,7 @@ def check_is_read(email_id):
 
 @app.route("/filter_emails")
 def filter_emails():
-    org_id = session["org_id"]
+    org_id = request.cookies.get('org_id')
     print("org_id", org_id)
     keyword = request.args.get("country_code")
     # print(keyword, "keyword")
@@ -2761,7 +2765,7 @@ def search_pdf():
 @role_required(allowed_roles=["user", "admin", "owner", "CEO"])
 def updatemail():
     try:
-        org_id = session["org_id"]
+        org_id = request.cookies.get('org_id')
         data = request.get_json()
         id = data.get("id")
         user = db.session.query(Emails_data).filter_by(id=id).first()
@@ -2787,7 +2791,7 @@ def updatemail():
         db.session.commit()
 
         if "user_id" in session:
-            user_id = session["user_id"]
+            user_id = request.cookies.get('user_id')
             user_name = db.session.query(Users).filter_by(id=user_id).first()
             current_time = datetime.utcnow().strftime("%b %d, %Y %I:%M%p")
             if selected_option == "Interested":
@@ -2845,10 +2849,12 @@ def deletemail():
 def members():
     user_idd = request.cookies.get('user_id')
     print("useris found in cookies", user_idd)
-    org_id = session["org_id"]
-    org_name = session["org_name"]
+    org_id = request.cookies.get('org_id')
+    org_name = request.cookies.get('org_name')
     print("org_idorg_name", org_name)
-    role = "user"
+    session = {}
+    session["user_id"] = request.cookies.get('user_id')
+    session["role"] = request.cookies.get('role')
     members_data = (
         Users.query.filter(Users.org_id == org_id).order_by(desc(Users.id)).all()
     )
@@ -2864,15 +2870,19 @@ def members():
         members_data=members_data,
         memberhistory=memberhistory,
         org_name=org_name,
+        session=session,
     )
 
 
 @app.route("/organizations")
 @role_required(allowed_roles=["CEO"])
 def organizations():
+    session = {}
+    session["user_id"] = request.cookies.get('user_id')
+    session["role"] = request.cookies.get('role')
     organization_data = organization.query.order_by(desc(organization.id)).all()
     print("organization_data", organization_data)
-    return render_template("organization.html", organizations=organization_data)
+    return render_template("organization.html", organizations=organization_data, session=session)
 
 
 @app.route("/apporg", methods=["POST"])
@@ -3074,7 +3084,7 @@ def apporg():
 
 @app.route("/pendingorg/<int:id>")
 def pendingorg(id):
-    org_id = session["org_id"]
+    org_id = request.cookies.get('org_id')
     try:
         if id is not None:
             organizations = (
@@ -3108,21 +3118,26 @@ def delorg(id):
 @app.route("/moredetails/<int:id>")
 @role_required(allowed_roles=["CEO"])
 def moredetails(id):
+    session = {}
+    session["user_id"] = request.cookies.get('user_id')
+    session["role"] = request.cookies.get('role')
     org_data = organization.query.filter(organization.id == id).first()
     org_datcre = org_cred.query.filter(org_cred.org_id == id).first()
     print("org_datcre", org_datcre)
-    return render_template("org_detail.html", org_data=org_data, org_datcre=org_datcre)
+    return render_template("org_detail.html", org_data=org_data, org_datcre=org_datcre, session=session)
 
 
 @app.route("/addmembers")
 @role_required(allowed_roles=["user", "admin", "owner", "CEO"])
 def addmembers():
-    org_name = session["org_name"]
+    org_name = request.cookies.get('org_name')
+    session = {}
+    session["role"] = request.cookies.get('role')
     print("org_idorg_name", org_name)
     designation = userdesignation_data.query.all()
     role = Role.query.all()
     return render_template(
-        "addmember.html", designations=designation, roles=role, org_name=org_name
+        "addmember.html", designations=designation, roles=role, org_name=org_name, session=session
     )
 
 
@@ -3143,7 +3158,7 @@ def updatemembers(id):
 def savemember():
     if request.method == "POST":
         id = request.form.get("id")
-        org_id = session["org_id"]
+        org_id = request.cookies.get('org_id')
         print(org_id, "org_id")
         fname = request.form.get("fname")
         lname = request.form.get("lname")
@@ -3234,7 +3249,7 @@ def savemember():
 
                         if change_statements:
                             if "user_id" in session:
-                                user_id = session["user_id"]
+                                user_id = request.cookies.get('user_id')
                                 user_name = (
                                     db.session.query(Users)
                                     .filter_by(id=user_id)
@@ -3301,7 +3316,7 @@ def savemember():
                     db.session.add(entry)
                     db.session.commit()
                     if "user_id" in session:
-                        user_id = session["user_id"]
+                        user_id = request.cookies.get('user_id')
                         user_name = (
                             db.session.query(Users).filter_by(id=user_id).first()
                         )
@@ -3334,7 +3349,7 @@ def savemember():
 @app.route("/deletemembers/<int:id>", methods=["POST"])
 @role_required(allowed_roles=["user", "admin", "owner", "CEO"])
 def deletemembers(id):
-    org_id = session["org_id"]
+    org_id = request.cookies.get('org_id')
     if id is not None:
         try:
             member_name = db.session.query(Users).filter(Users.id == id).first()
@@ -3349,7 +3364,7 @@ def deletemembers(id):
                     member_name.status = "Active"
             db.session.commit()
             if "user_id" in session:
-                user_id = session["user_id"]
+                user_id = request.cookies.get('user_id')
                 user_name = db.session.query(Users).filter_by(id=user_id).first()
                 current_time = datetime.utcnow().strftime("%b %d, %Y %I:%M%p")
                 user_statement = f"Memeber {member_name.fname} {member_name.lname} is Archive  by {user_name.fname} {user_name.lname} ({current_time}) "
@@ -3371,7 +3386,7 @@ def deletemembers(id):
 
 @app.route("/unarchivedmember/<int:id>", methods=["POST"])
 def unarchivedmember(id):
-    org_id = session["org_id"]
+    org_id = request.cookies.get('org_id')
     try:
         if id is not None:
             member_name = db.session.query(Users).filter(Users.id == id).first()
@@ -3383,7 +3398,7 @@ def unarchivedmember(id):
             db.session.commit()  # Commit the changes to the database
 
             if "user_id" in session:
-                user_id = session["user_id"]
+                user_id = request.cookies.get('user_id')
                 user_name = db.session.query(Users).filter_by(id=user_id).first()
                 current_time = datetime.utcnow().strftime("%b %d, %Y %I:%M%p")
                 user_statement = f"Memeber {member_name.fname} {member_name.lname} is restore  by {user_name.fname} {user_name.lname} ({current_time}) "
@@ -3437,14 +3452,18 @@ def reset_password(id):
 @app.route("/user")
 @role_required(allowed_roles=["user", "admin", "owner", "CEO"])
 def user():
-    return render_template("/user.html")
+    session = {}
+    session["user_id"] = request.cookies.get('user_id')
+    session["role"] = request.cookies.get('role')
+    session["email"] = request.cookies.get('email')
+    return render_template("/user.html", session=session)
 
 
 @app.route("/changepassword", methods=["POST"])
 @role_required(allowed_roles=["user", "admin", "owner", "CEO"])
 def chnagepassword():
     if request.method == "POST":
-        user_id = session["user_id"]
+        user_id = request.cookies.get('user_id')
         oldpassword = request.form.get("oldps")
         newpassword = request.form.get("newps")
         confirmpassword = request.form.get("confirmpswrd")
@@ -3500,7 +3519,11 @@ def chnagepassword():
 @app.route("/onereporting_form/<int:id>/<string:status>")
 @role_required(allowed_roles=["user", "admin", "owner", "CEO"])
 def onereporting_form(id=None, status=None):
-    org_id = session["org_id"]
+    org_id = request.cookies.get('org_id')
+    session = {}
+    session["user_id"] = request.cookies.get('user_id')
+    session["role"] = request.cookies.get('role')
+    session["user"] = request.cookies.get('user')
     if id is not None:
         print(status)
         user = db.session.query(Emails_data).filter_by(id=id).first()
@@ -3516,7 +3539,7 @@ def onereporting_form(id=None, status=None):
     company = [c for c in company if c.company_name is not None]
     company = sorted(company, key=lambda x: x.company_name)
     return render_template(
-        "resume.html", data=user, company=company, status=status, members=members
+        "resume.html", data=user, company=company, status=status, members=members, session=session
     )
 
 
@@ -3548,7 +3571,7 @@ def check_existing_job_order(title, company, org_id):
 @role_required(allowed_roles=["user", "admin", "owner", "CEO"])
 def marketing():
     if request.method == "POST":
-        org_id = session["org_id"]
+        org_id = request.cookies.get('org_id')
         rcpt = ["nisa@i8is.com"]
         if org_id:
             tocred = org_cred.query.filter(org_cred.org_id == org_id).first()
@@ -3853,7 +3876,7 @@ def marketing():
                     db.session.add(order)
                     db.session.commit()
                     if "user_id" in session:
-                        user_id = session["user_id"]
+                        user_id = request.cookies.get('user_id')
                     user_name = db.session.query(Users).filter_by(id=user_id).first()
                     current_time = datetime.utcnow().strftime("%b %d, %Y %I:%M%p")
                     user_statement = f"Joborder name as {order.title} is created by {user_name.fname} {user_name.lname} ({current_time}) "
@@ -4163,7 +4186,7 @@ def marketing():
 @role_required(allowed_roles=["user", "admin", "owner", "CEO"])
 def hrforms():
     if request.method == "POST":
-        org_id = session["org_id"]
+        org_id = request.cookies.get('org_id')
         print("org_id", org_id)
         id = request.form.get("id")
         user_id = request.form.get("user_id")
@@ -4210,7 +4233,7 @@ def hrforms():
             db.session.commit()
             submitted_id = entry.id
             if "user_id" in session:
-                user_id = session["user_id"]
+                user_id = request.cookies.get('user_id')
             user_name = db.session.query(Users).filter_by(id=user_id).first()
             current_time = datetime.utcnow().strftime("%b %d, %Y %I:%M%p")
             user_statement = f"HR form is filled by {user_name.fname} {user_name.lname} ({current_time}) "
@@ -4246,7 +4269,7 @@ def hrforms():
 @role_required(allowed_roles=["user", "admin", "owner", "CEO"])
 def resumesent():
     if request.method == "POST":
-        org_id = session["org_id"]
+        org_id = request.cookies.get('org_id')
         print("org_id", org_id)
         formid = request.form.get("formid")
         id = request.form.get("id")
@@ -4751,10 +4774,14 @@ def resumesent():
 @app.route("/jobs")
 @role_required(allowed_roles=["user", "admin", "owner", "CEO"])
 def jobs():
-    org_id = session["org_id"]
+    org_id = request.cookies.get('org_id')
     print("org_id", org_id)
+    session = {}
+    session["user_id"] = request.cookies.get('user_id')
+    session["role"] = request.cookies.get('role')
+    
     alljobs = Jobs.query.filter(Jobs.org_id == org_id).order_by(desc(Jobs.id)).all()
-    return render_template("jobs.html", alljobs=alljobs)
+    return render_template("jobs.html", alljobs=alljobs, session=session)
 
 
 @app.route("/deletejobs/<int:id>")
@@ -4781,21 +4808,28 @@ def convert_unix_to_local(timestamp):
 @app.route("/postnewjobs")
 @role_required(allowed_roles=["user", "admin", "owner", "CEO"])
 def postnewjobs():
-    return render_template("/postnewjobs.html")
+    session = {}
+    session["user_id"] = request.cookies.get('user_id')
+    session["user"] = request.cookies.get('user')
+    return render_template("/postnewjobs.html", session=session)
 
 
 @app.route("/selectjob/<int:id>", methods=["POST", "GET"])
 @role_required(allowed_roles=["user", "admin", "owner", "CEO"])
 def selectjob(id):
+    session = {}
+    session["user_id"] = request.cookies.get('user_id')
+    session["role"] = request.cookies.get('role')
+    session["user"] = request.cookies.get('user')
     if request.method == "POST":
         jobid = request.form.get("jobid")
         # print(jobid)
         user = db.session.query(Emails_data).filter_by(id=id).first()
         jobdata = db.session.query(Jobs).filter_by(id=jobid).first()
-        return render_template("recruiting.html", data=user, jobdata=jobdata)
+        return render_template("recruiting.html", data=user, jobdata=jobdata, session=session)
     else:
         alljobs = Jobs.query.all()
-        return render_template("jobs.html", alljobs=alljobs, id=id)
+        return render_template("jobs.html", alljobs=alljobs, id=id, session=session)
 
 
 @app.route("/editjob/<int:id>")
@@ -4809,16 +4843,19 @@ def editjob(id):
         .all()
     )
     print(post_job_history, "post_job_history")
-
+    
+    session = {}
+    session["user_id"] = request.cookies.get('user_id')
+    session["user"] = request.cookies.get('user')
     return render_template(
-        "postnewjobs.html", job=job, postjob_history=post_job_history
+        "postnewjobs.html", job=job, postjob_history=post_job_history, session=session
     )
 
 
 @app.route("/activity_log")
 @role_required(allowed_roles=["user", "admin", "owner", "CEO"])
 def activity_log():
-    org_id = session["org_id"]
+    org_id = request.cookies.get('org_id')
     print("org_id", org_id)
     filter_option = request.args.get("filter", "")
     start_date_str = request.args.get("startDate", "")
@@ -4946,7 +4983,7 @@ print(formatted_date)
 @role_required(allowed_roles=["user", "admin", "owner", "CEO"])
 def updatejoborder():
     if request.method == "POST":
-        org_id = session["org_id"]
+        org_id = request.cookies.get('org_id')
         print("org_id", org_id)
         id = request.form.get("id")
         company = request.form.get("company")
@@ -4962,7 +4999,7 @@ def updatejoborder():
             if id is not None:
                 old_job_order = db.session.query(Joborder).filter_by(id=id).first()
                 if "user_id" in session:
-                    user_id = session["user_id"]
+                    user_id = request.cookies.get('user_id')
                 user_name = db.session.query(Users).filter_by(id=user_id).first()
 
                 if old_job_order:
@@ -5100,7 +5137,7 @@ def updatejoborder():
 @role_required(allowed_roles=["user", "admin", "owner", "CEO"])
 def postjob():
     if request.method == "POST":
-        org_id = session["org_id"]
+        org_id = request.cookies.get('org_id')
         print("org_id", org_id)
         id = request.form.get("id")
         title = request.form.get("title")
@@ -5287,7 +5324,7 @@ def postjob():
 
                     if change_statements:
                         if "user_id" in session:
-                            user_id = session["user_id"]
+                            user_id = request.cookies.get('user_id')
                             user_name = (
                                 db.session.query(Users).filter_by(id=user_id).first()
                             )
@@ -5352,7 +5389,7 @@ def postjob():
             )
             db.session.add(entry)
             if "user_id" in session:
-                user_id = session["user_id"]
+                user_id = request.cookies.get('user_id')
                 user_name = db.session.query(Users).filter_by(id=user_id).first()
                 current_time = datetime.utcnow().strftime("%b %d, %Y %I:%M%p")
                 user_statement = f"This Job name {title} is created by {user_name.fname} {user_name.lname} for {selected_companies}  ({current_time}) "
@@ -5379,8 +5416,10 @@ def postjob():
 @role_required(allowed_roles=["user", "admin", "owner", "CEO"])
 def editjoborder(id, str):
     print("hello", str)
-    org_id = session["org_id"]
+    org_id = request.cookies.get('org_id')
     print("org_id", id, "id", org_id)
+    session = {}
+    session["role"] = request.cookies.get('role')
     job_data = Joborder.query.filter(
         Joborder.id == id, Joborder.org_id == org_id
     ).first()
@@ -5394,14 +5433,14 @@ def editjoborder(id, str):
     print(job_history, "job_history")
 
     return render_template(
-        "editjoborder.html", jobsdata=job_data, job_history=job_history
+        "editjoborder.html", jobsdata=job_data, job_history=job_history, session=session
     )
 
 
 @app.route("/jobOders")
 @role_required(allowed_roles=["user", "admin", "owner", "CEO"])
 def jobOders():
-    org_id = session["org_id"]
+    org_id = request.cookies.get('org_id')
     print("org_id", org_id)
     jobsorders = (
         Joborder.query.filter(
@@ -5427,7 +5466,7 @@ def jobOders():
 @app.route("/completed_orders")
 @role_required(allowed_roles=["user", "admin", "owner", "CEO"])
 def completed_orders():
-    org_id = session["org_id"]
+    org_id = request.cookies.get('org_id')
     print("org_id", org_id, type(org_id))
     completed_job_orders = (
         Joborder.query.filter(
@@ -5445,7 +5484,7 @@ def completed_orders():
 @app.route("/archived_orders")
 @role_required(allowed_roles=["user", "admin", "owner", "CEO"])
 def archived_orders():
-    org_id = session["org_id"]
+    org_id = request.cookies.get('org_id')
     print("org_id", org_id)
     archived_orders = (
         Joborder.query.filter(
@@ -5462,7 +5501,7 @@ def archived_orders():
 @app.route("/Companies")
 @role_required(allowed_roles=["user", "admin", "owner", "CEO"])
 def Companies():
-    org_id = session["org_id"]
+    org_id = request.cookies.get('org_id')
     print("org_id", org_id)
     page = request.args.get("page", default=1, type=int)
     per_page = 35
@@ -5512,7 +5551,7 @@ def Companies():
 @app.route("/company_detail/<int:id>")
 @role_required(allowed_roles=["user", "admin", "owner", "CEO"])
 def company_detail(id):
-    org_id = session["org_id"]
+    org_id = request.cookies.get('org_id')
     print("org_id", org_id)
     with db.session() as rsession:
         company_data = (
@@ -5584,7 +5623,7 @@ def company_detail(id):
 
 @app.route("/archive_jobs", methods=["POST"])
 def archive_jobs():
-    org_id = session["org_id"]
+    org_id = request.cookies.get('org_id')
     print("org_id", org_id)
     selected_job_ids = [
         int(job_id) for job_id in request.form.getlist("selected_jobs[]")
@@ -5605,7 +5644,7 @@ def archive_jobs():
                 job.jobstatus = "inactive"
 
             if "user_id" in session:
-                user_id = session["user_id"]
+                user_id = request.cookies.get('user_id')
                 user_name = db.session.query(Users).filter_by(id=user_id).first()
                 current_time = datetime.utcnow().strftime("%b %d, %Y %I:%M%p")
                 archive_status = "archived" if job.archived else "unarchived"
@@ -5678,7 +5717,7 @@ def position():
 @role_required(allowed_roles=["user", "admin", "owner", "CEO"])
 def otherfinal():
     if request.method == "POST":
-        org_id = session["org_id"]
+        org_id = request.cookies.get('org_id')
         print("org_id", org_id)
         user_id = request.form.get("user_id")
         name = request.form.get("name")
@@ -5719,7 +5758,7 @@ def otherfinal():
             db.session.add(forms)
             db.session.commit()
             if "user_id" in session:
-                user_id = session["user_id"]
+                user_id = request.cookies.get('user_id')
             user_name = db.session.query(Users).filter_by(id=user_id).first()
             current_time = datetime.utcnow().strftime("%b %d, %Y %I:%M%p")
             user_statement = f"Other report is filled by {user_name.fname} {user_name.lname} ({current_time}) "
@@ -5749,12 +5788,15 @@ def forms():
     user_filter = request.args.get("userFilter")
     start_date = request.args.get("startDate")
     end_date = request.args.get("endDate")
-    org_id = session["org_id"]
+    org_id = request.cookies.get('org_id')
 
+    session = {}
+    session["role"] = request.cookies.get('role')
+    
     query = allforms_data.query.filter(allforms_data.org_id == org_id)
 
-    if session["role"] == "user":
-        user_id = session["user_id"]
+    if request.cookies.get("role") == "user":
+        user_id = request.cookies.get('user_id')
         query = query.filter(allforms_data.user_id == user_id)
     elif user_filter:
         query = query.filter(allforms_data.user_id == user_filter)
@@ -5825,6 +5867,7 @@ def forms():
         end_page=end_page,
         users=users,
         status_counts=status_counts,
+        session= session,
     )
 
 
@@ -5832,7 +5875,12 @@ def forms():
 @app.route("/OneReportingForm")
 @role_required(allowed_roles=["user", "admin", "owner", "CEO"])
 def OneReportingForm():
-    org_id = session["org_id"]
+    org_id = request.cookies.get('org_id')
+    session = {}
+    session["user_id"] = request.cookies.get('user_id')
+    session["role"] = request.cookies.get('role')
+    session["user"] = request.cookies.get('user')
+
     print("org_id", org_id)
     companies = Marketing.query.filter(
         Marketing.company_status == "active", Marketing.org_id == org_id
@@ -5870,7 +5918,7 @@ app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 @app.route("/addnewemployeetodata", methods=["POST"])
 def addnewemployeetodata():
     if request.method == "POST":
-        org_id = session["org_id"]
+        org_id = request.cookies.get('org_id')
         print("org_id", org_id)
         sender_name = request.form.get("candidate_name")
         email = request.form.get("email")
@@ -5923,7 +5971,7 @@ def addmanualemployee(data=None):
 @role_required(allowed_roles=["user", "admin", "owner", "CEO"])
 def addmanualemployeetodata():
     if request.method == "POST":
-        org_id = session["org_id"]
+        org_id = request.cookies.get('org_id')
         print("org_id", org_id)
         sender_name = request.form.get("candidate_name")
         email = request.form.get("email")
@@ -5967,7 +6015,7 @@ def addmanualemployeetodata():
         db.session.commit()
         if notes:
             if "user_id" in session:
-                user_id = session["user_id"]
+                user_id = request.cookies.get('user_id')
                 user_name = db.session.query(Users).filter_by(id=user_id).first()
                 name = f"{user_name.fname} {user_name.lname}"
             new_document = Can_notes(
@@ -5976,7 +6024,7 @@ def addmanualemployeetodata():
             db.session.add(new_document)
             db.session.commit()
         if "user_id" in session:
-            user_id = session["user_id"]
+            user_id = request.cookies.get('user_id')
             user_name = db.session.query(Users).filter_by(id=user_id).first()
             current_time = datetime.utcnow().strftime("%b %d, %Y %I:%M%p")
             user_statement = f"Candidate name as {sender_name} is manually added by {user_name.fname} {user_name.lname} ({current_time}) "
@@ -6003,7 +6051,12 @@ def addmanualemployeetodata():
 @role_required(allowed_roles=["user", "admin", "owner", "CEO"])
 def view(form_id, form_type):
     type = "view"
-    org_id = session["org_id"]
+    org_id = request.cookies.get('org_id')
+    session = {}
+    session["user_id"] = request.cookies.get('user_id')
+    session["role"] = request.cookies.get('role')
+    session["user"] = request.cookies.get('user')
+
     print("org_id", org_id)
     if form_type == "New Deals Contract Signed" or form_type == "Marketing":
         formdata = Marketing.query.filter(
@@ -6014,7 +6067,7 @@ def view(form_id, form_type):
         ).all()
         # print(*jobsdata)
         return render_template(
-            "marketing.html", type=type, formdata=formdata, jobsdata=jobsdata
+            "marketing.html", type=type, formdata=formdata, jobsdata=jobsdata, session=session
         )
     elif form_type == "Person Placement":
         formdata = recruiting_data.query.filter(
@@ -6031,17 +6084,19 @@ def view(form_id, form_type):
             formdata=formdata,
             company=company,
             content=content,
+            session=session,
         )
+
     elif form_type == "HR Forms":
         formdata = Hrforms.query.filter(
             Hrforms.id == form_id, Hrforms.org_id == org_id
         ).first()
-        return render_template("hrforms.html", type=type, formdata=formdata)
+        return render_template("hrforms.html", type=type, formdata=formdata, session=session)
     elif form_type == "Other Final":
         formdata = Otherfinal.query.filter(
             Otherfinal.id == form_id, Otherfinal.org_id == org_id
         ).first()
-        return render_template("otherreport.html", type=type, formdata=formdata)
+        return render_template("otherreport.html", type=type, formdata=formdata, session=session)
 
 
 @app.route("/placecontent/<int:email_id>")
@@ -6072,28 +6127,32 @@ def placecontent(email_id):
 @role_required(allowed_roles=["user", "admin", "owner", "CEO"])
 def editforms(form_id, form_type):
     type = "edit"
-    org_id = session["org_id"]
+    org_id = request.cookies.get('org_id')
     print("org_id", org_id)
+    session = {}
+    session["user_id"] = request.cookies.get('user_id')
+    session["role"] = request.cookies.get('role')
+    session["user"] = request.cookies.get('user')
     if form_type == "New Deals Contract Signed":
         formdata = Marketing.query.filter(Marketing.id == form_id).first()
         jobsdata = Joborder.query.filter(
             Joborder.company_id == form_id, Joborder.org_id == org_id
         ).all()
         return render_template(
-            "marketing.html", type=type, formdata=formdata, jobsdata=jobsdata
+            "marketing.html", type=type, formdata=formdata, jobsdata=jobsdata, session=session
         )
     elif form_type == "Person Placement":
         formdata = recruiting_data.query.filter(recruiting_data.id == form_id).first()
         company = Marketing.query.all()
         return render_template(
-            "recruiting.html", type=type, formdata=formdata, company=company
+            "recruiting.html", type=type, formdata=formdata, company=company, session=session
         )
     elif form_type == "HR Forms":
         formdata = Hrforms.query.filter(Hrforms.id == form_id).first()
-        return render_template("hrforms.html", type=type, formdata=formdata)
+        return render_template("hrforms.html", type=type, formdata=formdata, session=session)
     elif form_type == "Other Final":
         formdata = Otherfinal.query.filter(Otherfinal.id == form_id).first()
-        return render_template("otherreport.html", type=type, formdata=formdata)
+        return render_template("otherreport.html", type=type, formdata=formdata, session=session)
 
 
 @app.route("/candidate_login")
@@ -6118,7 +6177,7 @@ def logincandidate():
 @app.route("/viewhistory/<string:email>")
 def viewhistory(email):
     with db.session() as session:
-        org_id = session["org_id"]
+        org_id = request.cookies.get('org_id')
         print("org_id", org_id)
         alldata = (
             session.query(Emails_data)
@@ -6150,8 +6209,8 @@ def viewhistory(email):
 @app.route("/deleteform/<int:form_id>/<string:form_type>", methods=["POST"])
 @role_required(allowed_roles=["user", "admin", "owner", "CEO"])
 def deleteform(form_id, form_type):
-    org_id = session["org_id"]
-    user_name = session["user"]
+    org_id = request.cookies.get('org_id')
+    user_name = request.cookies.get("user")
     current_time = datetime.utcnow().strftime("%b %d, %Y %I:%M%p")
     print("org_id", form_type, user_name, org_id)
     user_statement = ""  # Initialize user_statement with a default value
@@ -6251,9 +6310,13 @@ def deleteform(form_id, form_type):
 @app.route("/target")
 @role_required(allowed_roles=["user", "admin", "owner", "CEO"])
 def target():
-    user_id = session["user_id"]
-    role = session["role"]
-    org_id = session["org_id"]
+    user_id = request.cookies.get('user_id')
+    role = request.cookies.get("role")
+    org_id = request.cookies.get('org_id')
+    session = {}
+    session["user_id"] = user_id
+    session["role"] = role
+    session["user"] = request.cookies.get('user')
     print("org_id", org_id)
     if role == "user":
         members_data = (
@@ -6272,13 +6335,13 @@ def target():
     for member in members_data:
         print(member.new_achieve, "members_data")
 
-    return render_template("/target.html", members_data=members_data)
+    return render_template("/target.html", members_data=members_data, session=session)
 
 
 @app.route("/addtarget")
 @role_required(allowed_roles=["user", "admin", "owner", "CEO"])
 def addtarget():
-    org_id = session["org_id"]
+    org_id = request.cookies.get('org_id')
     print("org_id", org_id)
     members_data = (
         Users.query.filter(
@@ -6297,7 +6360,7 @@ def addtarget():
 
 @app.route("/edit_target")
 def edit_target():
-    org_id = session["org_id"]
+    org_id = request.cookies.get('org_id')
     print("org_id", org_id)
     selected_week = request.args.get("selectedWeek")
     selected_week_data = (
@@ -6314,7 +6377,7 @@ def edit_target():
 
 @app.route("/resettarget", methods=["POST"])
 def resettarget():
-    org_id = session["org_id"]
+    org_id = request.cookies.get('org_id')
     print("org_id", org_id)
     if request.method == "POST":
         ids = request.form.getlist("id")
@@ -6412,7 +6475,7 @@ def resettarget():
 
 @app.route("/savetarget", methods=["POST"])
 def savetarget():
-    org_id = session["org_id"]
+    org_id = request.cookies.get('org_id')
     print("org_id", org_id)
     if request.method == "POST":
         user_ids = request.form.getlist("user_id")
@@ -6540,12 +6603,12 @@ def savetarget():
         # recipients = ['nhoorain161@gmail.com']
 
         recipients2 = emails
-        user_name = session["user"]
-        user_email = session["email"]
+        user_name = request.cookies.get("user")
+        user_email = request.cookies.get("email")
 
         try:
-            user_name = session["user"]
-            user_email = session["email"]
+            user_name = request.cookies.get("user")
+            user_email = request.cookies.get("email")
             email_subject = f"""Weekly Target Added """
             email_body = f"""
                                <!DOCTYPE html>
@@ -6802,8 +6865,8 @@ def savetarget():
 
 @app.route("/bugreport", methods=["POST"])
 def bugreport():
-    org_id = session["org_id"]
-    org_name = session["org_name"]
+    org_id = request.cookies.get('org_id')
+    org_name = request.cookies.get('org_name')
     print("org_id", org_id)
     if request.method == "POST":
         user_name = request.form.get("user_name")
