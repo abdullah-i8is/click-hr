@@ -450,7 +450,7 @@ def fetch_data():
                         </head>
                         <body>
                             <div class="container">
-                                <img class="cont-img" src="https://www.click-hr.com/static/img/clickhr.png">
+                                <img class="cont-img" src="{{ url_for('static', filename='img/clickhr.png') }}">
                                 <div class="hello"></div>
                                 <div class="details">
                                     <p>We encountered an issue accessing your email for ClickHR. Please contact the ClickHR Administrator to update your credentials ASAP to avoid disruption. This includes your Indeed or ZipRecruiter email and password.</p>

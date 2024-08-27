@@ -5,12 +5,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign-Up CLick HR</title>
-    <link rel="icon" href="https://www.click-hr.com/static/img/titleicon.png">
+    <link rel="icon" href="{{ url_for('static', filename='img/titleicon.png') }}">
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <!--    <link rel="stylesheet" href="{{url_for('static', filename='css/signupstyle.css')}}">-->
-    <link rel="stylesheet" href="https://www.click-hr.com/static/css/signupstyle.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/signupstyle.css') }}">
 
 </head>
 <style>
@@ -31,7 +31,7 @@
     <div class="container register">
         <div class="row">
             <div class="col-md-3 register-left">
-                <img src="https://www.click-hr.com/static/img/white.png" class="w-100" alt="" />
+                <img src="{{ url_for('static', filename='img/white.png') }}" class="w-100" alt="" />
                 <!-- <h3>Welcome</h3> -->
                 <h4>Empower Your Recruitment - Where Technology Meets Talent</h4>
 

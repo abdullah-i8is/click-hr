@@ -4,38 +4,38 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Your Dashboard</title>
-    <link rel="icon" href="https://www.click-hr.com/static/img/titleicon.png">
+    <link rel="icon" href="{{ url_for('static', filename='img/titleicon.png') }}">
 
 
     <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
-    <link href="https://www.click-hr.com/static/css/black-dashboard.css?v=1.0.0" rel="stylesheet"/>
-    <link rel="stylesheet" href="https://www.click-hr.com/static/css/style.css">
-<!--        <link rel="stylesheet" href="https://www.click-hr.com/static/css/forms.css">-->
+    <link href="{{ url_for('static', filename='css/black-dashboard.css?v=1.0.0') }}" rel="stylesheet"/>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+<!--        <link rel="stylesheet" href="{{ url_for('static', filename='css/forms.css' ) }}">-->
 
     <!--     Fonts and icons     -->
     <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,600,700,800" rel="stylesheet"/>
     <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
     <!-- Nucleo Icons -->
-    <link href="https://www.click-hr.com/static/css/nucleo-icons.css" rel="stylesheet"/>
+    <link href="{{ url_for('static', filename='css/nucleo-icons.css') }}" rel="stylesheet"/>
     <!-- CSS Files -->
-    <link href="https://www.click-hr.com/static/css/theme-switcher.css" rel="stylesheet"/>
-    <link href="https://www.click-hr.com/static/demo/demo.css" rel="stylesheet"/>
+    <link href="{{ url_for('static', filename='css/theme-switcher.css' ) }}" rel="stylesheet"/>
+    <link href="{{ url_for('static', filename='demo/demo.css' ) }}" rel="stylesheet"/>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>
-    <script src="https://www.click-hr.com/static/js/script.js"></script>
+    <script src="{{ url_for('static', filename='js/script.js' ) }}"></script>
     <!--   Core JS Files   -->
-    <script src="https://www.click-hr.com/static/js/core/jquery.min.js"></script>
-    <script src="https://www.click-hr.com/static/js/core/popper.min.js"></script>
-    <script src="https://www.click-hr.com/static/js/core/bootstrap.min.js"></script>
-    <script src="https://www.click-hr.com/static/js/plugins/perfect-scrollbar.jquery.min.js"></script>
+    <script src="{{ url_for('static', filename='js/core/jquery.min.js' ) }}"></script>
+    <script src="{{ url_for('static', filename='js/core/popper.min.js' ) }}"></script>
+    <script src="{{ url_for('static', filename='js/core/bootstrap.min.js' ) }}"></script>
+    <script src="{{ url_for('static', filename='js/plugins/perfect-scrollbar.jquery.min.js' ) }}"></script>
     <!-- Chart JS -->
-    <script src="https://www.click-hr.com/static/js/plugins/chartjs.min.js"></script>
+    <script src="{{ url_for('static', filename='js/plugins/chartjs.min.js' ) }}"></script>
     <!--  Notifications Plugin    -->
-    <script src="https://www.click-hr.com/static/js/plugins/bootstrap-notify.js"></script>
+    <script src="{{ url_for('static', filename='js/plugins/bootstrap-notify.js' ) }}"></script>
     <!-- Control Center for Black Dashboard: parallax effects, scripts for the example pages etc -->
-    <script src="https://www.click-hr.com/static/js/black-dashboard.min.js?v=1.0.0"></script>
+    <script src="{{ url_for('static', filename='js/black-dashboard.min.js?v=1.0.0') }}"></script>
     <!-- Black Dashboard DEMO methods, don't include it in your project! -->
-    <script src="https://www.click-hr.com/static/js/demo/demo.js"></script>
-    <script src="https://www.click-hr.com/static/js/themeSettings.js"></script>
+    <script src="{{ url_for('static', filename='js/demo/demo.js' ) }}"></script>
+    <script src="{{ url_for('static', filename='js/themeSettings.js' ) }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-labels@1.1.0"></script>
 

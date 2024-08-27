@@ -9,8 +9,8 @@
         <meta content="" name="keywords" />
     
         <!-- Favicons -->
-        <link href="https://www.click-hr.com/static/assets/img/favicon.png" rel="icon" />
-        <link href="https://www.click-hr.com/static/assets/img/apple-touch-icon.png" rel="apple-touch-icon" />
+        <link href="{{ url_for('static', filename='assets/img/favicon.png') }}" rel="icon" />
+        <link href="{{ url_for('static', filename='assets/img/apple-touch-icon.png') }}" rel="apple-touch-icon" />
     
         <!-- Google Fonts -->
         <link
@@ -19,25 +19,25 @@
         />
     
         <!-- Vendor CSS Files -->
-        <link href="https://www.click-hr.com/static/assets/vendor/aos/aos.css" rel="stylesheet" />
+        <link href="{{ url_for('static', filename='assets/vendor/aos/aos.css') }}" rel="stylesheet" />
         <link
-          href="https://www.click-hr.com/static/assets/vendor/bootstrap/css/bootstrap.min.css"
+          href="{{ url_for('static', filename='assets/vendor/bootstrap/css/bootstrap.min.css') }}"
           rel="stylesheet"
         />
         <link
-          href="https://www.click-hr.com/static/assets/vendor/bootstrap-icons/bootstrap-icons.css"
+          href="{{ url_for('static', filename='assets/vendor/bootstrap-icons/bootstrap-icons.css') }}"
           rel="stylesheet"
         />
-        <link href="https://www.click-hr.com/static/assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet" />
+        <link href="{{ url_for('static', filename='assets/vendor/boxicons/css/boxicons.min.css') }}" rel="stylesheet" />
         <link
-          href="https://www.click-hr.com/static/assets/vendor/glightbox/css/glightbox.min.css"
+          href="{{ url_for('static', filename='assets/vendor/glightbox/css/glightbox.min.css') }}"
           rel="stylesheet"
         />
-        <link href="https://www.click-hr.com/static/assets/vendor/remixicon/remixicon.css" rel="stylesheet" />
-        <link href="https://www.click-hr.com/static/assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet" />
+        <link href="{{ url_for('static', filename='assets/vendor/remixicon/remixicon.css') }}" rel="stylesheet" />
+        <link href="{{ url_for('static', filename='assets/vendor/swiper/swiper-bundle.min.css') }}" rel="stylesheet" />
     
         <!-- Template Main CSS File -->
-        <link href="https://www.click-hr.com/static/assets/css/style.css" rel="stylesheet" />
+        <link href="{{ url_for('static', filename='assets/css/style.css') }}" rel="stylesheet" />
       </head>
     
       <body>
@@ -47,7 +47,7 @@
             <!-- <h1 class="logo me-auto"><a href="index.html">Click HR</a></h1> -->
             <!-- Uncomment below if you prefer to use an image logo -->
             <a href="/signin" class="logo me-auto"
-              ><img src="https://www.click-hr.com/static/assets/img/clickhr.png" alt="" class="img-fluid"
+              ><img src="{{ url_for('static', filename='assets/img/clickhr.png') }}" alt="" class="img-fluid"
             /></a>
     
             <nav id="navbar" class="navbar">
@@ -145,7 +145,7 @@
                 <div class="row">
                   <div class="col-lg-4 col-md-6 footer-contact">
     <a href="/signin" class="logo me-auto"
-              ><img style="width:47%" src="https://www.click-hr.com/static/assets/img/clickhr.png" alt="" class="img-fluid"
+              ><img style="width:47%" src="{{ url_for('static', filename='assets/img/clickhr.png') }}" alt="" class="img-fluid"
             /></a>                <p>
                       4370 Steeles Ave <br />
                       W, Woodbridge, ON L4L 4Y4,<br />
@@ -244,16 +244,16 @@
           ></a>
       
           <!-- Vendor JS Files -->
-          <script src="https://www.click-hr.com/static/assets/vendor/aos/aos.js"></script>
-          <script src="https://www.click-hr.com/static/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-          <script src="https://www.click-hr.com/static/assets/vendor/glightbox/js/glightbox.min.js"></script>
-          <script src="https://www.click-hr.com/static/assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
-          <script src="https://www.click-hr.com/static/assets/vendor/swiper/swiper-bundle.min.js"></script>
-          <script src="https://www.click-hr.com/static/assets/vendor/waypoints/noframework.waypoints.js"></script>
-          <script src="https://www.click-hr.com/static/assets/vendor/php-email-form/validate.js"></script>
+          <script src="{{ url_for('static', filename='assets/vendor/aos/aos.js') }}"></script>
+          <script src="{{ url_for('static', filename='assets/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+          <script src="{{ url_for('static', filename='assets/vendor/glightbox/js/glightbox.min.js') }}"></script>
+          <script src="{{ url_for('static', filename='assets/vendor/isotope-layout/isotope.pkgd.min.js') }}"></script>
+          <script src="{{ url_for('static', filename='assets/vendor/swiper/swiper-bundle.min.js') }}"></script>
+          <script src="{{ url_for('static', filename='assets/vendor/waypoints/noframework.waypoints.js') }}"></script>
+          <script src="{{ url_for('static', filename='assets/vendor/php-email-form/validate.js') }}"></script>
       
           <!-- Template Main JS File -->
-          <script src="https://www.click-hr.com/static/assets/js/main.js"></script>
+          <script src="{{ url_for('static', filename='assets/js/main.js') }}"></script>
         </body>
       </html>
       

@@ -9,7 +9,7 @@
                             <span class="navbar-toggler-bar bar3"></span>
                         </button>
                     </div>
-                    <a class="navbar-brand" style="width:13.5%;margin-left:0px" href="/index"><img style="width: 95%;" src="https://www.click-hr.com/static/img/Clcik Hr logo White.png" alt="Logo Photo"></a>
+                    <a class="navbar-brand" style="width:13.5%;margin-left:0px" href="/index"><img style="width: 95%;" src="{{ url_for('static', filename='img/Clcik Hr logo White.png') }}" alt="Logo Photo"></a>
                 </div>
                <!--  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation"
                         aria-expanded="false" aria-label="Toggle navigation">
@@ -35,7 +35,7 @@
                         <li class="dropdown nav-item">
                             <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
                                 <div class="photo" style="    margin-left: 33px;">
-                                    <img src="https://www.click-hr.com/static/img/default-avatar.png" alt="Profile Photo">
+                                    <img src="{{ url_for('static', filename='img/default-avatar.png') }}" alt="Profile Photo">
                                 </div>
                                 <b<p style="font-weight: 600;color: rgba(255, 255, 255, 0.8);">{{session['user']}}</p></b>
                                 <p class="d-lg-none">

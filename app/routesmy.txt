@@ -699,7 +699,7 @@ def org():
                                              </head>
                                              <body>
                                                  <div class="container">
-                                                     <img class="cont-img" src="https://www.click-hr.com/static/img/clickhr.png">
+                                                     <img class="cont-img" src="{{ url_for('static', filename='img/clickhr.png') }}">
                                                      <div class="hello"></div>
 
                                                      <p>We are thrilled to inform you that your registration has been successfully processed! Thank you for choosing to join our community.</p>
@@ -3002,7 +3002,7 @@ def apporg():
                                                                      </head>
                                                                      <body>
                                                                          <div class="container">
-                                                                             <img class="cont-img" src="https://www.click-hr.com/static/img/clickhr.png">
+                                                                             <img class="cont-img" src="{{ url_for('static', filename='img/clickhr.png') }}">
                                                                              <div class="hello"></div>
                                                                              
                                                                              <h1>Sign in Now to Access Click-HR!</h1>
@@ -3903,7 +3903,7 @@ def marketing():
                   </head>
                   <body>
                       <div class="container">
-                          <img class="cont-img" src="https://www.click-hr.com/static/img/clickhr.png">
+                          <img class="cont-img" src="{{ url_for('static', filename='img/clickhr.png') }}">
                                          <div class="hello"></div>
                           <p> A new contract signed with {company} filled by {name}</p>
                           <div class="details">
@@ -3993,7 +3993,7 @@ def marketing():
                   </head>
                   <body>
                       <div class="container">
-                           <img class="cont-img" src="https://www.click-hr.com/static/img/clickhr.png">
+                           <img class="cont-img" src="{{ url_for('static', filename='img/clickhr.png') }}">
                                          <div class="hello"></div>
 
                             <p> Deal Contract not signed with {company} filled by {name}</p>                         
@@ -4084,7 +4084,7 @@ def marketing():
                   </head>
                   <body>
                       <div class="container">
-                            <img class="cont-img" src="https://www.click-hr.com/static/img/clickhr.png">
+                            <img class="cont-img" src="{{ url_for('static', filename='img/clickhr.png') }}">
                                          <div class="hello"></div>
                           <p> Reopen Deal signed with {company} filled by {name}</p>
 
@@ -4668,7 +4668,7 @@ def resumesent():
                                  </head>
                                  <body>
                                      <div class="container">
-						<img class="cont-img" src="https://www.click-hr.com/static/img/clickhr.png">
+						<img class="cont-img" src="{{ url_for('static', filename='img/clickhr.png') }}">
                                          <div class="hello"></div>
                                          <p>A new Candidate({candidate}) is Placed at company({company_name}) filled by {name}</p>
                                          <div class="details">
@@ -6599,7 +6599,7 @@ def savetarget():
                                </head>
                                <body>
                                    <div class="container">
-					<img class="cont-img" src="https://www.click-hr.com/static/img/clickhr.png">
+					<img class="cont-img" src="{{ url_for('static', filename='img/clickhr.png') }}">
                                          <div class="hello"></div>
                                        
                                        <p>I hope this email finds you well. I wanted to inform you that weekly tasks have been assigned {user_name} to our users for the current week. This includes a breakdown of tasks for each user to ensure clarity and accountability.Dive into the details below:</p>
@@ -6736,7 +6736,7 @@ def savetarget():
                                  </head>
                                  <body>
                                      <div class="container">
-                                         <img class="cont-img" src="https://www.click-hr.com/static/img/clickhr.png">
+                                         <img class="cont-img" src="{{ url_for('static', filename='img/clickhr.png') }}">
                                          <div class="hello"></div>
 
                                         <p>We hope this email finds you well. We wanted to inform you that your weekly tasks have been assigned by {user_name} </p>
@@ -6853,7 +6853,7 @@ def bugreport():
                                </head>
                                <body>
                                    <div class="container">
-                                       <img class="cont-img" src="https://www.click-hr.com/static/img/clickhr.png">
+                                       <img class="cont-img" src="{{ url_for('static', filename='img/clickhr.png') }}">
                                          <div class="hello"></div>
                                        <p>Bug report send by  {user_name} with ({user_email}). </p>
                                        <p>Description:{description}</p>
@@ -6989,7 +6989,7 @@ def arc_mails_auto():
                 </head>
                 <body>
                     <div class="container">
-                       <img class="cont-img" src="https://www.click-hr.com/static/img/clickhr.png">
+                       <img class="cont-img" src="{{ url_for('static', filename='img/clickhr.png') }}">
                                          <div class="hello"></div>
                         <p>I hope this email finds you well. Here are the {archived_count} job orders from your organization that have been archived due to being active for more than 45 days:</p>
                         <table id="targetTable">
@@ -7147,7 +7147,7 @@ def send_email():
                 </head>
                 <body>
                     <div class="container">
-                        <img class="cont-img" src="https://www.click-hr.com/static/img/clickhr.png">
+                        <img class="cont-img" src="{{ url_for('static', filename='img/clickhr.png') }}">
                         <p>I hope this email finds you well. Here is the comprehensive weekly target report showcasing the remarkable achievements and progress of our dedicated team. Your insights and feedback are highly appreciated.</p>
                         <table id="targetTable">
                             <tr>

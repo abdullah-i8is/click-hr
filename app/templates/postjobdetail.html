@@ -10,16 +10,16 @@
     <link href="https://fonts.googleapis.com/css2?family=Righteous&family=Roboto&display=swap" rel="stylesheet">
     <link href='https://fonts.googleapis.com/css?family=Spartan' rel='stylesheet'>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    <link rel="stylesheet" href="https://www.click-hr.com/static/css/website.css">
-        <link rel="stylesheet" href="https://www.click-hr.com/static/css/headerfooter.css">
-          <link rel="icon" href="https://www.click-hr.com/static/img/titleicon.png">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/website.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/headerfooter.css') }}">
+          <link rel="icon" href="{{ url_for('static', filename='img/titleicon.png') }}">
 
 
     <title>Geox Hr</title>
 </head>
 <style>
         .jobTitleMain {
-            background-image: url("https://www.click-hr.com/static/img/page-header-default.jpg");
+            background-image: url("{{ url_for('static', filename='img/page-header-default.jpg') }}");
             width: 100%;
             background-repeat: no-repeat;
             background-size: cover;
@@ -32,7 +32,7 @@
         <nav class="custom_menu navbar navbar-expand-lg">
             <div class="container">
                 <a class="navbar-brand navbar_logo" href="https://geoxhr.com/" target="_blank">
-                        <img class="logoImg" src="https://www.click-hr.com/static/img/Logo2.png" alt=""></a>
+                        <img class="logoImg" src="{{ url_for('static', filename='img/Logo2.png') }}" alt=""></a>
                 <button class="navbar-toggler" id="mobile-menu-button" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false"
                     aria-label="Toggle navigation">
@@ -78,7 +78,7 @@
                 </ul>
             </div> -->
             <div class="mobile-menu">
-                <div class="logo"><a href="https://geoxhr.com/" target="_blank"><img src="./images/header_logo.png"
+                <div class="logo"><a href="https://geoxhr.com/" target="_blank"><img src="./images/header_logo.png') }}
                             alt=""></a><i class="fa-solid fa-circle-xmark" id="mobile_menu_close_button"></i></div>
                 <ul class="navbar-nav navlinks">
                     <li class="nav-item">
@@ -114,7 +114,7 @@
             <div class="container">
 <!--                <div class="headerMain">-->
 <!--                    <div class="logoMain">-->
-<!--                        <img class="logoImg" src="https://www.click-hr.com/static/img/clickhr.png" alt="">-->
+<!--                        <img class="logoImg" src="{{ url_for('static', filename='img/clickhr.png') }}" alt="">-->
 <!--                    </div>-->
 <!--                    <div class="backToHome">-->
 <!--                        <button class="backToHomeButton">Back to Home</button>-->
@@ -140,13 +140,13 @@
                         </div>
                         <div class="locationMain">
                             <div class="locationIconMain">
-                                <img class="locationIcon" src="https://www.click-hr.com/static/img/location.png" alt="location.png">
+                                <img class="locationIcon" src="{{ url_for('static', filename='img/location.png') }}" alt="location.png">
                             </div>
                             <h6 class="locationDetail">{{jobdetail.location.title()}}</h6>
                         </div>
                         <div class="locationMain">
                             <div class="locationIconMain">
-                                <img class="locationIcon" src="https://www.click-hr.com/static/img/calendar.png" alt="calendar.png">
+                                <img class="locationIcon" src="{{ url_for('static', filename='img/calendar.png') }}" alt="calendar.png">
                             </div>
                             <h6 class="locationDetail">{{jobdetail.formatted_time}}</h6>
                         </div>
@@ -211,7 +211,7 @@
 <!--                            <div class="freturedJobsMain" onclick="window.location='{{ url_for('jobdetail', id=new.id) }}'">-->
 <!--                                <div class="logoCompanyName">-->
 <!--                                    <div class="companyLogoMain">-->
-<!--                                <img class="locationIcon" src="https://www.click-hr.com/static/img/location.png" alt="location.png">-->
+<!--                                <img class="locationIcon" src="{{ url_for('static', filename='img/location.png') }}" alt="location.png">-->
 <!--                                    </div>-->
 <!--                                    <div class="featuredJobContent">-->
 <!--                                        <h4 class="jobHeading">{{new.title.title()}}</h4>-->
@@ -225,7 +225,7 @@
 <!--                                        </div>-->
 <!--                                        <div class="locationMain">-->
 <!--                                            <div class="locationIconMain">-->
-<!--                                  <img class="locationIcon" src="https://www.click-hr.com/static/img/calendar.png" alt="calendar.png">-->
+<!--                                  <img class="locationIcon" src="{{ url_for('static', filename='img/calendar.png') }}" alt="calendar.png">-->
 <!--                                            </div>-->
 <!--                                            <h6 class="locationDetail">{{new.location.title()}}</h6>-->
 <!--                                        </div>-->
@@ -299,7 +299,7 @@
                 <div class="col-lg-4 col-sm-12 col-xs-12">
                     <div class="address-box clearfix">
                         <div class="add-icon"><a href="https://geoxhr.com/" target="_blank">
-                                <img src="./images/footer_logo.png" alt=""></a>
+                                <img src="./images/footer_logo.png') }}" alt=""></a>
                         </div>
                         <div class="add_content1 add-content">
                             <h5>Branch Address</h5>

@@ -11,7 +11,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Righteous&family=Roboto&display=swap" rel="stylesheet">
     <link href='https://fonts.googleapis.com/css?family=Spartan' rel='stylesheet'>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    <link rel="stylesheet" href="https://www.click-hr.com/static/css/i8is.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/i8is.css')}}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
         integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -19,7 +19,7 @@
     <style>
         .careers {
             position: relative;
-            background-image: url("https://www.click-hr.com/static/img/bg1.png");
+            background-image: url("{{ url_for('static', filename='img/bg1.png') }}");
             background-size: cover;
             background-repeat: no-repeat;
             background-color: #FFFFFF;
@@ -154,7 +154,7 @@
     <header id="hide-header">
         <nav class="custom_menu navbar navbar-expand-lg">
             <div class="container">
-                <a class="navbar-brand navbar_logo" href="https://i8is.com/" target="_blank"><img src="../static/img/i8ishead.png" alt=""></a>
+                <a class="navbar-brand navbar_logo" href="https://i8is.com/" target="_blank"><img src="../static/img/i8ishead.png') }}" alt=""></a>
                 <button class="navbar-toggler" id="mobile-menu-button" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false"
                     aria-label="Toggle navigation">
@@ -185,7 +185,7 @@
                 </div>
             </div>
             <div class="mobile-menu">
-                <div class="logo"><a href="https://i8is.com/" target="_blank"><img src="./images/New-Logo-min.png" alt=""></a><i class="fa-solid fa-circle-xmark" id="mobile_menu_close_button"></i></div>
+                <div class="logo"><a href="https://i8is.com/" target="_blank"><img src="./images/New-Logo-min.png') }}" alt=""></a><i class="fa-solid fa-circle-xmark" id="mobile_menu_close_button"></i></div>
                 <ul class="navbar-nav navlinks">
                     <li class="nav-item">
                         <a class="nav-link " aria-current="page" href="https://i8is.com/" target="_blank">Home</a>
@@ -294,7 +294,7 @@
                 <div class="col-lg-4 col-sm-12 col-xs-12">
                     <div class="address-box clearfix">
                         <div class="add-icon"><a href="https://i8is.com/" target="_blank">
-                                <img src="../static/img/i8isfoot.png" alt=""></a>
+                                <img src="../static/img/i8isfoot.png') }}" alt=""></a>
                         </div>
                         <div class="add_content1 add-content">
                             <p class="custom_branch_address text"><span class="custom_icon_address_text">Your Gateway to

@@ -10,14 +10,14 @@
     <link href="https://fonts.googleapis.com/css2?family=Righteous&family=Roboto&display=swap" rel="stylesheet">
     <link href='https://fonts.googleapis.com/css?family=Spartan' rel='stylesheet'>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    <link rel="stylesheet" href="https://www.click-hr.com/static/css/website.css">
-        <link rel="stylesheet" href="https://www.click-hr.com/static/css/headerfooter.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/website.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/headerfooter.css') }}">
 
     <title>Geox Hr</title>
 </head>
 <style>
         .jobTitleMain {
-            background-image: url("https://www.click-hr.com/static/img/page-header-default.jpg");
+            background-image: url("{{ url_for('static', filename='img/page-header-default.jpg' }}");
             width: 100%;
             background-repeat: no-repeat;
             background-size: cover;
@@ -30,7 +30,7 @@
         <nav class="custom_menu navbar navbar-expand-lg">
             <div class="container">
                 <a class="navbar-brand navbar_logo" href="https://geoxhr.com/" target="_blank">
-                        <img class="logoImg" src="https://www.click-hr.com/static/img/Logo2.png" alt=""></a>
+                        <img class="logoImg" src="{{ url_for('static', filename='img/Logo2.png') }}" alt=""></a>
                 <button class="navbar-toggler" id="mobile-menu-button" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false"
                     aria-label="Toggle navigation">
@@ -76,7 +76,7 @@
                 </ul>
             </div> -->
             <div class="mobile-menu">
-                <div class="logo"><a href="https://geoxhr.com/" target="_blank"><img src="./images/header_logo.png"
+                <div class="logo"><a href="https://geoxhr.com/" target="_blank"><img src="./images/header_logo.png') }}
                             alt=""></a><i class="fa-solid fa-circle-xmark" id="mobile_menu_close_button"></i></div>
                 <ul class="navbar-nav navlinks">
                     <li class="nav-item">
@@ -128,26 +128,26 @@
             <div class="working">
                 <div class="row">
                     <div class="col">
-                        <img class="colimg" src="https://www.click-hr.com/static/img/1.png" alt="">
+                        <img class="colimg" src="{{ url_for('static', filename='img/1.png') }}" alt="">
                         <h2 class="colh">Applied</h2>
                         <p class="colp"> "Application Submitted  We've Got You!"</p>
 
                     </div>
                     <div class="col">
-                        <img class="colimg" src="https://www.click-hr.com/static/img/2.png" alt="">
+                        <img class="colimg" src="{{ url_for('static', filename='img/2.png') }}" alt="">
                         <h2 class="colh">Resume Sent to Company</h2>
                         <p class="colp">"Making Introductions  Your Resume's Now with the Pros!"</p>
 
                     </div>
                     <div class="col">
-                        <img class="colimg" src="https://www.click-hr.com/static/img/3.png" alt="">
+                        <img class="colimg" src="{{ url_for('static', filename='img/3.png') }}" alt="">
 
                         <h2 class="colh">Lock in a Date</h2>
                         <p class="colp"> "Big Moment Alert It's Time to Shine in the Interview!"</p>
 
                     </div>
                     <div class="col">
-                        <img class="colimg" src="https://www.click-hr.com/static/img/4.png" alt="">
+                        <img class="colimg" src="{{ url_for('static', filename='img/4.png') }}" alt="">
                         <h2 class="colh">Candidate Placed</h2>
                         <p class="colp">"Congratulations! Your New Career Chapter Begins Now."</p>
 
@@ -162,17 +162,17 @@
         <div class="jobs">
     <div class="container">
         <div class="jobscontent">
-            <img class="job1" src="https://www.click-hr.com/static/img/team1.png" alt="">
+            <img class="job1" src="{{ url_for('static', filename='img/team1.png') }}" alt="">
             <div class="job2">
                 <h2 class="jobh">
                     Why Register with GEOX HR ?</h2>
                 <p class="jobp">Instant Matches: Our advanced AI algorithm instantly matches your profile with suitable job openings.</p>
 
-                <p class="subjobp"><img class="subjobimg" src="https://www.click-hr.com/static/img/tick.png" alt="">We partner with leading companies across various industries.
+                <p class="subjobp"><img class="subjobimg" src="{{ url_for('static', filename='img/tick.png') }}" alt="">We partner with leading companies across various industries.
                 </p>
-                <p class="subjobp"><img class="subjobimg" src="https://www.click-hr.com/static/img/tick.png" alt="">Say goodbye to endless job searches. Let the opportunities come to you.
+                <p class="subjobp"><img class="subjobimg" src="{{ url_for('static', filename='img/tick.png') }}" alt="">Say goodbye to endless job searches. Let the opportunities come to you.
                 </p>
-                <p class="subjobp"><img class="subjobimg" src="https://www.click-hr.com/static/img/tick.png" alt=""> Get recommendations on courses and workshops that can boost your employability.
+                <p class="subjobp"><img class="subjobimg" src="{{ url_for('static', filename='img/tick.png') }}" alt=""> Get recommendations on courses and workshops that can boost your employability.
                 </p>
                 <a class="jobbtn" style="margin-top:10px; color:#ffff;" href="/getregistered" >Register Now</a>
 <!--                <button class="jobbtn">Register Now</button>-->
@@ -200,7 +200,7 @@
                 {% for data in alljobs %}
                 <div class="jobsContentMain" style="cursor:pointer; margin-bottom:30px" onclick="window.location='{{ url_for('jobdetail', id=data.id) }}'">
                     <div class="jobsLogoMain">
-                    <img class="jobsLogoContentMain" src="https://www.click-hr.com/static/img/Logo2.png" alt="">
+                    <img class="jobsLogoContentMain" src="{{ url_for('static', filename='img/Logo2.png') }}" alt="">
                     </div>
                     <div class="jobTileHeading">
                         <h4 class="jobTileHeadingContent">{{ data.title.title() }}</h4>
@@ -228,7 +228,7 @@
                 <div class="col-lg-4 col-sm-12 col-xs-12">
                     <div class="address-box clearfix">
                         <div class="add-icon"><a href="https://geoxhr.com/" target="_blank">
-                                <img src="./images/footer_logo.png" alt=""></a>
+                                <img src="./images/footer_logo.png') }}" alt=""></a>
                         </div>
                         <div class="add_content1 add-content">
                             <h5>Branch Address</h5>

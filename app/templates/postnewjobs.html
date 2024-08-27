@@ -6,10 +6,10 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <link rel="stylesheet" href="https://www.click-hr.com/static/css/forms.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/forms.css' ) }}">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-        <link rel="icon" href="https://www.click-hr.com/static/img/titleicon.png">
+        <link rel="icon" href="{{ url_for('static', filename='img/titleicon.png') }}">
 
 </head>
 <style>
@@ -229,7 +229,7 @@
 <body>
   <section class="container">
     <div class="form-head">
-        <a href="/index"><img class="logo" src="https://www.click-hr.com/static/img/clickhr.png" alt=""></a>
+        <a href="/index"><img class="logo" src="{{ url_for('static', filename='img/clickhr.png') }}" alt=""></a>
            <a class="backtodashboard" href="{{ url_for('jobs') }}">
              <i class="fa fa-arrow-left"></i>
              <p style="margin-bottom: 0px">back to jobs</p>

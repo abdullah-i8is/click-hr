@@ -5,23 +5,23 @@
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="https://www.click-hr.com/static/css/loginstyle.css">
-        <link rel="icon" href="https://www.click-hr.com/static/img/titleicon.png">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/onereport.js' ) }}">
+        <link rel="icon" href="{{ url_for('static', filename='img/titleicon.png') }}">
 
     </head>
 
-<body style="background-image: url(https://www.click-hr.com/static/img/Group65.png);">
+<body style="background-image: url('{{ url_for('static', filename='img/Group65.png) }}');">
 <div class="container" id="container">
     <div class="logo-div">
-    <img src="https://www.click-hr.com/static/img/clickhr.png" alt=""></div>
+    <img src="{{ url_for('static', filename='img/clickhr.png') }}" alt=""></div>
     <div class="ahad-dev">
-        <img src="https://www.click-hr.com/static/img/clickhrsignin.png" alt="">
+        <img src="{{ url_for('static', filename='img/clickhrsignin.png') }}" alt="">
 
         <div class="wrapper">
 
             <form role="form" method="post" action="/login">
              <h2>Sign in to Account</h2>
-             <img src="https://www.click-hr.com/static/img/Group66.png"  alt="">
+             <img src="{{ url_for('static', filename='img/Group66.png') }}"  alt="">
              {% if msg %}
              <div class="row">
                <div class="col-md-6 pr-md-1">

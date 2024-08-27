@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://www.click-hr.com/static/css/loginstyle.css">
-    <link rel="icon" href="https://www.click-hr.com/static/img/titleicon.png">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/loginstyle.css') }}">
+    <link rel="icon" href="{{ url_for('static', filename='img/titleicon.png') }}">
 
 </head>
 <body>
@@ -13,7 +13,7 @@
 	<div class="form-container sign-in-container">
         <form role="form" method="post" action="/logincandidate">
             <div class="imaContainer">
-                <img class="logoImg" src="https://www.click-hr.com/static/img/Logo2.png" alt="Logo.png">
+                <img class="logoImg" src="{{ url_for('static', filename='img/Logo2.png') }}" alt="Logo.png') }}">
             </div>
 			<h1 class="signin">Sign in</h1>
              {% if msg %}
@@ -40,7 +40,7 @@
 		<div class="overlay">
             <div class="MainDivFlex">
                 <div class="imgRightContainer">
-                    <img class="imgRightSignin" src="https://www.click-hr.com/static/img/signin.png" alt="signin.png">
+                    <img class="imgRightSignin" src="{{ url_for('static', filename='img/signin.png') }}" alt="signin.png') }}">
                 </div>
             </div>
 		</div>
