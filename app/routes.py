@@ -59,22 +59,23 @@ import mimetypes
 from itertools import chain
 from sqlalchemy import or_, not_
 import logging
-
+import redis
 from collections import defaultdict
+from flask_session import Session
 
 
 # ... (other imports and database setup)
 
-# # Configure Flask-Session to use Redis
-# app.config['SESSION_TYPE'] = 'redis'
-# app.config['SESSION_REDIS'] = redis.from_url('redis://localhost:6379')
-# app.config['SESSION_COOKIE_SAMESITE'] = 'None'  # Allow cross-site cookie access (important for iframes)
-# app.config['SESSION_COOKIE_SECURE'] = False  # Only send cookies over HTTPS (recommended for production)
+# Configure Flask-Session to use Redis
+app.config['SESSION_TYPE'] = 'redis'
+app.config['SESSION_REDIS'] = redis.from_url('redis://localhost:6379')
+app.config['SESSION_COOKIE_SAMESITE'] = 'None'  # Allow cross-site cookie access (important for iframes)
+app.config['SESSION_COOKIE_SECURE'] = True  # Only send cookies over HTTPS (recommended for production)
 # fs.init_app(app)
 
 # # Initialize storage
 # storage = fs.Storage('files')
-# Session(app)
+Session(app)
 
 # Define global variables
 global_user_id = None
@@ -532,25 +533,30 @@ def directlogin():
             if user.status == "Active" and bcrypt.checkpw(password.encode('utf-8'), user.password.encode('utf-8')):
                 # Successful login
                  # Set global variables
-                global global_user_id, global_role, global_org_id, global_user_name, global_user_email
-                global_user_id = user.id
-                global_role = user.role
-                global_org_id = user.org_id
-                global_user_name = f"{user.fname} {user.lname}"
-                global_user_email = user.email
+                # global global_user_id, global_role, global_org_id, global_user_name, global_user_email
+                # global_user_id = user.id
+                # global_role = user.role
+                # global_org_id = user.org_id
+                # global_user_name = f"{user.fname} {user.lname}"
+                # global_user_email = user.email
                 
                 session["user_id"] = user.id
                 session["role"] = user.role
-                session["org_id"] = user.org_id
-                session["email"] = user.email
-                session["org_name"] = user.org_name
-                session["user"] = f"{user.fname} {user.lname}"
+                # session["org_id"] = user.org_id
+                # session["email"] = user.email
+                # session["org_name"] = user.org_name
+                # session["user"] = f"{user.fname} {user.lname}"
                  # Set cookies
-                resp = make_response(redirect(url_for("index")))
-                resp.set_cookie('user_id', str(user.id), samesite='None', secure=True)  # Set secure=True if using HTTPS
-                resp.set_cookie('role', user.role, samesite='None', secure=True)  # Set secure=True if using HTTPS
-                resp.set_cookie('org_id', str(user.org_id), samesite='None', secure=True)  # Set secure=True if using HTTPS
-                return resp
+                # resp = make_response(redirect(url_for("index")))
+                # resp.set_cookie('user_id', str(user.id), samesite='None', secure=True)  # Set secure=True if using HTTPS
+                # resp.set_cookie('role', user.role, samesite='None', secure=True)  # Set secure=True if using HTTPS
+                # resp.set_cookie('org_id', str(user.org_id), samesite='None', secure=True)  # Set secure=True if using HTTPS
+                # resp.set_cookie('email', str(user.email), samesite='None', secure=True)  # Set secure=True if using HTTPS
+                # resp.set_cookie('org_name', str(user.org_name), samesite='None', secure=True)  # Set secure=True if using HTTPS
+                # resp.set_cookie('user', str(f"{user.fname} {user.lname}"), samesite='None', secure=True)  # Set secure=True if using HTTPS
+                return redirect(url_for("index"))
+
+                # return resp
             else:
                 return jsonify({"message": "wrong credentials"}), 200
         else:
@@ -852,9 +858,9 @@ class DotDict(dict):
 # @role_required(allowed_roles=["user", "admin", "owner", "CEO"])
 def index():
     
-
-    user_idd = request.cookies.get('user_id')
-    print("useris found in cookies", user_idd)
+    user_idd = session["user_id"]
+    # user_idd = request.cookies.get('user_id')
+    print("useris found in session", user_idd)
     # role = session["role"]
     # org_id = session["org_id"]
     # Access global variables instead of session variables
