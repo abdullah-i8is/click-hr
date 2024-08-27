@@ -88,7 +88,7 @@ def role_required(allowed_roles):
     def decorator(f):
         @wraps(f)
         def decorated_function(*args, **kwargs):
-            if "user_id" not in session or "role" not in session:
+            if not request.cookies.get('user_id') or not request.cookies.get('role'):
                 return redirect(url_for("login"))
 
             user_role = request.cookies.get("role")
