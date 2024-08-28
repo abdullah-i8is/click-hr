@@ -3681,7 +3681,7 @@ def check_existing_job_order(title, company, org_id):
 def marketing():
     if request.method == "POST":
         org_id = request.cookies.get('org_id')
-        rcpt = ["nisa@i8is.com"]
+        rcpt = ["nagina@i8is.com"]
         if org_id:
             tocred = org_cred.query.filter(org_cred.org_id == org_id).first()
             if tocred:
@@ -4854,7 +4854,7 @@ def resumesent():
                                  </html>
                                  """
                     # recipients = ['nhoorain161@gmail.com']
-                    rcpt = ["nisa@i8is.com"]
+                    rcpt = ["nagina@i8is.com"]
                     if org_id:
                         tocred = org_cred.query.filter(
                             org_cred.org_id == org_id
@@ -5571,6 +5571,12 @@ def editjoborder(id, str):
 @app.route("/jobOders")
 @role_required(allowed_roles=["user", "admin", "owner", "CEO"])
 def jobOders():
+    session = {}
+    session["user_id"] = request.cookies.get('user_id')
+    session["role"] = request.cookies.get('role')
+    session["org_id"] = request.cookies.get('org_id')
+    session["email"] = request.cookies.get('email')
+    session["user"] = request.cookies.get('user')
     org_id = request.cookies.get('org_id')
     print("org_id", org_id)
     jobsorders = (
@@ -5583,7 +5589,7 @@ def jobOders():
         .all()
     )
     print(jobsorders)
-    return render_template("jobsorder.html", jobsorders=jobsorders)
+    return render_template("jobsorder.html", jobsorders=jobsorders, session=session)
 
 
 # @app.route('/jobOders')
@@ -6736,7 +6742,7 @@ def savetarget():
         emails = [email[0] for email in user_emails]
         print(emails)
         # recipients = ['nhoorain161@gmail.com']
-        rcpt = ["nisa@i8is.com"]
+        rcpt = ["nagina@i8is.com"]
         if org_id:
             tocred = org_cred.query.filter(org_cred.org_id == org_id).first()
             if tocred:
@@ -7098,7 +7104,7 @@ def bugreport():
                                </html>
             """
             msg = Message(
-                subject=email_subject, recipients=["nisa@i8is.com"], html=email_body
+                subject=email_subject, recipients=["nagina@i8is.com"], html=email_body
             )
             # print(msg)
             # Attach files if any
@@ -7126,7 +7132,7 @@ def arc_mails_auto():
             return
 
         for org in active_orgs:
-            rcpt = ["nisa@i8is.com", "contact@handshr.com"]
+            rcpt = ["nagina@i8is.com", "contact@handshr.com"]
             # toem = org.noti_email
             # rcpt.append(toem)
             org_id = org.org_id
@@ -7292,7 +7298,7 @@ def send_email():
                     continue
                 processed_orgs.append(org_id)
 
-            rcpt = ["nisa@i8is.com"]
+            rcpt = ["nagina@i8is.com"]
 
             today = datetime.today()
             days_to_saturday = today.weekday()
