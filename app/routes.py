@@ -2472,7 +2472,7 @@ def fillnotes(id):
         org_id = request.cookies.get('org_id')
         notes = request.form.get("notes")
         print(notes, "notes")
-        if "user_id" in session:
+        if request.cookies.get('user_id'):
             user_id = request.cookies.get('user_id')
             user_name = db.session.query(Users).filter_by(id=user_id).first()
             name = f"{user_name.fname} {user_name.lname}"
@@ -2876,7 +2876,7 @@ def updatemail():
         db.session.add(user)
         db.session.commit()
 
-        if "user_id" in session:
+        if request.cookies.get('user_id'):
             user_id = request.cookies.get('user_id')
             user_name = db.session.query(Users).filter_by(id=user_id).first()
             current_time = datetime.utcnow().strftime("%b %d, %Y %I:%M%p")
@@ -3353,7 +3353,7 @@ def savemember():
                                     change_statements.append(change_statement)
 
                         if change_statements:
-                            if "user_id" in session:
+                            if request.cookies.get('user_id'):
                                 user_id = request.cookies.get('user_id')
                                 user_name = (
                                     db.session.query(Users)
@@ -3420,7 +3420,7 @@ def savemember():
                     )
                     db.session.add(entry)
                     db.session.commit()
-                    if "user_id" in session:
+                    if request.cookies.get('user_id'):
                         user_id = request.cookies.get('user_id')
                         user_name = (
                             db.session.query(Users).filter_by(id=user_id).first()
@@ -3468,7 +3468,7 @@ def deletemembers(id):
                 else:
                     member_name.status = "Active"
             db.session.commit()
-            if "user_id" in session:
+            if request.cookies.get('user_id'):
                 user_id = request.cookies.get('user_id')
                 user_name = db.session.query(Users).filter_by(id=user_id).first()
                 current_time = datetime.utcnow().strftime("%b %d, %Y %I:%M%p")
@@ -3502,7 +3502,7 @@ def unarchivedmember(id):
                     member_name.status = "Inactive"
             db.session.commit()  # Commit the changes to the database
 
-            if "user_id" in session:
+            if request.cookies.get('user_id'):
                 user_id = request.cookies.get('user_id')
                 user_name = db.session.query(Users).filter_by(id=user_id).first()
                 current_time = datetime.utcnow().strftime("%b %d, %Y %I:%M%p")
@@ -3689,7 +3689,7 @@ def marketing():
                 rcpt.append(toemail)
         print("org_id", org_id)
         id = request.form.get("id")
-        user_id = request.form.get("user_id")
+        user_id = request.cookies.get('user_id')
         name = request.form.get("name")
         company = request.form.get("company")
         selected_company = request.form.get("selected_company")
@@ -3984,7 +3984,7 @@ def marketing():
                     # jobstatus = jobstatuss,
                     db.session.add(order)
                     db.session.commit()
-                    if "user_id" in session:
+                    if request.cookies.get('user_id'):
                         user_id = request.cookies.get('user_id')
                     user_name = db.session.query(Users).filter_by(id=user_id).first()
                     current_time = datetime.utcnow().strftime("%b %d, %Y %I:%M%p")
@@ -4298,7 +4298,7 @@ def hrforms():
         org_id = request.cookies.get('org_id')
         print("org_id", org_id)
         id = request.form.get("id")
-        user_id = request.form.get("user_id")
+        user_id = request.cookies.get('user_id')
         name = request.form.get("name")
         candidate = request.form.get("cname")
         late = request.form.get("Late/absent")
@@ -4341,7 +4341,7 @@ def hrforms():
             db.session.add(entry)
             db.session.commit()
             submitted_id = entry.id
-            if "user_id" in session:
+            if request.cookies.get('user_id'):
                 user_id = request.cookies.get('user_id')
             user_name = db.session.query(Users).filter_by(id=user_id).first()
             current_time = datetime.utcnow().strftime("%b %d, %Y %I:%M%p")
@@ -4382,7 +4382,7 @@ def resumesent():
         print("org_id", org_id)
         formid = request.form.get("formid")
         id = request.form.get("id")
-        user_id = request.form.get("user_id")
+        user_id = request.cookies.get('user_id')
         name = request.form.get("name")
         candidate = request.form.get("cname")
         phone = request.form.get("cphone")
@@ -5125,7 +5125,7 @@ def updatejoborder():
         try:
             if id is not None:
                 old_job_order = db.session.query(Joborder).filter_by(id=id).first()
-                if "user_id" in session:
+                if request.cookies.get('user_id'):
                     user_id = request.cookies.get('user_id')
                 user_name = db.session.query(Users).filter_by(id=user_id).first()
 
@@ -5270,7 +5270,7 @@ def postjob():
         title = request.form.get("title")
         name = request.form.get("name")
         selected_companies = request.form.getlist("company_name")
-        user_id = request.form.get("user_id")
+        user_id = request.cookies.get('user_id')
         location = request.form.get("location")
         experience = request.form.get("experience")
         JobType = request.form.get("Job-Type")
@@ -5450,7 +5450,7 @@ def postjob():
                                 change_statements.append(change_statement)
 
                     if change_statements:
-                        if "user_id" in session:
+                        if request.cookies.get('user_id'):
                             user_id = request.cookies.get('user_id')
                             user_name = (
                                 db.session.query(Users).filter_by(id=user_id).first()
@@ -5515,7 +5515,7 @@ def postjob():
                 notes=notes,
             )
             db.session.add(entry)
-            if "user_id" in session:
+            if request.cookies.get('user_id'):
                 user_id = request.cookies.get('user_id')
                 user_name = db.session.query(Users).filter_by(id=user_id).first()
                 current_time = datetime.utcnow().strftime("%b %d, %Y %I:%M%p")
@@ -5787,7 +5787,7 @@ def archive_jobs():
                 job.archived = True
                 job.jobstatus = "inactive"
 
-            if "user_id" in session:
+            if request.cookies.get('user_id'):
                 user_id = request.cookies.get('user_id')
                 user_name = db.session.query(Users).filter_by(id=user_id).first()
                 current_time = datetime.utcnow().strftime("%b %d, %Y %I:%M%p")
@@ -5863,7 +5863,7 @@ def otherfinal():
     if request.method == "POST":
         org_id = request.cookies.get('org_id')
         print("org_id", org_id)
-        user_id = request.form.get("user_id")
+        user_id = request.cookies.get('user_id')
         name = request.form.get("name")
         otherreport = request.form.get("otherreport")
         notes = request.form.get("notes")
@@ -5901,7 +5901,7 @@ def otherfinal():
             )
             db.session.add(forms)
             db.session.commit()
-            if "user_id" in session:
+            if request.cookies.get('user_id'):
                 user_id = request.cookies.get('user_id')
             user_name = db.session.query(Users).filter_by(id=user_id).first()
             current_time = datetime.utcnow().strftime("%b %d, %Y %I:%M%p")
@@ -6164,7 +6164,7 @@ def addmanualemployeetodata():
         db.session.add(apply)
         db.session.commit()
         if notes:
-            if "user_id" in session:
+            if request.cookies.get('user_id'):
                 user_id = request.cookies.get('user_id')
                 user_name = db.session.query(Users).filter_by(id=user_id).first()
                 name = f"{user_name.fname} {user_name.lname}"
@@ -6173,7 +6173,7 @@ def addmanualemployeetodata():
             )
             db.session.add(new_document)
             db.session.commit()
-        if "user_id" in session:
+        if request.cookies.get('user_id'):
             user_id = request.cookies.get('user_id')
             user_name = db.session.query(Users).filter_by(id=user_id).first()
             current_time = datetime.utcnow().strftime("%b %d, %Y %I:%M%p")
