@@ -5638,6 +5638,12 @@ def archived_orders():
 @app.route("/Companies")
 @role_required(allowed_roles=["user", "admin", "owner", "CEO"])
 def Companies():
+    session = {}
+    session["user_id"] = request.cookies.get('user_id')
+    session["role"] = request.cookies.get('role')
+    session["org_id"] = request.cookies.get('org_id')
+    session["email"] = request.cookies.get('email')
+    session["user"] = request.cookies.get('user')
     org_id = request.cookies.get('org_id')
     print("org_id", org_id)
     page = request.args.get("page", default=1, type=int)
@@ -5682,6 +5688,7 @@ def Companies():
         total_pages=total_pages,
         start_page=start_page,
         end_page=end_page,
+        session=session
     )
 
 
